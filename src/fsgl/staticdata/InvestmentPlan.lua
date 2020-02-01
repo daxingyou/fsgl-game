@@ -1,0 +1,25 @@
+InvestmentPlan = 
+{
+    { id = 1, type = 1, param = 1, type1 = 2, id1 = 0, num1 = 680000, },
+    { id = 2, type = 1, param = 2, type1 = 2, id1 = 0, num1 = 1880000, },
+    { id = 3, type = 1, param = 3, type1 = 2, id1 = 0, num1 = 1880000, },
+    { id = 4, type = 1, param = 4, type1 = 2, id1 = 0, num1 = 1880000, },
+    { id = 5, type = 1, param = 5, type1 = 2, id1 = 0, num1 = 2880000, },
+    { id = 6, type = 1, param = 6, type1 = 2, id1 = 0, num1 = 3880000, },
+    { id = 7, type = 1, param = 7, type1 = 2, id1 = 0, num1 = 5880000, },
+    { id = 8, type = 3, param = 1, type1 = 6, id1 = 0, num1 = 680000, },
+    { id = 9, type = 3, param = 2, type1 = 6, id1 = 0, num1 = 1880000, },
+    { id = 10, type = 3, param = 3, type1 = 6, id1 = 0, num1 = 1880000, },
+    { id = 11, type = 3, param = 4, type1 = 6, id1 = 0, num1 = 1880000, },
+    { id = 12, type = 3, param = 5, type1 = 6, id1 = 0, num1 = 2880000, },
+    { id = 13, type = 3, param = 6, type1 = 6, id1 = 0, num1 = 3880000, },
+    { id = 14, type = 3, param = 7, type1 = 6, id1 = 0, num1 = 5880000, },
+    { id = 15, type = 4, param = 1, type1 = 4, id1 = 2251, num1 = 88, },
+    { id = 16, type = 4, param = 2, type1 = 4, id1 = 2251, num1 = 188, },
+    { id = 17, type = 4, param = 3, type1 = 4, id1 = 2251, num1 = 288, },
+    { id = 18, type = 4, param = 4, type1 = 4, id1 = 2251, num1 = 388, },
+    { id = 19, type = 4, param = 5, type1 = 4, id1 = 2251, num1 = 488, },
+    { id = 20, type = 4, param = 6, type1 = 4, id1 = 2251, num1 = 588, },
+    { id = 21, type = 4, param = 7, type1 = 4, id1 = 2251, num1 = 688, },
+}
+

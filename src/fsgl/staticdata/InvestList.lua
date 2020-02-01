@@ -1,0 +1,58 @@
+InvestList={
+	{
+		["id"] = 1,
+		["miaoshu"] = "等级10 奖励",
+		["level"] = 10,
+		["rewardtype"] = 3,
+		["canshu"] = "403#500",
+	},
+	{
+		["id"] = 2,
+		["miaoshu"] = "等级15 奖励",
+		["level"] = 15,
+		["rewardtype"] = 3,
+		["canshu"] = "403#1000",
+	},
+	{
+		["id"] = 3,
+		["miaoshu"] = "等级20 奖励",
+		["level"] = 20,
+		["rewardtype"] = 3,
+		["canshu"] = "403#2500",
+	},
+	{
+		["id"] = 4,
+		["miaoshu"] = "等级30 奖励",
+		["level"] = 30,
+		["rewardtype"] = 3,
+		["canshu"] = "403#6000",
+	},
+	{
+		["id"] = 5,
+		["miaoshu"] = "等级40 奖励",
+		["level"] = 40,
+		["rewardtype"] = 3,
+		["canshu"] = "403#10000",
+	},
+	{
+		["id"] = 6,
+		["miaoshu"] = "等级50 奖励",
+		["level"] = 50,
+		["rewardtype"] = 3,
+		["canshu"] = "403#20000",
+	},
+	{
+		["id"] = 7,
+		["miaoshu"] = "等级55 奖励",
+		["level"] = 55,
+		["rewardtype"] = 3,
+		["canshu"] = "403#30000",
+	},
+	{
+		["id"] = 8,
+		["miaoshu"] = "等级60 奖励",
+		["level"] = 60,
+		["rewardtype"] = 3,
+		["canshu"] = "403#30000",
+	},
+}

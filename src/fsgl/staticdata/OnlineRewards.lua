@@ -1,0 +1,13 @@
+OnlineRewards = 
+{
+    { id = 1, typeA = 1, typeB = 1, needTime = 5, needTimes = 0, reward1 = 4, reward1id = 2008, reward1num = 10, reward2 = 2, reward2id = 0, reward2num = 5000, reward3 = 6, reward3id = 0, reward3num = 5000, reward4 = 4, reward4id = 81901, reward4num = 5, reward5 = 3, reward5id = 0, reward5num = 20, },
+    { id = 2, typeA = 1, typeB = 1, needTime = 5, needTimes = 0, reward1 = 4, reward1id = 2008, reward1num = 10, reward2 = 2, reward2id = 0, reward2num = 8000, reward3 = 6, reward3id = 0, reward3num = 8000, reward4 = 4, reward4id = 81801, reward4num = 5, reward5 = 3, reward5id = 0, reward5num = 20, },
+    { id = 3, typeA = 1, typeB = 1, needTime = 5, needTimes = 0, reward1 = 4, reward1id = 2008, reward1num = 10, reward2 = 2, reward2id = 0, reward2num = 16000, reward3 = 6, reward3id = 0, reward3num = 16000, reward4 = 4, reward4id = 81901, reward4num = 5, reward5 = 3, reward5id = 0, reward5num = 20, },
+    { id = 4, typeA = 1, typeB = 1, needTime = 5, needTimes = 0, reward1 = 4, reward1id = 2008, reward1num = 10, reward2 = 2, reward2id = 0, reward2num = 30000, reward3 = 6, reward3id = 0, reward3num = 30000, reward4 = 4, reward4id = 81801, reward4num = 5, reward5 = 3, reward5id = 0, reward5num = 20, },
+    { id = 5, typeA = 1, typeB = 1, needTime = 5, needTimes = 0, reward1 = 4, reward1id = 2008, reward1num = 10, reward2 = 2, reward2id = 0, reward2num = 50000, reward3 = 6, reward3id = 0, reward3num = 50000, reward4 = 4, reward4id = 81802, reward4num = 5, reward5 = 3, reward5id = 0, reward5num = 50, },
+    { id = 6, typeA = 2, typeB = 2, needTime = 0, needTimes = 4, reward1 = 4, reward1id = 2302, reward1num = 2, reward2 = 0, reward2id = 0, reward2num = 0, reward3 = 0, reward3id = 0, reward3num = 0, reward4 = 0, reward4id = 0, reward4num = 0, reward5 = 0, reward5id = 0, reward5num = 0, },
+    { id = 7, typeA = 2, typeB = 2, needTime = 0, needTimes = 8, reward1 = 4, reward1id = 2302, reward1num = 4, reward2 = 0, reward2id = 0, reward2num = 0, reward3 = 0, reward3id = 0, reward3num = 0, reward4 = 0, reward4id = 0, reward4num = 0, reward5 = 0, reward5id = 0, reward5num = 0, },
+    { id = 8, typeA = 2, typeB = 2, needTime = 0, needTimes = 12, reward1 = 4, reward1id = 2302, reward1num = 6, reward2 = 0, reward2id = 0, reward2num = 0, reward3 = 0, reward3id = 0, reward3num = 0, reward4 = 0, reward4id = 0, reward4num = 0, reward5 = 0, reward5id = 0, reward5num = 0, },
+    { id = 9, typeA = 3, typeB = 2, needTime = 30, needTimes = 0, reward1 = 3, reward1id = 0, reward1num = 50, reward2 = 0, reward2id = 0, reward2num = 0, reward3 = 0, reward3id = 0, reward3num = 0, reward4 = 0, reward4id = 0, reward4num = 0, reward5 = 0, reward5id = 0, reward5num = 0, },
+}
+

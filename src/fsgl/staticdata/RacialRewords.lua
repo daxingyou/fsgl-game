@@ -1,0 +1,26 @@
+RacialRewords = 
+{
+    { id = 1, rewardType = 1, remark = "阵营战参战奖励，参与战斗后通过邮件发送", requireType = 1, parameter = 0, rewardItemType = 3, isTools = 0, rewardAmoun = 100, },
+    { id = 2, rewardType = 2, remark = "阵营战获胜奖励，阵营战获胜后通过邮件发送，每天发送1次", requireType = 2, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 50, },
+    { id = 3, rewardType = 3, remark = "每周总势力获胜，通过邮件发送", requireType = 3, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 200, },
+    { id = 4, rewardType = 5, remark = "阵营战获胜奖励，阵营战获胜后通过邮件发送，胜利后发送1次", requireType = 2, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 100, },
+    { id = 5, rewardType = 4, remark = "阵营势力点奖励，阵营达到需求的势力点后获得，每周重置", requireType = 4, parameter = 20000, rewardItemType = 9, isTools = 0, rewardAmoun = 50, },
+    { id = 6, rewardType = 4, remark = "阵营势力点奖励，阵营达到需求的势力点后获得，每周重置", requireType = 4, parameter = 50000, rewardItemType = 9, isTools = 0, rewardAmoun = 100, },
+    { id = 7, rewardType = 4, remark = "阵营势力点奖励，阵营达到需求的势力点后获得，每周重置", requireType = 4, parameter = 100000, rewardItemType = 9, isTools = 0, rewardAmoun = 300, },
+    { id = 8, rewardType = 4, remark = "阵营势力点奖励，阵营达到需求的势力点后获得，每周重置", requireType = 4, parameter = 300000, rewardItemType = 9, isTools = 0, rewardAmoun = 500, },
+    { id = 9, rewardType = 4, remark = "阵营势力点奖励，阵营达到需求的势力点后获得，每周重置", requireType = 4, parameter = 500000, rewardItemType = 9, isTools = 0, rewardAmoun = 800, },
+    { id = 10, rewardType = 6, remark = "阵营战每次战斗奖励（获胜）即时发送", requireType = 6, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 50, },
+    { id = 11, rewardType = 7, remark = "阵营战每次战斗奖励（失败）即时发送", requireType = 7, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 25, },
+    { id = 12, rewardType = 8, remark = "阵营战击杀排名第1奖励，阵营战结束后发送", requireType = 8, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 1000, },
+    { id = 13, rewardType = 9, remark = "阵营战击杀排名第2奖励，阵营战结束后发送", requireType = 9, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 800, },
+    { id = 14, rewardType = 10, remark = "阵营战击杀排名第3奖励，阵营战结束后发送", requireType = 10, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 500, },
+    { id = 15, rewardType = 11, remark = "阵营战击杀排名第4奖励，阵营战结束后发送", requireType = 11, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 300, },
+    { id = 16, rewardType = 12, remark = "阵营战击杀排名第5奖励，阵营战结束后发送", requireType = 12, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 200, },
+    { id = 17, rewardType = 13, remark = "阵营战击杀排名第6奖励，阵营战结束后发送", requireType = 13, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 200, },
+    { id = 18, rewardType = 14, remark = "阵营战击杀排名第7奖励，阵营战结束后发送", requireType = 14, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 200, },
+    { id = 19, rewardType = 15, remark = "阵营战击杀排名第8奖励，阵营战结束后发送", requireType = 15, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 200, },
+    { id = 20, rewardType = 16, remark = "阵营战击杀排名第9奖励，阵营战结束后发送", requireType = 16, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 200, },
+    { id = 21, rewardType = 17, remark = "阵营战击杀排名第10奖励，阵营战结束后发送", requireType = 17, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 200, },
+    { id = 22, rewardType = 18, remark = "每设置一位防守队伍的英雄，阵营战结束后发送", requireType = 18, parameter = 0, rewardItemType = 9, isTools = 0, rewardAmoun = 30, },
+}
+

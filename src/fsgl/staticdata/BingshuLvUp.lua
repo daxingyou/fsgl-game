@@ -1,0 +1,12 @@
+BingshuLvUp = 
+{
+    { id = 1, name = "三略", needlevel = 10, activity = "2322#1", maxrank = 5, maxlevel = 25, cost = 10000, chenggonglv = 50, chenggonglv2 = 2, addhp = 0.15, addat = 0.1, addmat = 0.1, adddf = 0.1, addmdf = 0.1, addbj = 0, addsb = 0, addmz = 0, addbjbl = 0, addbsjm = 0, addnq = 0, addct = 0, addjm = 0, },
+    { id = 2, name = "六韬", needlevel = 10, activity = "2315#1", maxrank = 5, maxlevel = 25, cost = 15000, chenggonglv = 50, chenggonglv2 = 2, addhp = 0.25, addat = 0.15, addmat = 0.15, adddf = 0.15, addmdf = 0.15, addbj = 0, addsb = 0, addmz = 0, addbjbl = 0, addbsjm = 0, addnq = 0, addct = 0, addjm = 0, },
+    { id = 3, name = "司马法", needlevel = 10, activity = "2316#1", maxrank = 5, maxlevel = 25, cost = 30000, chenggonglv = 50, chenggonglv2 = 2, addhp = 0.35, addat = 0.2, addmat = 0.2, adddf = 0.2, addmdf = 0.2, addbj = 0, addsb = 0, addmz = 0, addbjbl = 0, addbsjm = 0, addnq = 0, addct = 0, addjm = 0, },
+    { id = 4, name = "尉缭子", needlevel = 10, activity = "2317#1", maxrank = 5, maxlevel = 25, cost = 45000, chenggonglv = 50, chenggonglv2 = 2, addhp = 0.5, addat = 0.25, addmat = 0.25, adddf = 0.25, addmdf = 0.25, addbj = 0, addsb = 0, addmz = 0, addbjbl = 0, addbsjm = 0, addnq = 0, addct = 0, addjm = 0, },
+    { id = 5, name = "孙子兵法", needlevel = 10, activity = "2318#1", maxrank = 5, maxlevel = 25, cost = 70000, chenggonglv = 50, chenggonglv2 = 2, addhp = 0.675, addat = 0.3, addmat = 0.3, adddf = 0.3, addmdf = 0.3, addbj = 0, addsb = 0, addmz = 0, addbjbl = 0, addbsjm = 0, addnq = 0, addct = 0, addjm = 0, },
+    { id = 6, name = "吴子兵法", needlevel = 10, activity = "2319#1", maxrank = 5, maxlevel = 25, cost = 100000, chenggonglv = 50, chenggonglv2 = 2, addhp = 0.8, addat = 0.4, addmat = 0.4, adddf = 0.4, addmdf = 0.4, addbj = 0, addsb = 0, addmz = 0, addbjbl = 0, addbsjm = 0, addnq = 0, addct = 0, addjm = 0, },
+    { id = 7, name = "纪效新书", needlevel = 10, activity = "2320#1", maxrank = 5, maxlevel = 25, cost = 120000, chenggonglv = 50, chenggonglv2 = 2, addhp = 1, addat = 0.5, addmat = 0.5, adddf = 0.5, addmdf = 0.5, addbj = 0, addsb = 0, addmz = 0, addbjbl = 0, addbsjm = 0, addnq = 0, addct = 0, addjm = 0, },
+    { id = 8, name = "武经总要", needlevel = 10, activity = "2321#1", maxrank = 5, maxlevel = 25, cost = 150000, chenggonglv = 50, chenggonglv2 = 2, addhp = 1.2, addat = 0.6, addmat = 0.6, adddf = 0.6, addmdf = 0.6, addbj = 0, addsb = 0, addmz = 0, addbjbl = 0, addbsjm = 0, addnq = 0, addct = 0, addjm = 0, },
+}
+

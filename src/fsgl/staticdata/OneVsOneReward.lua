@@ -1,0 +1,28 @@
+OneVsOneReward = 
+{
+    { id = 1, group = 1, needs = "通关第5关", params = 5, item1 = 2271, num1 = 50, item2 = 2314, num2 = 20, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 2, group = 1, needs = "通关第10层", params = 10, item1 = 2271, num1 = 100, item2 = 2314, num2 = 30, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 3, group = 1, needs = "通关第15层", params = 15, item1 = 2271, num1 = 150, item2 = 2314, num2 = 40, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 4, group = 1, needs = "通关第20层", params = 20, item1 = 2271, num1 = 200, item2 = 2314, num2 = 50, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 5, group = 1, needs = "通关第25层", params = 25, item1 = 2271, num1 = 250, item2 = 2314, num2 = 60, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 6, group = 1, needs = "通关第30层", params = 30, item1 = 2271, num1 = 300, item2 = 2314, num2 = 70, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 9, group = 2, needs = "通关第5关", params = 5, item1 = 2271, num1 = 100, item2 = 2314, num2 = 30, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 10, group = 2, needs = "通关第10层", params = 10, item1 = 2271, num1 = 150, item2 = 2314, num2 = 40, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 11, group = 2, needs = "通关第15层", params = 15, item1 = 2271, num1 = 200, item2 = 2314, num2 = 50, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 12, group = 2, needs = "通关第20层", params = 20, item1 = 2271, num1 = 250, item2 = 2314, num2 = 60, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 13, group = 2, needs = "通关第25层", params = 25, item1 = 2271, num1 = 300, item2 = 2314, num2 = 70, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 14, group = 2, needs = "通关第30层", params = 30, item1 = 2271, num1 = 350, item2 = 2314, num2 = 80, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 17, group = 3, needs = "通关第5关", params = 5, item1 = 2271, num1 = 150, item2 = 2314, num2 = 40, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 18, group = 3, needs = "通关第10层", params = 10, item1 = 2271, num1 = 200, item2 = 2314, num2 = 50, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 19, group = 3, needs = "通关第15层", params = 15, item1 = 2271, num1 = 250, item2 = 2314, num2 = 60, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 20, group = 3, needs = "通关第20层", params = 20, item1 = 2271, num1 = 300, item2 = 2314, num2 = 70, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 21, group = 3, needs = "通关第25层", params = 25, item1 = 2271, num1 = 350, item2 = 2314, num2 = 80, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 22, group = 3, needs = "通关第30层", params = 30, item1 = 2271, num1 = 400, item2 = 2314, num2 = 90, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 25, group = 4, needs = "通关第5关", params = 5, item1 = 2271, num1 = 200, item2 = 2314, num2 = 50, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 26, group = 4, needs = "通关第10层", params = 10, item1 = 2271, num1 = 250, item2 = 2314, num2 = 60, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 27, group = 4, needs = "通关第15层", params = 15, item1 = 2271, num1 = 300, item2 = 2314, num2 = 70, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 28, group = 4, needs = "通关第20层", params = 20, item1 = 2271, num1 = 350, item2 = 2314, num2 = 80, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 29, group = 4, needs = "通关第25层", params = 25, item1 = 2271, num1 = 400, item2 = 2314, num2 = 90, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+    { id = 30, group = 4, needs = "通关第30层", params = 30, item1 = 2271, num1 = 450, item2 = 2314, num2 = 100, item3 = nil, num3 = nil, item4 = nil, num4 = nil, },
+}
+

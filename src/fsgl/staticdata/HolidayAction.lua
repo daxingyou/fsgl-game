@@ -1,0 +1,25 @@
+HolidayAction = 
+{
+    { id = 1, describe = "活动期间累计充值达到60元宝", actype = 34, typeA = 2, canshu = 60, rewardtype1 = 4, canshu1 = "8011#6", rewardtype2 = 4, canshu2 = "8010#6", rewardtype3 = 2, canshu3 = "0#100000", rewardtype4 = nil, canshu4 = nil, },
+    { id = 2, describe = "活动期间累计充值达到300元宝", actype = 34, typeA = 2, canshu = 300, rewardtype1 = 4, canshu1 = "8011#24", rewardtype2 = 4, canshu2 = "8010#24", rewardtype3 = 6, canshu3 = "0#200000", rewardtype4 = nil, canshu4 = nil, },
+    { id = 3, describe = "活动期间累计充值达到500元宝", actype = 34, typeA = 2, canshu = 500, rewardtype1 = 4, canshu1 = "8011#30", rewardtype2 = 4, canshu2 = "8010#30", rewardtype3 = 4, canshu3 = "2003#5", rewardtype4 = nil, canshu4 = nil, },
+    { id = 4, describe = "活动期间累计充值达到1000元宝", actype = 34, typeA = 2, canshu = 1000, rewardtype1 = 4, canshu1 = "8011#50", rewardtype2 = 4, canshu2 = "8010#50", rewardtype3 = 4, canshu3 = "2302#50", rewardtype4 = nil, canshu4 = nil, },
+    { id = 5, describe = "活动期间累计充值达到2000元宝", actype = 34, typeA = 2, canshu = 2000, rewardtype1 = 4, canshu1 = "8011#100", rewardtype2 = 4, canshu2 = "8010#100", rewardtype3 = 4, canshu3 = "2306#10", rewardtype4 = nil, canshu4 = nil, },
+    { id = 6, describe = "活动期间累计充值达到3000元宝", actype = 34, typeA = 2, canshu = 3000, rewardtype1 = 4, canshu1 = "8011#100", rewardtype2 = 4, canshu2 = "8010#100", rewardtype3 = 4, canshu3 = "2307#10", rewardtype4 = nil, canshu4 = nil, },
+    { id = 7, describe = "活动期间累计充值达到5000元宝", actype = 34, typeA = 2, canshu = 5000, rewardtype1 = 4, canshu1 = "8011#200", rewardtype2 = 4, canshu2 = "8010#200", rewardtype3 = 4, canshu3 = "2251#500", rewardtype4 = nil, canshu4 = nil, },
+    { id = 8, describe = "活动期间累计充值达到8000元宝", actype = 34, typeA = 2, canshu = 8000, rewardtype1 = 4, canshu1 = "8011#300", rewardtype2 = 4, canshu2 = "8010#300", rewardtype3 = 4, canshu3 = "2302#300", rewardtype4 = nil, canshu4 = nil, },
+    { id = 9, describe = "活动期间累计充值达到10000元宝", actype = 34, typeA = 2, canshu = 10000, rewardtype1 = 4, canshu1 = "8011#200", rewardtype2 = 4, canshu2 = "8010#200", rewardtype3 = 4, canshu3 = "5011#1", rewardtype4 = nil, canshu4 = nil, },
+    { id = 10, describe = "活动期间累计充值达到20000元宝", actype = 34, typeA = 2, canshu = 20000, rewardtype1 = 4, canshu1 = "8011#500", rewardtype2 = 4, canshu2 = "8010#500", rewardtype3 = 4, canshu3 = "630051#1", rewardtype4 = nil, canshu4 = nil, },
+    { id = 11, describe = "活动期间累计充值达到30000元宝", actype = 34, typeA = 2, canshu = 30000, rewardtype1 = 4, canshu1 = "8011#500", rewardtype2 = 4, canshu2 = "8010#500", rewardtype3 = 4, canshu3 = "5012#1", rewardtype4 = nil, canshu4 = nil, },
+    { id = 12, describe = "活动期间累计充值达到50000元宝", actype = 34, typeA = 2, canshu = 50000, rewardtype1 = 4, canshu1 = "8011#1000", rewardtype2 = 4, canshu2 = "8010#1000", rewardtype3 = 4, canshu3 = "1049#300", rewardtype4 = nil, canshu4 = nil, },
+    { id = 13, describe = "活动期间累计消耗元宝达到500", actype = 35, typeA = 3, canshu = 500, rewardtype1 = 4, canshu1 = "8011#5", rewardtype2 = 4, canshu2 = "8010#5", rewardtype3 = 4, canshu3 = "2306#1", rewardtype4 = nil, canshu4 = nil, },
+    { id = 14, describe = "活动期间累计消耗元宝达到1000", actype = 35, typeA = 3, canshu = 1000, rewardtype1 = 4, canshu1 = "8011#10", rewardtype2 = 4, canshu2 = "8010#10", rewardtype3 = 4, canshu3 = "2306#2", rewardtype4 = nil, canshu4 = nil, },
+    { id = 15, describe = "活动期间累计消耗元宝达到2000", actype = 35, typeA = 3, canshu = 2000, rewardtype1 = 4, canshu1 = "8011#10", rewardtype2 = 4, canshu2 = "8010#10", rewardtype3 = 4, canshu3 = "2306#3", rewardtype4 = nil, canshu4 = nil, },
+    { id = 16, describe = "活动期间累计消耗元宝达到3000", actype = 35, typeA = 3, canshu = 3000, rewardtype1 = 4, canshu1 = "8011#20", rewardtype2 = 4, canshu2 = "8010#20", rewardtype3 = 4, canshu3 = "2306#4", rewardtype4 = nil, canshu4 = nil, },
+    { id = 17, describe = "活动期间累计消耗元宝达到5000", actype = 35, typeA = 3, canshu = 5000, rewardtype1 = 4, canshu1 = "8011#40", rewardtype2 = 4, canshu2 = "8010#40", rewardtype3 = 2, canshu3 = "0#2000000", rewardtype4 = nil, canshu4 = nil, },
+    { id = 18, describe = "活动期间累计消耗元宝达到10000", actype = 35, typeA = 3, canshu = 10000, rewardtype1 = 4, canshu1 = "8011#50", rewardtype2 = 4, canshu2 = "8010#50", rewardtype3 = 6, canshu3 = "0#2000000", rewardtype4 = nil, canshu4 = nil, },
+    { id = 19, describe = "活动期间累计消耗元宝达到20000", actype = 35, typeA = 3, canshu = 20000, rewardtype1 = 4, canshu1 = "8011#100", rewardtype2 = 4, canshu2 = "8010#100", rewardtype3 = 4, canshu3 = "2220#100", rewardtype4 = nil, canshu4 = nil, },
+    { id = 20, describe = "活动期间累计消耗元宝达到50000", actype = 35, typeA = 3, canshu = 50000, rewardtype1 = 4, canshu1 = "8011#300", rewardtype2 = 4, canshu2 = "8010#300", rewardtype3 = 4, canshu3 = "5005#1", rewardtype4 = nil, canshu4 = nil, },
+    { id = 21, describe = "活动期间累计消耗元宝达到100000", actype = 35, typeA = 3, canshu = 100000, rewardtype1 = 4, canshu1 = "8011#500", rewardtype2 = 4, canshu2 = "8010#500", rewardtype3 = 4, canshu3 = "2701#1", rewardtype4 = nil, canshu4 = nil, },
+}
+
