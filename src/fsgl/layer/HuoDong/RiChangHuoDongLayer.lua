@@ -544,7 +544,7 @@ function RiChangHuoDongLayer:updateCell( cell, index )
                             ShowRewardNode:create( showRewardData )
                             self:refreshData()
                             --刷新主城信息
-                            XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+                            XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
                             XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) 
                         end
                     else

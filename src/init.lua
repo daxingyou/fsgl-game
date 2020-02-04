@@ -251,7 +251,8 @@ BattleType.ZHENQI_DEFENCE = 106 --真气世界防守
 --注册的监听事件
 CUSTOM_EVENT={}
 CUSTOM_EVENT.REFRESH_TOP_INFO 						= "refresh_top_info" 						--刷新界面顶部条信息,
-CUSTOM_EVENT.REFRESH_MAINCITY_INFO 					= "refresh_maincity_info" 			--刷新界面顶部条信息,
+CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO 					= "refresh_maincity_top_info" 			--刷新界面顶部条信息,
+CUSTOM_EVENT.REFRESH_MAINCITY_INFO 					= "refresh_maincity_info" 			--刷新主城界面信息,
 CUSTOM_EVENT.REFRESH_SKILLPOINT 					= "refresh_skillpoint" 					--技能点
 CUSTOM_EVENT.REFRESH_PVP_TEAMINFO 					= "refresh_pvp_teaminfo" 				--PVP设置防守队伍信息，刷新
 CUSTOM_EVENT.REFRESH_CAMP_MAINLAYER 				= "refresh_camp_mainLayerData" 		--刷新种族主面板的数据 

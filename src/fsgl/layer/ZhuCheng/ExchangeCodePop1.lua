@@ -97,7 +97,7 @@ function ExchangeCodePop1:init()
                     end
                 end
                 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
                 local _rewarddbid = nil
                 for i=1,#data["bagItems"] do
                     local _dbid = data.bagItems[i].dbId

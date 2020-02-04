@@ -323,7 +323,7 @@ function BangPaiJuanXian:worship_do_http( _type )
             end
         end
         BangPaiFengZhuangShuJu.setGuildData(mDatas)
-        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) ---刷新主城市的，
+        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) ---刷新主城市的，
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_GUILDMAIN_INFO})
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_GUILDMAIN_LIST})

@@ -480,7 +480,7 @@ function XinYunZhuanPanLayer:showReward()
 				DBUpdateFunc:UpdateProperty( "userdata", pro_data[1], pro_data[2] )
 			end
 			gameUser.setIngot(self.rewardList.ingot)
-			XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+			XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 			XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) 		--刷新数据信息
 		end
 

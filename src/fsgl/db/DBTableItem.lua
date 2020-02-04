@@ -59,7 +59,7 @@ function DBTableItem.insertMultiData(userid , params )
 		_temp_data["plusTempProperty"] = _temp_data["property"]["plusTempProperty"] or ""
 		DBTableItem.insertData(userid , _temp_data)
 	end
-	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "bag"}})
+--	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "bag"}})
 end
 
 function DBTableItem.updateCount(userid, data, dbid )

@@ -314,7 +314,7 @@ function KaiShanCaiKuang:refreshBtn()
 					    	show[1].num = data.soldPrice
 					    	--更新数据
 							XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-							XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+							XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 							--如果大于100000显示暴击
 						   	if tonumber(data.soldPrice) >= 100000 then
 						   		self:runAction(cc.Sequence:create(

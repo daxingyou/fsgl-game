@@ -9,8 +9,8 @@ function ShouCiChongZhiNewLayer:ctor(data)
 	self._selectedIndex = 0
 	local jianglilist = {1,2,3}
 
-	dump(gameUser.getThreeTimePayList(),"当前未领取")
-	dump(gameUser.getFinishThreePayRewardList(),"当前已领取")
+--	dump(gameUser.getThreeTimePayList(),"当前未领取")
+--	dump(gameUser.getFinishThreePayRewardList(),"当前已领取")
 	local RewardList = gameUser.getFinishThreePayRewardList()
 	if #gameUser.getThreeTimePayList() == 0 then
 		for k, v in pairs(RewardList) do
@@ -586,7 +586,7 @@ function ShouCiChongZhiNewLayer:LingquJiangLi()
 				gameUser.setThreeTimePayList(backData.threeTimePayList)
 				gameUser.setFinishThreePayRewardList(backData.finishThreePayRewardList)
 				self:refreshUI()
-				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 			else
 				XTHDTOAST(backData.msg)
 			end 

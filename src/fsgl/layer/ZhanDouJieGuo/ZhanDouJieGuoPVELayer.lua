@@ -46,7 +46,7 @@ function ZhanDouJieGuoPVELayer:BattleAgain()
     elseif self._target_battle_type == BattleType.PVP_CUTGOODS then
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_ESCORT_LAYER}) 
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) 
-        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) 
+        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) 
     else
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) 
     end

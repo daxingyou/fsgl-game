@@ -17,7 +17,7 @@ end
 function BangPaiDuiWu:create(data,parent)
 	self._parent = parent
 	self._Data = data
-	dump(data,"获取帮派战队伍")
+--	dump(data,"获取帮派战队伍")
 	local layer = BangPaiDuiWu.new(data,parent)
 	if layer then 
 		layer:init()
@@ -163,7 +163,7 @@ function BangPaiDuiWu:getTeamData(indx)
 		defendTeams[i].teamId = 0
 		defendTeams[i].cityId = 0
 		defendTeams[i].team = {}
-		dump(_data)
+--		dump(_data)
 		for j = 1,#_data do
 			print("===========>>>",i) 
 			defendTeams[i].team[#defendTeams[i].team + 1] = tonumber(_data[j])

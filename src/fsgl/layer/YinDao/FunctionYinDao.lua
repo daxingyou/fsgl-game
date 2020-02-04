@@ -106,6 +106,7 @@ function FunctionYinDao:init( )
 --				if YinDaoMarg:getInstance()._group == 6 then
 					YinDaoMarg:getInstance()._isGuiding = false
 --				end
+                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) 
 				gotoMaincity()
 	        	--XTHD.dispatchEvent({name = CUSTOM_EVENT.GOTO_SPECIFIEDBUILDING,data = {funcID = self.__funcID,isBuild = self._isBuild,funcData = self._newFunctData}})
 			end 

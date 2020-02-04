@@ -1373,7 +1373,7 @@ function ZhongZuCity:handleFightButton( )
 		        		ZhongZuDatas._serverEnemyCityDatas.clearCdSum = data.clearCdSum
 		        		gameUser.setIngot(tonumber(data.gold))
 
-    					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) ---刷新主城市的，
+    					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) ---刷新主城市的，
     					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
 
 		        		self.__isAtChanllengeCD = false

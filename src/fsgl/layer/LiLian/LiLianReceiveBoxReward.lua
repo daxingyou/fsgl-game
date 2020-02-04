@@ -259,7 +259,7 @@ function LiLianReceiveBoxReward:initUI(params)
 							        end
 							    end
 					        	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) --刷新数据信息
-								XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+								XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 
 								--
 					        	if params.callback and type(params.callback) == "function" then

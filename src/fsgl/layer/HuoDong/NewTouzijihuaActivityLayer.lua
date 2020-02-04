@@ -11,7 +11,7 @@ function NewTouzijihuaActivityLayer:ctor(data)
 	self._listData = nil
 	self._listData = gameData.getDataFromCSV("InvestmentPlan",{type = self._selectedIndex})
 	self._InvestmentPrice = gameData.getDataFromCSV("InvestmentPrice",{type = self._selectedIndex})
-	dump(self._InvestmentPrice,"投资计划数据")
+--	dump(self._InvestmentPrice,"投资计划数据")
 	self:initUI()
 end
 
@@ -267,7 +267,7 @@ function NewTouzijihuaActivityLayer:InvestPlanReward(index)
 		params = { configId  = self._investReward[index].configId},
         successCallback = function( data )
 			if data.result == 0 then
-				dump(data,"领取奖励")
+--				dump(data,"领取奖励")
 				local show_data = {}
 				if data.property then
 					for i = 1, #data.property do
@@ -293,7 +293,7 @@ function NewTouzijihuaActivityLayer:InvestPlanReward(index)
 					DBTableItem.updateCount(gameUser.getUserId(),_data,_data["dbId"])
 				end
 				ShowRewardNode:create(show_data)
-				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 
 				self._investReward = self:SortList(data.investReward)
 				self._talbeView:reloadData()
@@ -321,7 +321,7 @@ function NewTouzijihuaActivityLayer:InvestPlanBuy()
 						for i = 1, #data.playerProperty do
 							local _data = string.split(data.playerProperty[i],",")
 							gameUser.updateDataById(_data[1],_data[2])
-							XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+							XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 							self:selecteTableView(self._selectedIndex)
 						end
 					end

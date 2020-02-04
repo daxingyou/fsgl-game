@@ -5,7 +5,7 @@ end)
 
 function ChaozhiduihuanRankPopLayer:ctor(data)
 	self._data = data
-	dump(self._data,"排行榜")
+--	dump(self._data,"排行榜")
 	self:initUI()
 end
 

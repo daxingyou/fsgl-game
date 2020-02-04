@@ -308,7 +308,7 @@ function ShangJinLieRenLevelUpPop:updataData( data)
     --刷新TopBar翡翠数据
     gameUser.setFeicui(data.feicui)
     XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})      --刷新topbar数据
-    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) ---刷新主城市的，
+    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) ---刷新主城市的，
 
     self:removeFromParent()
 

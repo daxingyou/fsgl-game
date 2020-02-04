@@ -232,7 +232,7 @@ function ClientHttp.httpCreateGuild( sParNode, sCallBack, sParams ) -- {icon, na
             if data.maxTili then--最大体力值改变
                 gameUser.setTiliMax(data.maxTili)
                 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
             end
             sCallBack(data)
         end,
@@ -362,7 +362,7 @@ function ClientHttp.httpExitGuild( sParNode, sCallBack )
             if data.maxTili then--最大体力值改变
                 gameUser.setTiliMax(data.maxTili)
                 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
             end
             sCallBack(data)
         end,
@@ -396,7 +396,7 @@ function ClientHttp.httpDissolveGuild( sParNode, sCallBack )
             if data.maxTili then--最大体力值改变
                 gameUser.setTiliMax(data.maxTili)
                 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
             end
             sCallBack(data)
         end,

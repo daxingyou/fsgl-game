@@ -172,7 +172,7 @@ function ZhanDouJieGuoWorldBossLayer:initUI(params)
 	end	
  	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) 
     XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_ESCORT_LAYER}) 
-    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) 
+    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) 
     if self.battleType == BattleType.GUILD_BOSS_PVE then
         local mDatas = BangPaiFengZhuangShuJu.getGuildData()
         if mDatas.list and #mDatas.list > 0 then

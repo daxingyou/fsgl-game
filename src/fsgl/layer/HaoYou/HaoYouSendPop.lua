@@ -60,7 +60,7 @@ function HaoYouSendPop:init( sData, stateInfo )
         	local _flower = tonumber(data.flower) or 0
         	HaoYouPublic.updateFlowersById(_data.charId, _flower)
 		    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-		    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+		    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
         	freshState()
         	XTHDTOAST(LANGUAGE_KEY_SENDSUCCESS)-------"赠送成功！")
 		end, {charId = _data.charId, type = sType})

@@ -302,7 +302,7 @@ function PopShopLayer:buyItem(index)
 							gameUser.updateDataById(_data[1],_data[2])
 						end
 					end
-					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 				end
 				ShowRewardNode:create(showlist)
 				self:refreshShopcount(data,index)
@@ -439,7 +439,7 @@ function PopShopLayer:refreshShopdata()
         modules = _modules,
         successCallback = function(data)        
             if tonumber(data.result) == 0 then
-				dump(data,"商城返回数据")
+--				dump(data,"商城返回数据")
 				self._severData = data.list
 				if self._key == "guild" then
 					self._huobiNum = data.totalContribution

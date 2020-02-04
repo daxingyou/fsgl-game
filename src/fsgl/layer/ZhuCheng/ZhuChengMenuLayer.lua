@@ -333,14 +333,16 @@ function ZhuChengMenuLayer:init()
         local popLayer = requires("src/fsgl/layer/ConstraintPoplayer/MeiRiQianDaoPopLayer.lua"):create()
         self:addChild(popLayer)
     end
+    self:refreshTopInfo()
+    self:refreshBaseInfo()
 
 end
 
 -- 开始将按钮伸缩到指定位置
 function ZhuChengMenuLayer:startSortPos()
     if self.scaleAction then return end
-    -- self:refreshBaseInfo()
-    self.scaleBtn:setEnable(false)
+--     self:refreshBaseInfo()
+    self.scaleBtn:setEnable(false)  
     if self.needScaleBtn then
         local time = 0.05
         for i = 1, #self._ceilbtnList1 do
@@ -637,6 +639,7 @@ function ZhuChengMenuLayer:initHeadBar(...)
             self.avator:initWithFile(zctech.getHeroAvatorImgById(data))
             mGameUser.setTemplateId(data)
         elseif id and id == 2 then
+            self:refreshTopInfo()
             self:refreshBaseInfo()
         end
     end
@@ -1704,12 +1707,11 @@ function ZhuChengMenuLayer:adjustBottomBtns()
     end
 end
 
---------------------------------------与主船对接方法--------------------------------------
+--------------------------------------与主城对接方法--------------------------------------
 -- 用来刷新等级、经验，银两，银币信息
-function ZhuChengMenuLayer:refreshBaseInfo()
-    -- CUSTOM_EVENT.REFRESH_MAINCITY_INFO
-
-    print("--------------------刷新主城小红点和信息------------------")
+function ZhuChengMenuLayer:refreshTopInfo()
+    -- CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO
+    print("--------------------刷新主城等级、经验，银两，银币------------------")
 
     local current_percent = tonumber(mGameUser.getExpNow()) / tonumber(mGameUser.getExpMax()) * 100
     self.expText:setString(mGameUser.getExpNow() .. "/" .. mGameUser.getExpMax())
@@ -1718,7 +1720,6 @@ function ZhuChengMenuLayer:refreshBaseInfo()
     self.campIcon:initWithFile("res/image/homecity/camp_icon" .. mGameUser.getCampID() .. ".png")
     self._level_label:setString(mGameUser.getLevel())
 
-    self:adjustLeftUpMenu()
     if self._propertyLable and #self._propertyLable > 3 then
         local base = 1000000
 
@@ -1763,11 +1764,14 @@ function ZhuChengMenuLayer:refreshBaseInfo()
         -- 在这里加个判断，然后将数字换成文字
         self._vip_num_sp:setString(VIPLABEL[tonumber(mGameUser.getVip()) + 1])
     end
-    ----小红点-----开服狂欢
-    if self._serverDayRedDot then
-        --- 东西已领完
-        self._serverDayRedDot:setVisible(gameUser.getSevenDayRedPoint() == 1)
-    end
+end
+
+--用来刷新主城按钮的状态
+function ZhuChengMenuLayer:refreshBaseInfo()
+    -- CUSTOM_EVENT.REFRESH_MAINCITY_INFO
+    print("--------------------刷新主城按钮状态和信息------------------")
+
+    self:adjustLeftUpMenu()
 
     if self.needScaleBtn then
         -- 新年活动按钮
@@ -1777,10 +1781,10 @@ function ZhuChengMenuLayer:refreshBaseInfo()
         }
         self._leftupBtns[4].isActivity = false
         self.__functionButtons[23]:setVisible(false)
-        self.jierikuanghuanRedDot:setVisible(false)
+--        self.jierikuanghuanRedDot:setVisible(false)
         for i, v in ipairs(newYearActivityId) do
             if activityOpenStatus[tostring(v)] == 1 then
-                self.jierikuanghuanRedDot:setVisible(RedPointState[1].state == 1)
+--                self.jierikuanghuanRedDot:setVisible(RedPointState[1].state == 1)
                 self._leftupBtns[4].isActivity = true
                 self.__functionButtons[23]:setVisible(true)
                 break
@@ -1838,13 +1842,13 @@ function ZhuChengMenuLayer:refreshBaseInfo()
             self._leftupBtns[14].isActivity = false
         end
 
-        if self._leftupBtns[1] then
-            --- 每日福利
-            -- local _visible = mGameUser.getLoginRewardState() > 0
-            self._leftupBtns[1].isActivity = true
-            RedPointState[4].state = gameUser.getDailyPointDot()
-            self._everyDayRedDot:setVisible(RedPointState[4].state == 1)
-        end
+--        if self._leftupBtns[1] then
+--            --- 每日福利
+--            -- local _visible = mGameUser.getLoginRewardState() > 0
+--            self._leftupBtns[1].isActivity = true
+--            RedPointState[4].state = gameUser.getDailyPointDot()
+--            self._everyDayRedDot:setVisible(RedPointState[4].state == 1)
+--        end
         if self._leftupBtns[6] then
             --- 限时英雄
             local isvisible = false
@@ -1856,16 +1860,16 @@ function ZhuChengMenuLayer:refreshBaseInfo()
             self._leftupBtns[6].isActivity = activityOpenStatus["11"] == 1
         end
 
-        if self._leftupBtns[3] then
-            --- 精彩活动
-            local status = mGameUser.getWonderfulPointDot()
-            RedPointState[2].state = status
-            if status == 1 then
-                self._wonderfulactivityRedDot:setVisible(true)
-            else
-                self._wonderfulactivityRedDot:setVisible(false)
-            end
-        end
+--        if self._leftupBtns[3] then
+--            --- 精彩活动
+--            local status = mGameUser.getWonderfulPointDot()
+--            RedPointState[2].state = status
+--            if status == 1 then
+--                self._wonderfulactivityRedDot:setVisible(true)
+--            else
+--                self._wonderfulactivityRedDot:setVisible(false)
+--            end
+--        end
 
         if self._leftupBtns[8] then
             -- 毕业典礼
@@ -1945,34 +1949,28 @@ function ZhuChengMenuLayer:refreshBaseInfo()
         self.__functionButtons[66]:setVisible(gameUser.getRecoveryState() == 1)
     end
 
-    if self._friendRedDot then
-        if HaoYouPublic.haveMsgs() then
-            -----好友
-            self._friendRedDot:setVisible(true)
-        else
-            self._friendRedDot:setVisible(false)
-        end
-    end
-    if self._taskRedDot then
-        if mGameUser.getTaskGettingState() > 0 then
-            --- 任务
-            self._taskRedDot:setVisible(true)
-            if self.recTip then
-            	self.recTip:setVisible(true)
-            end
-        else
-            self._taskRedDot:setVisible(false)
-            if self.recTip then
-            	self.recTip:setVisible(false)
-            end
-        end
-    end
-
-    if self._canRecruitTip then
-        self._canRecruitTip:setVisible(self:refreshHeroBtnTishi())
-    end
-
-    self:refreshHeroBtnTishi()
+--    if self._friendRedDot then
+--        if HaoYouPublic.haveMsgs() then
+--            -----好友
+--            self._friendRedDot:setVisible(true)
+--        else
+--            self._friendRedDot:setVisible(false)
+--        end
+--    end
+--    if self._taskRedDot then
+--        if mGameUser.getTaskGettingState() > 0 then
+--            --- 任务
+--            self._taskRedDot:setVisible(true)
+--            if self.recTip then
+--            	self.recTip:setVisible(true)
+--            end
+--        else
+--            self._taskRedDot:setVisible(false)
+--            if self.recTip then
+--            	self.recTip:setVisible(false)
+--            end
+--        end
+--    end
 
     -- self:adjustLeftUpMenu()
     self:refreshCeilNodeBtnPos()
@@ -2203,8 +2201,8 @@ function ZhuChengMenuLayer:freshRedPoints(event)
     elseif event.data.name == "bag" then
         -- 背包
         if self._canopenTip then
-            local flag = XTHD.checkBagOpenTip()
-            self._canopenTip:setVisible(flag == 1)
+--            local flag = XTHD.checkBagOpenTip()
+            self._canopenTip:setVisible(RedPointState[29].state == 1)
         end
     elseif event.data.name == "task" then
         -- 任务
@@ -2273,7 +2271,7 @@ function ZhuChengMenuLayer:freshRedPoints(event)
     elseif event.data.name == "artifact" then
         -- 神器
         if self._artifactRedDot then
-            self._artifactRedDot:setVisible(false)
+            self._artifactRedDot:setVisible(event.data.visible)
         end
     elseif event.data.name == "jchd" then
         -- 精彩活动
@@ -2895,6 +2893,8 @@ function ZhuChengMenuLayer:openXYZP()
                 local layer = luckyTrunLayer:create(data)
                 self:addChild(layer)
                 layer:show()
+            else
+                XTHDTOAST(data.msg)
             end
         end,
         failedCallback = function()
@@ -3329,8 +3329,8 @@ function ZhuChengMenuLayer:refreshHeroBtnTishi()
 end
 
 function ZhuChengMenuLayer:refreshZhaoMuTishi()
-    local count = gameData.getDataFromDynamicDB(gameUser.getUserId(), DB_TABLE_NAME_ITEM, { itemid = 2306 }).count or 0
-    local count2 = gameData.getDataFromDynamicDB(gameUser.getUserId(), DB_TABLE_NAME_ITEM, { itemid = 2307 }).count or 0
+    local count = XTHD.resource.getItemNum(2306) or 0  --gameData.getDataFromDynamicDB(gameUser.getUserId(), DB_TABLE_NAME_ITEM, { itemid = 2306 }).count or 0
+    local count2 = XTHD.resource.getItemNum(2307) or 0  --gameData.getDataFromDynamicDB(gameUser.getUserId(), DB_TABLE_NAME_ITEM, { itemid = 2307 }).count or 0
     if count >= 9 or count2 >= 9 then
         return true
     else

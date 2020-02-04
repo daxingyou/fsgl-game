@@ -6,7 +6,7 @@ end)
 
 function XingNangShowNode:ctor(size,itemdata)
 	self._itemdata = itemdata
-	dump(self._itemdata)
+--	dump(self._itemdata)
 	self._winSize = size
 	self:setItemDropData()
 	self:setStaticSystemName()

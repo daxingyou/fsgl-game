@@ -476,8 +476,8 @@ function XTHD.createTask(fNode, CallFunc, ZOrder, index)
         successCallback = function(data)
             if tonumber(data.result) == 0 then
                 HttpRequestWithOutParams("gragraduationRewardList",function (sdata)
-                    print("毕业典礼的数据为")
-                    print_r(sdata)
+--                    print("毕业典礼的数据为")
+--                    print_r(sdata)
                     local tasklayer = requires("src/fsgl/layer/RenWu/RenWuLayer.lua"):create(data, CallFunc, index,sdata)
                     LayerManager.addLayout(tasklayer)
                 end) 
@@ -1391,7 +1391,7 @@ end
 --[[ 刷新用户数据的ui显示，包括主城和顶部信息 ]]
 function XTHD.refreshUserInfoUI(params)
     XTHD.dispatchEvent( { name = CUSTOM_EVENT.REFRESH_TOP_INFO })
-    XTHD.dispatchEvent( { name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO })
+    XTHD.dispatchEvent( { name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO })
 end
 --[[
 {
@@ -1943,7 +1943,7 @@ function XTHD.requirePayID(payInfo,_parent)
                 if type(data) == "table" and data["itemList"] then
                     for i=1,#data["itemList"] do
                         local item = data["itemList"][i]
-                        dump(item)
+--                        dump(item)
                         local showCount = 0
                         if item.count and tonumber(item.count) ~= 0 then
                             showCount = item.count - tonumber(DBTableItem.getCountByID(item.dbId));
@@ -1971,7 +1971,7 @@ function XTHD.requirePayID(payInfo,_parent)
                 XTHDTOAST(LANGUAGE_KEY_RECHARGE_CONGRATULATIONS)
                 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_VIP_MSG})
                 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
                 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_RECHARGE_MSG})
                 if needShowVip then
                     XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_VIP_SHOW})
@@ -3122,7 +3122,7 @@ function XTHD.doPayFinish(_param_,_parent,isLimit)
             modules = "payFinish?",
             params = _param_, -- 参数
             successCallback = function(data)
-            dump(data)
+--            dump(data)
             --获取奖励成功
             if data and tonumber(data.result) == 0 then
                 local needShowVip = false
@@ -3152,7 +3152,7 @@ function XTHD.doPayFinish(_param_,_parent,isLimit)
                 if type(data) == "table" and data["itemList"] then
                     for i=1,#data["itemList"] do
                         local item = data["itemList"][i]
-                        dump(item)
+--                        dump(item)
                         local showCount = 0
                         if item.count and tonumber(item.count) ~= 0 then
                             showCount = item.count - tonumber(DBTableItem.getCountByID(item.dbId));
@@ -3183,7 +3183,7 @@ function XTHD.doPayFinish(_param_,_parent,isLimit)
                 XTHDTOAST(LANGUAGE_KEY_RECHARGE_CONGRATULATIONS)
                 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_VIP_MSG})
                 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
                 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_RECHARGE_MSG})
                 if needShowVip then
                     XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_VIP_SHOW})
@@ -3910,7 +3910,7 @@ function XTHD.changPlayerNameLayer(callback)
                             modules = "changeName?",
                             params = {name=tostring(string.gsub(notice," ",""))},
                             successCallback = function(my_data)
-                                dump(my_data)
+--                                dump(my_data)
                                 if tonumber(my_data.result)==0 then  
                                     gameUser.setNameCount(my_data.changeNameCount)
                                     gameUser.setNickname(my_data.name)

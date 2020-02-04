@@ -180,8 +180,8 @@ function ChaozhiduihuanXiaofeiLayer:receiveCostReward(index)
 						end
 					end
 				end
-				ShowRewardNode:create(show_data)
-				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+				ShowRewardNode:create(show_data)            
+				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 				self._activityList = data.list
 				table.sort(self._listData,function(data1,data2)
 					return tonumber(data1.id)<tonumber(data2.id)

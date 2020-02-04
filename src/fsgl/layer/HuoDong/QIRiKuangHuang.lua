@@ -427,7 +427,7 @@ function QIRiKuangHuang:updateListState( configId, state)
 end
 --创建列表元素
 function QIRiKuangHuang:createCell( cell, data )
-	dump(data)
+--	dump(data)
 	local _cellDiSize = cc.size(cell:getBoundingBox().width, cell:getBoundingBox().height - 30)
 	--描述
 	local _desc = XTHDLabel:createWithParams({
@@ -515,7 +515,7 @@ function QIRiKuangHuang:createCell( cell, data )
 		                    DBUpdateFunc:UpdateProperty("userdata", pro_data[1], pro_data[2])
 		                end
 		                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) --刷新数据信息
-		                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+		                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 		            end
 		            -- 更新背包
 		            if sData.bagItems and #sData.bagItems ~= 0 then

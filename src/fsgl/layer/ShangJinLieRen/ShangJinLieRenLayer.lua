@@ -441,7 +441,7 @@ function ShangJinLieRenLayer:buyChallengeTimes(  )
                    self._surplusSum = data["surplusSum"]
                    gameUser.setIngot(data["ingot"])
                    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})      --刷新topbar数据
-                   XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) --刷新主城市的，
+                   XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) --刷新主城市的，
                    XTHDTOAST(LANGUAGE_TIP_SUCCESS_TO_BUY)------"购买成功")
 
                 else
@@ -599,7 +599,7 @@ function ShangJinLieRenLayer:updateData(  )
         self:refreshRankData()
 
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})      --刷新topbar数据
-        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) ---刷新主城市的，
+        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) ---刷新主城市的，
     end
 end
 

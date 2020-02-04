@@ -456,7 +456,7 @@ function LiLianStageLayer:initRight(stage_data, nowIdx)
 					            	gameUser.setIngot(net_data["ingot"])
 					            end
 				            	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-				            	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+				            	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 		            		end,
 		            	})
 		            end,

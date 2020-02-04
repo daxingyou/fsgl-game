@@ -395,20 +395,20 @@ function DuoCengScrollLayer:getBackLayEaseX( sNode, sEX , sBounces)
 	local pEX = sEX
 	local pWidth = sNode:getContentSize().width
 	local pPosX = sNode:getPositionX()
-	print("shatter>>pPosX>>" .. pPosX)
-	print("shatter>>sEX>>" .. sEX)
+--	print("shatter>>pPosX>>" .. pPosX)
+--	print("shatter>>sEX>>" .. sEX)
 	local pMaxX = 0 - sBounces
 	local pMinX = g_winSize.width - pWidth + sBounces
-	print("shatter>>pMaxX>>" .. pMaxX)
-	print("shatter>>pMinX>>" .. pMinX)
+--	print("shatter>>pMaxX>>" .. pMaxX)
+--	print("shatter>>pMinX>>" .. pMinX)
 	if (pEX + pPosX > pMaxX) then
 		pEX = pMaxX - pPosX
-		print("shatter>>pMaxX>>")
+--		print("shatter>>pMaxX>>")
 	elseif (pEX + pPosX < pMinX) then
 		pEX = pMinX - pPosX
-		print("shatter>>pMinX>>")
+--		print("shatter>>pMinX>>")
 	end
-	print("shatter>>pEX>>" .. pEX)
+--	print("shatter>>pEX>>" .. pEX)
 	return pEX
 end
 

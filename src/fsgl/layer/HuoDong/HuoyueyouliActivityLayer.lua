@@ -205,7 +205,7 @@ function HuoyueyouliActivityLayer:buildCell(cell,idx)
 			selectedFile = "res/image/activities/huoyueyouli/btn_qianwang_down.png",
 			isScrollView = true,
 			endCallback = function ()
-				dump(self._tableListdata,"刷新")
+--				dump(self._tableListdata,"刷新")
 				replaceLayer({id = self._tableListdata[1].gotype ,parent = self._parent})
 			end
 		})
@@ -256,7 +256,7 @@ function HuoyueyouliActivityLayer:activeActivityReward(index)
 							end
 							gameUser.updateDataById(_data[1],_data[2])
 						end
-						XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+						XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 					end
 				end
 				for i = 1 ,#data.bagItems do
@@ -285,7 +285,7 @@ function HuoyueyouliActivityLayer:updateTableViewCell()
         modules = "activeActivityList?",
         successCallback = function( data )
 			if data.result == 0 then
-				dump(data,"=============7777")
+--				dump(data,"=============7777")
 				self._redData = data.list
 				self._data.list = self:SortList(data.list)
 				self:selecteTableView(self._selectedIndex)

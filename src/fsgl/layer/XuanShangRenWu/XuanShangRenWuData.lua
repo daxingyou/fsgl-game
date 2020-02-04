@@ -48,7 +48,7 @@ function XuanShangRenWuData.httpRefreshOfferRewardList( sParams )
                 -- XuanShangRenWuData.setSurplusCount(data.surplusCount)
                 if data.ingot then
                 	gameUser.setIngot(data.ingot)
-                	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) ---刷新主城市的
+                	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) ---刷新主城市的
                 	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
                 end
                 if callBack then

@@ -339,8 +339,8 @@ end
 --请求收获
 function DaMaiChangLayer:onBuyBtnClick(id)
     HttpRequestWithParams("buyHypemarketItem",{configId = self._openData[self.selectedIndex].sell[id].sellID},function (data)
-        print("大卖场购买服务器返回的数据为：")
-        print_r(data)
+--        print("大卖场购买服务器返回的数据为：")
+--        print_r(data)
         local show = {} --奖励展示
         --领取状态
         if data.receiveState then
@@ -371,7 +371,7 @@ function DaMaiChangLayer:onBuyBtnClick(id)
                 end
                 DBUpdateFunc:UpdateProperty( "userdata", pro_data[1], pro_data[2] )
             end
-            XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+            XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
             XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})        --刷新数据信息
         end
 

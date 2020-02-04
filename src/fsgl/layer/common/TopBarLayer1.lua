@@ -349,7 +349,7 @@ function TopBarLayer1:onEnter()
 	self:refreshData()
 	XTHD.addEventListenerWithNode({name = CUSTOM_EVENT.REFRESH_TOP_INFO,node = self,callback = function(event)
  	 	self:refreshData() --刷新当前的
-		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) ---刷新主城市的，
+		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) ---刷新主城市的，
 		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_BUILDINFO_AFTERLEVELUP}) ----刷新建筑升级时底部数据 
  	end})
 end

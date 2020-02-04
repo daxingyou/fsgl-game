@@ -13,7 +13,7 @@ function Shouchongtuangou:onCleanup()
 end
 
 function Shouchongtuangou:ctor(parent,data)
-	dump(data)
+--	dump(data)
 	self._exist = true
 	self._parent = parent
 	self._data = data
@@ -302,7 +302,7 @@ function Shouchongtuangou:Lingqujiangli(index)
 						local _data = string.split(data.property[i],",")
 						gameUser.updateDataById(_data[1],_data[2])
 					end
-					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
 					for i = 1,#self._dataList do
 						if self._dataList[i].configId == _configid then

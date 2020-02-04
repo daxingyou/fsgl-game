@@ -185,7 +185,7 @@ function ChengZhangJiJin:receiveReward(index)
 			DBTableItem.updateCount(gameUser.getUserId(),_data,_data["dbId"])
 		end
 		ShowRewardNode:create(show_data)
-		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 		self:sortList(data)
 		self._talbeView:reloadData()
 		self:freshRedDot(data)

@@ -195,8 +195,8 @@ end
 
 function XiuLianListLayer:initUI()
 	self._size = self:getContentSize()
-	print("当前屏幕的尺寸为：")
-	print_r(self._size)
+--	print("当前屏幕的尺寸为：")
+--	print_r(self._size)
 	self._bottomSize = cc.size( self._size.width, 100 )
 	self._attrLabel = {}
 	self._attrValue = {}

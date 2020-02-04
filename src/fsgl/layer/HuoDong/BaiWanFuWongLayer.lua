@@ -379,7 +379,7 @@ function BaiWanFuWongLayer:getReward()
 		    	gameUser.setFeicui(data.feicui)
 
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 
 			   	ShowRewardNode:create(show)
 

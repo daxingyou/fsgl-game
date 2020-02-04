@@ -2410,7 +2410,7 @@ function XuanZeYingXiongNewLayer:createWithParams(params)
 			obj._target_teamIndex = params.teamIndex or 1
 			obj._cityId = params.cityId 
 			obj._cityName = params.cityName
-			dump(params.team_data)
+--			dump(params.team_data)
 		end
 
 		if params.teaminfo and params.teaminfo["teams"] then
@@ -2424,7 +2424,7 @@ function XuanZeYingXiongNewLayer:createWithParams(params)
 			obj._target_teamIndex = params.teamIndex or 1
 			--obj._user_data = params.team_data
 			obj._user_data = params.team_data
-			dump(params.team_data)
+--			dump(params.team_data)
 		end
 		
 		-- 在这块用来判定是否能否将人物下阵，在设置防守队伍的时候
@@ -2493,7 +2493,7 @@ end
 
 function XuanZeYingXiongNewLayer:GuildTishiGroup(data)
 	data = json.decode(data._list)
-	dump(data)
+--	dump(data)
 	local idnex = 1
 	for i = 1,#data do
 		if #data[i].petIds < 1 then

@@ -121,6 +121,7 @@ local MSGID = {
 	SC_ACTIVITY_SCSC_MSG = 5082,	--三次首冲（红点）
 	SC_ACTIVITY_SCTG_MSG = 5083,	--缤纷有礼 首冲团购（红点）
 	SC_ACTIVITY_YKZZK_MSG = 5084,	--月卡至尊卡（红点）
+    SC_BAG_CAN_OPEN_REMIND_MSG = 5085, --背包可开启提醒
 
 }
 MsgCenter.MSGID = MSGID
@@ -233,6 +234,7 @@ local function onMsgRecive(event)
 				LiaoTianDatas.updateMsg(newchat)
 				break
 			elseif msgID == MSGID.SERVER_RESPONSE_SKILLDOT then ---技能点	
+                print("技能点推送")
 				local _value = event.data.msg:readInt()
 				gameUser.setSkillPointNow(_value) ----当前技能点值
 
@@ -248,9 +250,9 @@ local function onMsgRecive(event)
 				gameUser.setMaxSkillPointBuyCount(_value) ---最大技能点购买次数
 
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_SKILLPOINT})
-				
 				break
 			elseif msgID == MSGID.SERVER_RESPONSE_ENERGY then ----体力
+                print("体力推送")
 				local energy = {}
 				energy.currentEnergy = event.data.msg:readInt()
 				energy.maxEnergy = event.data.msg:readInt()
@@ -263,9 +265,10 @@ local function onMsgRecive(event)
 				gameUser.setTiliRestCD(energy.CD)
 				gameUser.setTiliSysytemTime()
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) ---刷新TopBar
-				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) --刷新主城
+				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) --刷新主城
 				break
 			elseif msgID == MSGID.SERVER_RESPONSE_JINGENERGY then ----精力
+                print("精力推送")
 				local currentValue = event.data.msg:readInt()
 				local maxValue = event.data.msg:readInt()
 				local CD = event.data.msg:readInt()
@@ -273,9 +276,10 @@ local function onMsgRecive(event)
 				gameUser.setEnergyCD(CD)
 				gameUser.setEnergySystemTime()
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) ---刷新TopBar
-				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) --刷新主城
+				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) --刷新主城
 				break
 			elseif msgID == MSGID.SERVER_RESPONSE_BUILDINGS then  ----城市建筑
+                print("城市建筑推送")
 				local build = {}
 				build.buildId = event.data.msg:readInt()
 				build.level = event.data.msg:readInt()
@@ -303,11 +307,17 @@ local function onMsgRecive(event)
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_RED_POINT})
 				break
 			elseif msgID == MSGID.SERVER_RESPONSE_TASKAVA then -----任务
-				print("task服务器推送红点")
+				print("task任务红点推送")
 				gameUser.setTaskGettinState(1)		
 				RedPointState[10].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "task",['visible'] = true}})
 				break
+            elseif msgID == MSGID.SC_BAG_CAN_OPEN_REMIND_MSG then
+                local flag = event.data.msg:readInt()
+                print("行囊可开启推送:"..flag)
+                RedPointState[29].state = flag
+                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "bag"}})
+                break
 			elseif msgID == MSGID.SERVER_RESPONSE_ACTIVITYCANGET then ----有活动可领取
 				local statu = event.data.msg:readChar() ----1 有东西可领，0 没东西可领
 				local innerStatu = {}
@@ -315,7 +325,7 @@ local function onMsgRecive(event)
 				for i = 1,_amount do 
 					innerStatu[i] = event.data.msg:readChar()
 				end 
-				print("活动红点通知")
+				print("活动红点推送")
 				print_r(innerStatu)
 				gameUser.setActivityStatus(innerStatu)	
 				RedPointState[2].state = gameUser.getWonderfulPointDot()
@@ -327,10 +337,10 @@ local function onMsgRecive(event)
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {name = "jchd"}})	
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "newlgdl"}})
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "zxjl"}})
-				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "bag"}})
 				-- 更新主界面排行奖励红点
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {name = "rankReward",visible = (innerStatu[7] == 1)}})		
 			elseif msgID == MSGID.SERVER_RESPONSE_CANCHOUKA_HERO or msgID == MSGID.SERVER_RESPONSE_CANCHOUKA_TOOLS then ----可免费抽英雄或者抽装备
+                print("七星坛红点推送")
 				if msgID == MSGID.SERVER_RESPONSE_CANCHOUKA_HERO then 
 					gameUser.setFreeChouHero(1)
 				elseif msgID == MSGID.SERVER_RESPONSE_CANCHOUKA_TOOLS then 
@@ -338,6 +348,7 @@ local function onMsgRecive(event)
 				end 
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {name = "chouka",visible = true}})
 			elseif msgID == MSGID.SERVER_RESPONSE_VIPREWARD then -----vip奖励
+                print("vip领奖红点推送")
 				gameUser._vipRewardStatu = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {name = "vip",visible = true}})			
 			elseif msgID == MSGID.SERVER_RESPONSE_FRIEND_GETREQUEST then -----获得请求好友信息 5005
@@ -392,6 +403,7 @@ local function onMsgRecive(event)
 				local charId = event.data.msg:readInt()
 				HaoYouPublic.removeDataById(charId)
 			elseif msgID == MSGID.SERVER_RESPONSE_VIPOUTOFPOWER then -----vip过期提醒
+                print("vip过期提醒推送")
 				local preVIPLevel = event.data.msg:readChar() ------当前vip等级
 				local nowVIPLevel = event.data.msg:readChar() ------降到的vip等级
 				local goldRestExT = event.data.msg:readShort() -----银两剩余兑换次数
@@ -400,7 +412,7 @@ local function onMsgRecive(event)
 				gameUser.setGoldSurplusExchangeCount(tonumber(goldRestExT) or 0)
 				gameUser.setFeicuiSurplusExchangeCount(tonumber(feicuiRestExT) or 0)
                 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 			elseif msgID == MSGID.SERVER_RESPONSE_OPENSERVERPACKAGE then ------开服奖励提醒 
     -- 			gameUser.setBigPackageGetting(1)
 				-- if gameUser.isPlayerInGame() then 
@@ -413,6 +425,7 @@ local function onMsgRecive(event)
 				local isZuobi = _typNum == 1
 				LayerManager.backToLoginLayer(isZuobi)	
             elseif msgID == MSGID.SERVER_RESPONSE_GUILDCHANGE then ----5025 公会状态变更
+                print("工会状态变更推送")
             	local _guildId = event.data.msg:readShort()
             	gameUser.setGuildId(_guildId)
 				local len = event.data.msg:readShort()
@@ -425,7 +438,7 @@ local function onMsgRecive(event)
             	
                 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_GUILDINFO})
         		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-        		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+        		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
             elseif msgID == MSGID.SERVER_RESPONSE_WORLDBOSSKILL then-- --5026世界boss击杀
     --         	local tab={}
     --         	tab.campid=event.data.msg:readChar()
@@ -434,6 +447,7 @@ local function onMsgRecive(event)
 				-- tab.rewardid=event.data.msg:readInt()
 				-- XTHD.dispatchEvent({name = CUSTOM_EVENT.WORLDBOSS_KILL,data=tab})
             elseif msgID == MSGID.SERVER_RESPONSE_WORLDBOSSOVER then-- --5027世界boss结束
+                print("世界boss结束推送")
             	local tab={}
             	tab.charid=event.data.msg:readInt()
 				tab.campid=event.data.msg:readChar()
@@ -444,16 +458,19 @@ local function onMsgRecive(event)
 				gameUser._worldBossOver_data=tab
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.WORLDBOSS_KILL})
             elseif msgID ==MSGID.SERVER_RESPONSE_WORLDBOSSHURT then   --世界boss血量推送
+                print("世界boss血量推送")
             	local tab={}
             	tab.hurt=event.data.msg:readInt()
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.WORLDBOSS_HURT,data=tab})
             elseif msgID == MSGID.SERVER_RESPONSE_CAMPTIPS then ----阵营开战前10分钟提示
             	local time = event.data.msg:readShort() -----阵营开战时间 大于0 离阵营开战剩余时间（分钟） == 0 阵营战已开启 <0 阵营战已结束
+                print("阵营战开启推送"..time)
 				if time >= 10 then ----还有十分钟开启阵营战
 					ZhongZuDatas._isCampWarStart = 0					
 					XTHD.dispatchEvent({name = CUSTOM_EVENT.SHOW_BATTLE_TIPSLAYER,data = "camp"})
             	end 
             elseif msgID == MSGID.SERVER_RESPONSE_CAMPRESULT then -----阵营战结果
+                print("阵营战结果推送")
             	local _result = event.data.msg:readChar() ---1 光明谷 2 暗月岭 0 平局
             	
             	local len = event.data.msg:readShort()
@@ -471,6 +488,7 @@ local function onMsgRecive(event)
             	local _tem = {result = _result,strong = {{name,killAmount},{name2,killAmount2}},selfRank = selfRank,selfnum = selfKillAmount}
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.SHOW_CAMPWARRESULT_DIALOG,data = _tem})
         	elseif msgID == MSGID.SERVER_RESPONSE_MATCHING then
+                print("修罗炼狱匹配推送")
         		local rivalData = {}
         		rivalData.charId = event.data.msg:readInt()
         		rivalData.name = event.data.msg:readStringBytes(event.data.msg:readShort())
@@ -481,6 +499,7 @@ local function onMsgRecive(event)
         		rivalData.time = event.data.msg:readByte()
         		XTHD.dispatchEvent({name = CUSTOM_EVENT.MATCHINGRIVAL,data = rivalData})
     		elseif msgID == MSGID.SERVER_RESPONSE_RIVALTEAM then
+                print("修罗战对手信息推送推送")
     			local roleID = event.data.msg:readInt()
     			local heroSize = event.data.msg:readChar()
     			local heroList = {}
@@ -493,11 +512,13 @@ local function onMsgRecive(event)
     			end
     			XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_RIVAL_TEAM, data = {charId = roleID, list = heroList}})
 			elseif msgID == MSGID.SERVER_RESPONSE_KICKOUTARENA then
+                print("修罗战踢出对手推送")
 				local id = event.data.msg:readInt()
 				local leftTime = event.data.msg:readByte()
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.KICK_OUT_ARENA})
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_LEFT_TIME,data = leftTime})
 			elseif msgID == MSGID.SERVER_RESPONSE_ESCORTTIPS then -- 5036,劫镖提醒
+                print("劫镖提醒推送")
 				local _info = {charId = 1, charName = "", level = 1, templateId = 1, sMsgType = FriendMsgType.ESCORT_FIGHT , isWin = false}
 				_info.charId = event.data.msg:readInt()
 				local len = event.data.msg:readShort()
@@ -543,7 +564,7 @@ local function onMsgRecive(event)
 				end 
 			elseif msgID == MSGID.SERVER_RESPONSE_SEVENDAYREDPOINT then ----7日活动红点控制  5038
 				gameUser.setSevenDayRedPoint(1)
-				print("7日狂欢活动红点")
+				print("7日狂欢活动红点推送")
 				RedPointState[3].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "sevenDay"}})
 			elseif msgID == MSGID.SERVER_RESPONSE_ARENASTARTRESULT then ----修罗战场选匹配上结果消息 5039
@@ -574,6 +595,7 @@ local function onMsgRecive(event)
 				local name = event.data.msg:readStringBytes(len) --玩家名字
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.ADDNEWMEMBERTOTEAM,data = {hasPortrait = false,roleID = roleID,playerName = name}})
 			elseif msgID == MSGID.SERVER_RESPONSE_MCCPREEMEMBERS then 								----多人副本原有成员列表
+                print("多人副本成员列表推送")
 				local ID = event.data.msg:readInt() -----当前进的副本ID（第一列的ID）
 				local loop = event.data.msg:readChar()
 				local teams = {}
@@ -611,12 +633,14 @@ local function onMsgRecive(event)
 			elseif msgID == MSGID.SERVER_RESPONSE_MCCOPEN then										----多人副本开启提醒	5051
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.BATTLECANGETIN})
 			elseif msgID == MSGID.SERVER_RESPONSE_PPRECHARGEOVER then ---- pp充值完成提醒-- 5052 	
+                print("充值完成提醒推送")
 				--pp充值完成提醒，这里添加相关处理
-				local callbackLua = XTHD.doPayFinish()
-				if callbackLua then
-					callbackLua()
-				end
+--				local callbackLua = XTHD.doPayFinish()
+--				if callbackLua then
+--					callbackLua()
+--				end
 			elseif msgID == MSGID.SERVER_RESPONSE_CASTELLANFIGHT then ----城主被抢提醒 5053
+                print("城主被抢提醒推送")
 				local _info = {charName = "", level = 1, sMsgType = FriendMsgType.CASTELLANFIGHT}
 				local len = event.data.msg:readShort()
 				_info.charName = event.data.msg:readStringBytes(len) --玩家名字
@@ -625,6 +649,7 @@ local function onMsgRecive(event)
 				_info.cityName = event.data.msg:readStringBytes(len2) --玩家名字
 				HaoYouPublic.addNewMsgs(_info)
 			elseif msgID == MSGID.SERVER_RESPONSE_NEWCHATMSG then ----新的聊天消息头 5055
+                print("新的聊天消息推送")
 				local info = {}
 				local len = event.data.msg:readShort()
 				info.charName = event.data.msg:readStringBytes(len) or ""--玩家名字
@@ -632,6 +657,7 @@ local function onMsgRecive(event)
 				gameUser.setZhongjiangInfo(info)
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_GONGXIFACAI})
 			elseif msgID == MSGID.SERVER_RESPONSE_LUCKYLIST then   --幸运转盘幸运榜 5056  结构和5055一样
+                print("转盘幸运榜推送")
                 local info = {}
 				local len = event.data.msg:readShort()
 				info.charName = event.data.msg:readStringBytes(len) or ""--玩家名字
@@ -660,103 +686,103 @@ local function onMsgRecive(event)
 				-- local msg = event.data.msg:readInt() or 0
 				-- print("服务器心跳响应：")
 			elseif msgID == MSGID.SC_ACTIVITY_CZYL_MSG then  --5061
-				print("充值有礼活动红点提示")
+				print("充值有礼活动红点推送")
 				RedPointState[1].state = 1
 				RedPointState[23].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "jrkh"}})
 			elseif msgID == MSGID.SC_ACTIVITY_XFHL_MSG then --5062
-				print("消费好礼活动红点提示")
+				print("消费好礼活动红点推送")
 				RedPointState[24].state = 1
 				RedPointState[1].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "jrkh"}})
 			elseif msgID == MSGID.SC_ACTIVITY_HYYL_MSG then  --5063
-				print("活跃有礼活动红点提示")
+				print("活跃有礼活动红点推送")
 				RedPointState[5].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "hyyl"}})
 			elseif msgID == MSGID.SC_ACTIVITY_TZJH_MSG then  --5064
-				print("投资计划活动红点提示")
+				print("投资计划活动红点推送")
 				RedPointState[6].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "tzjh"}})
 			elseif msgID == MSGID.SC_ACTIVITY_XFYL_MSG then  --5065
-				print("消费有礼活动红点提示")
+				print("消费有礼活动红点推送")
 				RedPointState[7].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "czdh"}})
 			elseif msgID == MSGID.SC_ACTIVITY_BYDL_MSG then  --5066
-				print("毕业典礼活动红点提示")
+				print("毕业典礼活动红点推送")
 				RedPointState[9].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "bydl"}})
 			elseif msgID == MSGID.SC_ACTIVITY_CZFL_MSG then  --5067
-				print("充值返利活动红点提示")
+				print("充值返利活动红点推送")
 				RedPointState[8].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "rchd"}})
 			elseif msgID == MSGID.SC_ACTIVITY_XFFL_MSG then  --5068
-				print("消费返利活动红点提示")
+				print("消费返利活动红点推送")
 				RedPointState[8].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "rchd"}})
 			elseif msgID == MSGID.SC_ACTIVITY_KCFL_MSG then  --5069
-				print("开采返利活动红点提示")
+				print("开采返利活动红点推送")
 				RedPointState[8].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "rchd"}})
 			elseif msgID == MSGID.SC_ACTIVITY_ZMFL_MSG then  --5070
-				print("招募返利活动红点提示")
+				print("招募返利活动红点推送")
 				RedPointState[8].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "rchd"}})
 			elseif msgID == MSGID.SC_ACTIVITY_SBFL_MSG then  --5071
-				print("神兵返利活动红点提示")
+				print("神兵返利活动红点推送")
 				RedPointState[8].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "rchd"}})
 			elseif msgID == MSGID.SC_ACTIVITY_SQFL_MSG then  --5072
-				print("神器返利活动红点提示")
+				print("神器返利活动红点推送")
 				RedPointState[8].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "rchd"}})
 			elseif msgID == MSGID.SC_ACTIVITY_DLYL_MSG then  --5073
-				print("登录有礼活动红点提示")
+				print("登录有礼活动红点推送")
 				RedPointState[8].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "rchd"}})
 			elseif msgID == MSGID.SC_ACTIVITY_HS_MSG then  --5074
-				print("回收红点提示")
+				print("回收红点推送")
 				RedPointState[14].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "hs"}})
 			elseif msgID == MSGID.SC_ACTIVITY_BG_MSG then  --5075
-				print("闭关红点提示")
+				print("闭关红点推送")
 				RedPointState[11].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "bg"}})
 			elseif msgID == MSGID.SC_ACTIVITY_CLDH_MSG then  --5077
-				print("材料兑换红点提示")
+				print("材料兑换红点推送")
 				RedPointState[1].state = 1
 				RedPointState[25].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "jrkh"}})
 			elseif msgID == MSGID.SC_ACTIVITY_SZDH_MSG then  --5078
-				print("神装兑换红点提示")
+				print("神装兑换红点推送")
 				RedPointState[26].state = 1
 				RedPointState[1].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "jrkh"}})
 			elseif msgID == MSGID.SC_ACTIVITY_YXDH_MSG then  --5079
-				print("英雄兑换红点提示")
+				print("英雄兑换红点推送")
 				RedPointState[27].state = 1
 				RedPointState[1].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "jrkh"}})
 			elseif msgID == MSGID.SC_ACTIVITY_XYDH_MSG then  --5080
-				print("稀有兑换红点提示")
+				print("稀有兑换红点推送")
 				RedPointState[28].state = 1
 				RedPointState[1].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "jrkh"}})
 			elseif msgID == MSGID.SC_ACTIVITY_CZJJ_MSG then
-				print("成长基金红点提示")
+				print("成长基金红点推送")
 				RedPointState[19].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "bfyl"}})
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_ACTIVITY_BFYL})
 			elseif msgID == MSGID.SC_ACTIVITY_SCSC_MSG then
-				print("三次首冲红点提示")
+				print("三次首冲红点推送")
 				RedPointState[22].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "scsc"}})
 			elseif msgID ==	MSGID.SC_ACTIVITY_SCTG_MSG then
-				print("首冲团购红点")
+				print("首冲团购红点推送")
 				RedPointState[20].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "bfyl"}})
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_ACTIVITY_BFYL})
 			elseif msgID == MSGID.SC_ACTIVITY_YKZZK_MSG then
-				print("月卡至尊卡")
+				print("月卡至尊卡红点推送")
 				RedPointState[18].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "monthandzcard"}})
 			end

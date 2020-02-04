@@ -152,7 +152,7 @@ function XuanShangRenWuLayer:ctor(data)
 			XuanShangRenWuData.httpRefreshOfferRewardList({parNode = self, callBack = function ( sDatas )
 				if tonumber(sDatas.ingot) then
 					gameUser.setIngot(sDatas.ingot)
-					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
 				end
 				sDatas.starSum = self._datas.starSum

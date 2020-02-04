@@ -247,8 +247,8 @@ end
 
 function NewLDengLuYouLiLayer:receiveBtnClick(index)
     HttpRequestWithParams("receiveCreateLoginReward",{day = self._activityData[index + 1].configId},function (data)
-        print("领取奖励服务器返回的数据为：")
-        print_r(data)
+--        print("领取奖励服务器返回的数据为：")
+--        print_r(data)
          -- 更新属性
         if data.property and #data.property > 0 then
             for i=1, #data.property do
@@ -280,7 +280,7 @@ function NewLDengLuYouLiLayer:receiveBtnClick(index)
         -- self._activityData[index + 1].state = 2
         self._activityData = self:sortData(data.list)
         --刷新主城信息
-        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) 
         self._actTableView:reloadData()
     end)

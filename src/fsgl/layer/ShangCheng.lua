@@ -1316,6 +1316,7 @@ function ShangCheng:startCountDown( time )
 		if time <= 0 then 
             gameUser.setLimitTimeShopState(0)  --关闭主界面的限时礼包按钮
             XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+            XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
             XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) 
 			self:stopActionByTag(self.Tag.ktag_countDown)
 			return 

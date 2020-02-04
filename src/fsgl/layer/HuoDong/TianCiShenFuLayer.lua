@@ -14,7 +14,7 @@ function TianCiShenFuLayer:ctor(parmas)
 	-- 添加监听事件
 	XTHD.addEventListener({name = CUSTOM_EVENT.REFRESH_GONGXIFACAI ,callback = function()
         self._zhongjiangInfo = gameUser.getZhongjiangInfo()
-        print_r(self._zhongjiangInfo)
+--        print_r(self._zhongjiangInfo)
         if self._myTable then
         	if not self._beginSlot then
         		self._myTable:reloadData()
@@ -711,7 +711,7 @@ function TianCiShenFuLayer:saveData(data)
             DBUpdateFunc:UpdateProperty( "userdata", pro_data[1], pro_data[2] )
         end
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) --刷新数据信息
-        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
     end
     -- 更新背包
     if data.bagItems and #data.bagItems ~= 0 then

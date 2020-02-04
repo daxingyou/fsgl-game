@@ -1007,7 +1007,7 @@ function VipRewardLayer1:showReward(data)
     end
     XTHD.dispatchEvent( { name = CUSTOM_EVENT.REFRESH_TOP_INFO })
     -- 刷新topbar数据
-    XTHD.dispatchEvent( { name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO })
+    XTHD.dispatchEvent( { name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO })
     --- 刷新主城市的，
 
     -- 拼接数据，为了ShowRewardNode显示

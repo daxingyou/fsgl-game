@@ -1169,7 +1169,7 @@ function XingNangLayer:UseItemForLord(item_data,item_type,effectvalue,item_idx)
                             self._last_select_dbid = nil --如果当前改名卡的数量为0 ，则把self._last_select_dbid 置为nil
                         end
                         XTHDTOAST("改名成功!")
-                        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+                        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
                         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})        --刷新数据信息
                     end
                 end
@@ -1298,7 +1298,7 @@ function XingNangLayer:UseItemForLord(item_data,item_type,effectvalue,item_idx)
                     if tonumber(data["charType"]) == 0 then --主角信息的变更
                         DBUpdateFunc:UpdateProperty( "userdata", _tab[1], _tab[2] )
                         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-                        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+                        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
                     else --武将信息的变更
                         -- XTHDTOAST(" XingNangLayer line 414 error");
                     end
@@ -1324,7 +1324,7 @@ function XingNangLayer:UseItemForLord(item_data,item_type,effectvalue,item_idx)
                         gameUser.setPackageRedPoint(0)
                     end
                 end
-                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "bag"}})
+--                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "bag"}})
             else
                 XTHDTOAST(data.msg)
             end

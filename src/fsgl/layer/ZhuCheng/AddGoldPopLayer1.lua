@@ -101,7 +101,7 @@ function AddGoldPopLayer1:init()
                 gameUser.setIngotTotal(data["totalIngot"])
 
                 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})      --刷新topbar数据
-                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) ---刷新主城市的，
+                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) ---刷新主城市的，
 
                 self:hide()
             else

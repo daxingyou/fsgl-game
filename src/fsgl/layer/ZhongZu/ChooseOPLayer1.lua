@@ -240,7 +240,7 @@ function ChooseOPLayer1:doChallenge(index)
 		        		ZhongZuDatas._serverEnemyCityDatas.clearCdSum = data.clearCdSum
 		        		ZhongZuDatas._serverEnemyCityDatas.cd = 0
 		        		gameUser.setIngot(tonumber(data.gold))
-    					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) ---刷新主城市的，
+    					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) ---刷新主城市的，
     					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
 		        		self.__isAtChanllengeCD = false
 	                    self._fightCD.time:stopActionByTag(self.Tag.ktag_actionFightCD)

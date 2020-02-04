@@ -270,7 +270,7 @@ function XiaoFeiFanLiLayer:LingQuJiangLi(index)
 		params = { configId  = self._severListData[index].configId },
         successCallback = function( data )
 			if data.result == 0 then
-				dump(data)
+--				dump(data)
 				local show_data = {}
 				if data.bagItems then
 					for i = 1, #data["bagItems"] do

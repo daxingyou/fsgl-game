@@ -7,7 +7,7 @@ function ChaozhiduihuanActivityLayer:ctor(data)
 	self._data = data
 	self._btnList = {}
 	self._selectedIndex = 1
-	dump(self._data,"超值兑换活动")
+--	dump(self._data,"超值兑换活动")
 	 local activityStatic = {
         --累计充值
 		[1] = {
@@ -259,7 +259,7 @@ function ChaozhiduihuanActivityLayer:newHttpActivity(index)
 					self._bg:getChildByTag(10):removeFromParent()
 				end
 				local layer = requires( "src/fsgl/layer/HuoDong/" .. self._activityOpen[index].file ):create(self,data)
-				dump(data,"77777")
+--				dump(data,"77777")
 				self._bg:addChild(layer,3,10)
 				layer:setPosition(cc.p(self._bg:getContentSize().width/2 + 2,self._bg:getContentSize().height/2 - 54))	
 			else

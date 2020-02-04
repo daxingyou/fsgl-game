@@ -20,7 +20,7 @@ function QiXingTanchangeLayer:ctor(data,callback)
 	self._one_Herotimes_cd = data.petCD
 	self._one_Equiptimes_cd = data.itemCD
 	self._one_times_btn = nil
-	dump(data,"777")
+--	dump(data,"777")
     local mengban_bg = cc.LayerColor:create(cc.c4b(0,0,0, 0))
     self:addChild(mengban_bg)
 

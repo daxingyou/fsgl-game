@@ -912,12 +912,19 @@ function ZhuChenglayer:registerNotifications( )
 		end
     end})
     
-    XTHD.addEventListener({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO, callback = function (event)--用来刷新等级、经验，银两，银币信息，按钮的显示与隐藏
+    XTHD.addEventListener({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO, callback = function (event)--用来刷新主城按钮的显示与隐藏
         self:refreshBaseInfo()
-		if self._buildingsTable[2]:getChildByName("canZhaomu") then
-			self._buildingsTable[2]:getChildByName("canZhaomu"):setVisible(self._menuLayer:refreshZhaoMuTishi())
-		end
+--		if self._buildingsTable[2]:getChildByName("canZhaomu") then
+--			self._buildingsTable[2]:getChildByName("canZhaomu"):setVisible(self._menuLayer:refreshZhaoMuTishi())
+--		end
     end})
+
+    XTHD.addEventListener({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO,callback = function(event) -------用来刷新主城等级、经验，银两，银币信息，
+        if self._menuLayer then 
+            self._menuLayer:refreshTopInfo()
+        end 
+    end})
+
     XTHD.addEventListener({name = CUSTOM_EVENT.REFRESH_CITY_BUILDINGS, callback = function( event)---刷新主城建筑产出
         local data = event.data
         if data and data.buildId then  
@@ -928,8 +935,8 @@ function ZhuChenglayer:registerNotifications( )
         end 
     end})
     XTHD.addEventListener({name = CUSTOM_EVENT.GOTO_SPECIFIEDBUILDING, callback = function( event)---特殊指引到某个指定建筑
-        print("--------------------引导的参数为---------------------")
-        print_r(event)
+--        print("--------------------引导的参数为---------------------")
+--        print_r(event)
         if event.data.funcID then 
             self:gotoNewFunction(event.data)
         elseif event.data.isOpen then 
@@ -938,12 +945,6 @@ function ZhuChenglayer:registerNotifications( )
             self:pointToSpecifiedBuid(event.data.id)
         end 
     end})    
-    XTHD.addEventListener({name = CUSTOM_EVENT.UPDATE_ACTIVITYMENUS,callback = function(event) -------更新活动按钮们的显示及位置 
-        local data = event.data
-        if self._menuLayer then 
-            self._menuLayer:updateActivityButtonPos(data.index,data.visible)
-        end 
-    end})
     XTHD.addEventListener({name = CUSTOM_EVENT.SHOW_BATTLE_TIPSLAYER,callback = function(event) ----当战斗快要开始的时候，显示提示页
         local what = event.data
         if gameUser.getLevel() > 15 and self._currentBattle == 0 then 
@@ -1330,6 +1331,7 @@ end
 function ZhuChenglayer:removeDispatchEvent( )
     XTHD.removeEventListener(CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT)    
     XTHD.removeEventListener(CUSTOM_EVENT.REFRESH_MAINCITY_INFO)
+    XTHD.removeEventListener(CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO)
     XTHD.removeEventListener(CUSTOM_EVENT.REFRESH_CITY_BUILDINGS)
     XTHD.removeEventListener(CUSTOM_EVENT.GOTO_SPECIFIEDBUILDING)    
     XTHD.removeEventListener(CUSTOM_EVENT.UPDATE_ACTIVITYMENUS)    

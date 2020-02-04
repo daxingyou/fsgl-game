@@ -101,7 +101,7 @@ function SourceLackPop1:TiliLack()
                                 right:setPositionX(self.containerBg:getContentSize().width/2)
                             end
                         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-                        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+                        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
                         if self.endCallback and type(self.endCallback) == "function" then
                             self.endCallback()
                         end

@@ -809,7 +809,7 @@ function RankListLayer1:chooseCamp( i )
 				modules = modules[self._tabIndex],
 				params = { campId  = i - 1 },
 				successCallback = function(backData)
-	        		 dump( backData, "backData" )
+--	        		 dump( backData, "backData" )
 	        		if tonumber(backData.result)==0 then
 						self._campIndex = i
 						self._dataTable = backData.list
@@ -846,7 +846,7 @@ function RankListLayer1:chooseCamp( i )
 			ClientHttp:requestAsyncInGameWithParams({
 				modules = ( myCampId + 1 ) == i and "myCampDuanRank?" or "rivalCampDuanRank?",
 				successCallback = function(backData)
-	        		 dump( backData, "backData" )
+--	        		 dump( backData, "backData" )
 	        		if tonumber(backData.result)==0 then
 						self._campIndex = i
 						self._dataTable = backData.list

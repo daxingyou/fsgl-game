@@ -477,7 +477,7 @@ function XianShiTiaoZhanLayer:updatePlayerDatas(data)
 		        gameUser.updateDataById(_tb[1], _tb[2])
 		    end
 	    	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-			XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+			XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 		end
 		self:reRequestBaseInfo()
 	end,0.4)

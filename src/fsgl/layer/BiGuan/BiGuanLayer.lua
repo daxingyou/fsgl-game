@@ -575,7 +575,7 @@ function BiGuanLayer:requestHangUpInfo(id)
         self.serverData = data
         self:freshRedDot()
         self:freshData(id)
-		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
     end)
 end
 
@@ -588,7 +588,7 @@ function BiGuanLayer:startHungUp(id,timeId,typeId)
 		local _data = string.split(data.property[1],",")
 		gameUser.updateDataById(_data[1],_data[2])
 		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
     end)
 end
 
@@ -596,8 +596,8 @@ end
 function BiGuanLayer:getHungUpReward(id)
 	print("id============================",id)
     HttpRequestWithParams("getHangUpReward",{configId = id},function (data)
-         print("挂机收获服务器返回的数据为：")
-         print_r(data)
+--         print("挂机收获服务器返回的数据为：")
+--         print_r(data)
         local show = {} --奖励展示
         --货币类型
         if data.property and #data.property > 0 then
@@ -616,7 +616,7 @@ function BiGuanLayer:getHungUpReward(id)
                 end
                 DBUpdateFunc:UpdateProperty( "userdata", pro_data[1], pro_data[2] )
             end
-            XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+            XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
             XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})        --刷新数据信息
         end
 

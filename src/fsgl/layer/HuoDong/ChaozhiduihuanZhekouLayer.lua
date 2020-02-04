@@ -149,7 +149,7 @@ function ChaozhiduihuanZhekouLayer:buyDiscountItem(index)
 			params = { configId  = self._listData[index].id },
 			successCallback = function( data )
 				if data.result == 0 then
-					dump(data,"111")
+--					dump(data,"111")
 					if data.bagItems then
 						local show_data = {}
 						for i = 1 ,#data.bagItems do
@@ -165,7 +165,7 @@ function ChaozhiduihuanZhekouLayer:buyDiscountItem(index)
 						local _data = string.split(data.property[i],",")
 						gameUser.updateDataById(_data[1],_data[2])
 					end
-					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 					self._buyLableList[self._selectedIndex]:setString("剩余购买次数："..data.selfSurplusCount)
 				else
 					XTHDTOAST(data.msg)

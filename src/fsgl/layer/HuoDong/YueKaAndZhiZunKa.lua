@@ -247,7 +247,7 @@ function YueKaAndZhiZunKa:receiveBtnClick(_type)
         ShowRewardNode:create(show_data)
         self:freshData()
         --刷新主城信息
-        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) 
     end)
 end

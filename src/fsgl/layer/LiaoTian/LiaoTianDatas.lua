@@ -264,7 +264,7 @@ function LiaoTianDatas.analysisServerMsg(msg)
             data.reportLogID = msg.chatMsg
             -------战报ID
             local source = string.split(msg.chatMsg, ",")
-            dump(msg.chatMsg, "战报")
+--            dump(msg.chatMsg, "战报")
             data.message = LiaoTianDatas.consistFightReport(source)
         else
             data.message = msg.chatMsg
@@ -433,7 +433,6 @@ function LiaoTianDatas.dispatchChatMsgs(data)
 end
 --------获取聊天记录
 function LiaoTianDatas.getChatRecord()
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAa")
     if #LiaoTianDatas.__worldMsg > 0 then
         return
     end

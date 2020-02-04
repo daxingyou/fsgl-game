@@ -117,11 +117,11 @@ function XTHDTouchSpine:getneedEnableWhenMoving()
 end
 
 function XTHDTouchSpine:isContainTouch(node,touch)
-    dump(touch:getLocation())
+--    dump(touch:getLocation())
     if node == nil then return end
     local point = node:convertToNodeSpace(touch:getLocation())
 	self._pos = point
-    dump(point)
+--    dump(point)
     point.x = point.x*node:getScaleX()
     point.y = point.y*node:getScaleY()
     local s ={width=0,height = 0} 
@@ -135,7 +135,7 @@ function XTHDTouchSpine:isContainTouch(node,touch)
             , (node:getBoundingBox().height - touchSize.height) / 2 , touchSize.width , touchSize.height)
     end
 
-    dump(rect_)
+--    dump(rect_)
     return cc.rectContainsPoint( rect_, point )
 end
 

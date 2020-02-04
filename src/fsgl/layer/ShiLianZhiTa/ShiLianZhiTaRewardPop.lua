@@ -272,7 +272,7 @@ function ShiLianZhiTaRewardPop:showReward( data,idx )
     --更新魂玉数据
     gameUser.setSoul(data["hunyu"])
     XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})      --刷新topbar数据
-    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) ---刷新主城市的，
+    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) ---刷新主城市的，
 
     --拼接数据，为了ShowRewardNode显示
     for i=1,#item_list do

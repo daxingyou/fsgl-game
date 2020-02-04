@@ -251,7 +251,7 @@ function LiLianStageLayer:init( )--在副本里添加了宝箱这个东西 所�
 					            	gameUser.setIngot(net_data["ingot"])
 					            end
 				            	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-				            	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+				            	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 				            	
 
 				            else
@@ -706,7 +706,7 @@ function LiLianStageLayer:challageEvent (stage_data)
 		-- end
 		-- local _instancingId = LiLianStageChapterData.getInstancingId(self._stageType)
 		-- print("新手引导章节部分数据为：".._instancingId.."类型："..self._stageType)
-		print_r(data)
+--		print_r(data)
 	    if self._stageType == ChapterType.Normal then
 			if stage_data.instancingid <= 5 then
 				if data.isPassFrist == true then

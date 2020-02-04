@@ -326,7 +326,7 @@ function ShenQiYiZhiPop:initUI(id,data,params)
                 if tonumber(healData.result) == 0 then
                 	self.allHero[self.selectedId]:setHp(healData.curHp)
                 	gameUser.setGold(healData.gold)
-                	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) 
+                	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) 
                 	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) 
                 	for k,v in pairs(data.hps.petHps) do
                     	if v.petId == self.selectedId then
@@ -544,7 +544,7 @@ function ShenQiYiZhiPop:initUI(id,data,params)
                 if tonumber(ReviveData.result) == 0 then
                     self.allHero[self.selectedId]:setHp(ReviveData.curHp)
                 	gameUser.setGold(ReviveData.gold)
-                	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) 
+                	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) 
                 	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) 
                     for k,v in pairs(data.hps.petHps) do
                     	if v.petId == self.selectedId then

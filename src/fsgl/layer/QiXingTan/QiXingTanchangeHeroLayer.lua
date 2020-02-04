@@ -587,7 +587,7 @@ function QiXingTanchangeHeroLayer:refreshTopBarData(data)
     if data and data.ingot then
         gameUser.setIngot(data.ingot)
     end
-    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) ---刷新主城市的，
+    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) ---刷新主城市的，
     XTHD.dispatchEvent({name = "EXCHANGE_LAYER_TOPBAR_DATA"}) ---QiXingTanchangeLayer界面的topBar数据
     self:getChildByName("TopBarLayer1"):refreshData()
 end

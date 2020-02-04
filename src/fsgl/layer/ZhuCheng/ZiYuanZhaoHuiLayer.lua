@@ -209,8 +209,9 @@ function ZiYuanZhaoHuiLayer:reloadData( )
 						self.allGold = self.allGold + data.reciver[i].config.needGold
 						local node = self:createVeiwCell(data.reciver[i])				
 						self.__msgTableView:insertCustomItem(node,0)
-					end
+					end              
 					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+                    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) --刷新数据信息
 					if self.allGold == 0 or self.allSliver == 0 then
 						self:removeFromParent()
@@ -255,6 +256,7 @@ function ZiYuanZhaoHuiLayer:reciveRewardOne(data)
 						DBUpdateFunc:UpdateProperty( "userdata", pro_data[1], pro_data[2] )
 					end
 					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+                    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) --刷新数据信息
 				end
 	
@@ -303,6 +305,7 @@ function ZiYuanZhaoHuiLayer:FangQiZhaoHui()
 			--self.__msgTableView:removeAllChildren()
 			gameUser.setRecoveryState(0)
 			XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+            XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 			XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) --刷新数据信息
 			self:removeFromParent()
         end,

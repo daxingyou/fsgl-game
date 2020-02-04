@@ -135,9 +135,13 @@ function TimelimitAnctivityLayer:selectedNode(index)
 
 	
 	if self._activityOpen[index].url ~= nil then
-		XTHD.timeHeroListCallback(self._layerNode)
+        performWithDelay(self, function()
+	        XTHD.timeHeroListCallback(self._layerNode)
+	    end, 0.1)
 	else
-		requires("src/fsgl/layer/HuoDong/XianShiTiaoZhanLayer.lua"):create(self._layerNode)  
+        performWithDelay(self, function()
+	        requires("src/fsgl/layer/HuoDong/XianShiTiaoZhanLayer.lua"):create(self._layerNode) 
+	    end, 0.1) 
 	end
 
 end

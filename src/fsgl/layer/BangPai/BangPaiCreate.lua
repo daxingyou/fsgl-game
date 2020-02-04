@@ -200,7 +200,7 @@ function BangPaiCreate:httpToDoGuild( ... )
             self._guildData.icon = self._nowSelectIcon
             self._guildData.limitLevel = levelStr
             BangPaiFengZhuangShuJu.setGuildData(self._guildData)
-			XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+			XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 			XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
             XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_GUILDMAIN_INFO})
             --刷新界面数据
@@ -212,7 +212,7 @@ function BangPaiCreate:httpToDoGuild( ... )
 			gameUser.setGuildRole(sData.guildRole)
 			gameUser.setGuildName(sData.guildName)
 			gameUser.setIngot(sData.ingot)
-			XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+			XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 			XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
 			BangPaiFengZhuangShuJu.createGuildLayer({parNode = self, callBack = function ( ... )
 				LayerManager.removeLayout()

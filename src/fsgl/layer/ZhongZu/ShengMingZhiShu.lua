@@ -4,7 +4,6 @@ local ShengMingZhiShu = class("ShengMingZhiShu",function( )
 end)
 
 function ShengMingZhiShu:ctor(parent)
-	print("生命树")
 	self._parent = parent
 end
 local this = nil

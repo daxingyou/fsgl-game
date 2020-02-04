@@ -115,7 +115,7 @@ function ChargeResources:refreshUserData( loading_type,deal_restore )  --deal_re
             
             XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_VIP_MSG})
             XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
-            XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO}) 
+            XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO}) 
         else
             XTHDTOAST(data.msg)
         end

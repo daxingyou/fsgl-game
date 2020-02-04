@@ -283,7 +283,7 @@ function XingNangSellPop:InitUI(item_data)
                     end
                     gameUser.setGold(data["silver"])
                     XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) --刷新数据信息
-                    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+                    XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 	           --获得资源数据存储，前界面数据刷新，所有涉及资源界面的数据刷新
 	           if self._sellCallback  then
 	           	  --出售资源成功回调

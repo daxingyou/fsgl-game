@@ -9,8 +9,8 @@ end)
 
 function NewLeiJiChongZhiLayer:ctor(parent,params)
 	self._exist = true
-	print("累计充值服务器返回的数据为")
-	print_r(params)
+--	print("累计充值服务器返回的数据为")
+--	print_r(params)
 	self._size = self:getContentSize()
 	self._leftWidth = 250
 	self._parent = parent

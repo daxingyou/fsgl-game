@@ -75,7 +75,7 @@ function LiLianStageBoxPopLayer:init( )--在副本里添加了宝箱这个东西
 		local item_bg=nil
 		local items_info=nil 
 		if tonumber(stage_data["bossid"]) == -1 then 
-			dump(stage_data)
+--			dump(stage_data)
 			items_info = gameData.getDataFromCSV("ArticleInfoSheet", {itemid = var[2]} )
 			local hero = gameData.getDataFromCSV("GeneralStarId", {configid = var[2]} )
 			self._heroDate = hero
@@ -176,7 +176,7 @@ function LiLianStageBoxPopLayer:openBoxEvent(stage_data)
 				elseif self._stageType == ChapterType.ELite then
 					gameUser.setEliteInstancingId(stage_data.instancingid)
 				end
-				dump(data,"777777")
+--				dump(data,"777777")
 	        	local reward_data = self.drop_data
 	        	local function ActionCallback()
 	        		local show_data = {} 
