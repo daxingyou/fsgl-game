@@ -204,6 +204,7 @@ function NewDanBiChongZhiLayer:receiveReward(index)
 			DBTableItem.updateCount(gameUser.getUserId(),_data,_data["dbId"])
 		end
 		ShowRewardNode:create(show_data)
+		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
 		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 		self:refreshData()
     end)

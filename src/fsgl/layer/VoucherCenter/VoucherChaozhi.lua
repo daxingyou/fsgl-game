@@ -132,7 +132,13 @@ function VoucherChongzhi:createTableViewCell(index,cell)
 	
 		buyBtn:setTouchEndedCallback(function()
 			cellbg:setScale(0.85)
-			self:buyVipLibao(_index)
+			local _confirmLayer = XTHDConfirmDialog:createWithParams( {
+				rightCallback = function ( ... )
+					self:buyVipLibao(_index)
+				end,
+				msg = ("是否花费".._buySum[2].."元宝购买VIP".._data.viplevel.."礼包？")
+			} );
+			cc.Director:getInstance():getRunningScene():addChild(_confirmLayer,1)
 		end)
 
 		if _data.stata == 0 then
@@ -143,7 +149,7 @@ function VoucherChongzhi:createTableViewCell(index,cell)
 end
 
 function VoucherChongzhi:buyVipLibao(index)
-	    ClientHttp:requestAsyncInGameWithParams( {
+	ClientHttp:requestAsyncInGameWithParams( {
         modules = "vipOneReward?",
         params = { level = self._data[index].viplevel},
         successCallback = function(data)
@@ -167,14 +173,15 @@ function VoucherChongzhi:buyVipLibao(index)
 					for i = 1, #data.property do
 						local _data = data.property[i]
 						local __data = string.split(_data,",")
-						gameUser.updateDataById(_data[1],_data[2])
+						gameUser.updateDataById(__data[1],__data[2])
 					end
 				end
 				self._vipReward = data.vipReward
 				self:refreshData()
 				self._talbeView:reloadData()
 				ShowRewardNode:create(show_list)
-				XTHD.dispatchEvent({ name = CUSTOM_EVENT.REFRESH_TOP_INFO })
+				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
+                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
             else
                 XTHDTOAST(data["msg"])
             end

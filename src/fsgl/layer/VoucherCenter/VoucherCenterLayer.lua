@@ -44,6 +44,9 @@ function VoucherCenterLayer:SwichVoucherNode(_index)
 	if _index == 2 then
 		HttpRequestWithOutParams("mouthCardState", function(data)
 			if self._voucherNode then
+				if self._voucherNode.onCleanup then
+					self._voucherNode:onCleanup()
+				end
 				self._voucherNode:removeFromParent()
 				self._voucherNode = nil
 			end			
@@ -52,11 +55,14 @@ function VoucherCenterLayer:SwichVoucherNode(_index)
 			self._bg:addChild(node)
 			node:setPosition(self._bg:getContentSize().width *0.6 + 20,self._bg:getContentSize().height *0.5)
 			self._voucherNode = node
-			self._selectedIndex = index
+			self._selectedIndex = _index
 		end )
 	elseif _index == 3 then
 		HttpRequestWithOutParams("payWindows", function(data)
 			if self._voucherNode then
+				if self._voucherNode.onCleanup then
+					self._voucherNode:onCleanup()
+				end
 				self._voucherNode:removeFromParent()
 				self._voucherNode = nil
 			end			
@@ -65,11 +71,14 @@ function VoucherCenterLayer:SwichVoucherNode(_index)
 			self._bg:addChild(node)
 			node:setPosition(self._bg:getContentSize().width *0.6 + 20,self._bg:getContentSize().height *0.5)
 			self._voucherNode = node
-			self._selectedIndex = index
+			self._selectedIndex = _index
 		end )
 	elseif _index == 4 then
 		HttpRequestWithOutParams("singlePayRewardList", function(data)
 			if self._voucherNode then
+				if self._voucherNode.onCleanup then
+					self._voucherNode:onCleanup()
+				end
 				self._voucherNode:removeFromParent()
 				self._voucherNode = nil
 			end			
@@ -78,11 +87,14 @@ function VoucherCenterLayer:SwichVoucherNode(_index)
 			self._bg:addChild(node)
 			node:setPosition(self._bg:getContentSize().width *0.6 + 20,self._bg:getContentSize().height *0.5)
 			self._voucherNode = node
-			self._selectedIndex = index
+			self._selectedIndex = _index
 		end )
 	elseif _index == 5 then
 		HttpRequestWithOutParams("welfareShopList", function(data)
 			if self._voucherNode then
+				if self._voucherNode.onCleanup then
+					self._voucherNode:onCleanup()
+				end
 				self._voucherNode:removeFromParent()
 				self._voucherNode = nil
 			end			
@@ -91,11 +103,14 @@ function VoucherCenterLayer:SwichVoucherNode(_index)
 			self._bg:addChild(node)
 			node:setPosition(self._bg:getContentSize().width *0.6 + 20,self._bg:getContentSize().height *0.5)
 			self._voucherNode = node
-			self._selectedIndex = index
+			self._selectedIndex = _index
 		end )
 	elseif _index == 1 then
 		HttpRequestWithOutParams("vipRewardRecord", function(data)
 			if self._voucherNode then
+				if self._voucherNode.onCleanup then
+					self._voucherNode:onCleanup()
+				end
 				self._voucherNode:removeFromParent()
 				self._voucherNode = nil
 			end			
@@ -104,7 +119,7 @@ function VoucherCenterLayer:SwichVoucherNode(_index)
 			self._bg:addChild(node)
 			node:setPosition(self._bg:getContentSize().width *0.6 + 20,self._bg:getContentSize().height *0.5)
 			self._voucherNode = node
-			self._selectedIndex = index
+			self._selectedIndex = _index
 		end )
 		
 	end

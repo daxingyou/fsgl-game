@@ -218,7 +218,7 @@ function VipRewardLayer1:initUI(data)
     } )
 	left_arrow:setScale(1.2)
     left_arrow:setPosition(20 + left_arrow:getContentSize().width *1.2 *0.5, tableBg:getContentSize().height*3/4-70)
-    tableBg:addChild(left_arrow)
+    tableBg:addChild(left_arrow,2)
 
     local right_arrow = XTHDPushButton:createWithParams( {
         normalFile = "res/image/common/arrow_right_normal.png",
@@ -228,7 +228,7 @@ function VipRewardLayer1:initUI(data)
     } )
 	right_arrow:setScale(1.2)
     right_arrow:setPosition(tableBg:getContentSize().width - 20 - right_arrow:getContentSize().width * 1.2 *0.5, left_arrow:getPositionY())
-    tableBg:addChild(right_arrow)
+    tableBg:addChild(right_arrow,2)
 
     left_arrow:setTouchEndedCallback( function()
         self.pager:scrollToLast()

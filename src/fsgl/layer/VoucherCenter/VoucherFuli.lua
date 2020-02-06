@@ -134,14 +134,14 @@ function VoucherFuli:createTableViewCell(index,cell)
 		end)
 	
 		buyBtn:setTouchEndedCallback(function()
+			self._buyIndex = _index
 			if _data.Rechargeid ~= 0 then
 				cellbg:setScale(0.85)
 				_data.needGold = 0
 				_data.configId = _data.Rechargeid
 				XTHD.pay(_data,nil,self)
-				self._buyIndex = _index
 			else
-
+				self:BuyMianfeilibao()
 			end
 		end)
 		
@@ -184,6 +184,24 @@ function VoucherFuli:updateCell()
 	end
 	self:refreshData()
 	self._talbeView:reloadData()
+end
+
+function VoucherFuli:BuyMianfeilibao()
+	HttpRequestWithOutParams("receiveWelfareShop", function(data)
+		dump(data)
+		local showlist = {}
+		if data.bagItems then
+			for i = 1,#data.bagItems do
+				local _data = data.bagItems[i]
+				local num1 = gameData.getDataFromDynamicDB(gameUser.getUserId(), DB_TABLE_NAME_ITEM,{itemid = _data.itemId}).count or 0
+				local getNum = tonumber(_data.count) - tonumber(num1)
+				showlist[#showlist+1] = {rewardtype = 4,id =_data.itemId,num =getNum}
+			end
+		end
+		ShowRewardNode:create(showlist)
+		XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
+		self:updateCell()
+	end )
 end
 
 function VoucherFuli:create(parent,data)

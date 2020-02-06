@@ -20,6 +20,16 @@ function PopShopLayer:init()
 	self:addContent(bg)
 	bg:setPosition(self:getContentSize().width *0.5,self:getContentSize().height *0.5)
 	self._bg = bg
+	
+	local btn_close = XTHDPushButton:createWithParams({
+		normalFile = "res/image/PopShop/btn_close_up.png",
+		selectedFile ="res/image/PopShop/btn_close_down.png"
+	})
+	self._bg:addChild(btn_close,2)
+	btn_close:setPosition(self._bg:getContentSize().width - btn_close:getContentSize().width *0.5 - 5,self._bg:getContentSize().height - btn_close:getContentSize().height *0.5 - 44)
+	btn_close:setTouchEndedCallback(function()
+		self:hide()
+	end)
 
 	local shopTitle = cc.Sprite:create(self._titleFile)
 	self._bg:addChild(shopTitle)
@@ -108,9 +118,30 @@ function PopShopLayer:loadStores(index,cell)
 			cellbg:addChild(itemNode)
 			itemNode:setPosition(cellbg:getContentSize().width *0.5, cellbg:getContentSize().height *0.6 + 2.5)
 
-			local itemName = XTHDLabel:create(data.itemname,18,"res/fonts/def.ttf")
+			local name = nil
+			if self._key == "recycle" then
+				local item = gameData.getDataFromCSV("ArticleInfoSheet",{itemid = data.itemid}) 
+				name = item.name
+			elseif self._key == "reward" then
+				local item = gameData.getDataFromCSV("ArticleInfoSheet",{itemid = data.itemid}) 
+				name = item.name
+			elseif self._key == "shura" then
+				local item = gameData.getDataFromCSV("ArticleInfoSheet",{itemid = data.itemid}) 
+				name = item.name
+			elseif self._key == "Artifact" then
+				if data.resourcetype == 4 then
+					local item = gameData.getDataFromCSV("ArticleInfoSheet",{itemid = data.resourceid}) 
+					name = item.name
+				else
+					local item = gameData.getDataFromCSV("SuperWeaponUpInfo",{id = data.resourceid}) 
+					name = item.name
+				end
+			else
+				name = data.itemname
+			end
+			local itemName = XTHDLabel:create(name,15,"res/fonts/def.ttf")
 			cellbg:addChild(itemName)
-			itemName:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height - itemName:getContentSize().height *0.5 - 5)
+			itemName:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height - itemName:getContentSize().height *0.5 - 8)
 			
 			self:createNeednum(cellbg,data,_index)
 			
@@ -171,7 +202,13 @@ function PopShopLayer:createNeednum(cellbg,data,index)
 				elseif self._key == "camp" then
 					needItemfiles[n] = IMAGE_KEY_HEADER_HONOR
 				elseif self._key == "Artifact" then
-					needItemfiles[n] = IMAGE_KEY_HEADER_SAINTSTONE
+					if data["type"..tostring(_index)] == 10 then
+						needItemfiles[n] = IMAGE_KEY_HEADER_SAINTSTONE
+					elseif data["type"..tostring(_index)] == 6 then
+						needItemfiles[n] = IMAGE_KEY_HEADER_FEICUI
+					elseif data["type"..tostring(_index)] == 3 then
+						needItemfiles[n] = IMAGE_KEY_HEADER_INGOT
+					end
 				end
 				needItemcoutns[n] = data["num"..tostring(_index)]
 			else
@@ -184,7 +221,7 @@ function PopShopLayer:createNeednum(cellbg,data,index)
 		local icon = cc.Sprite:create(needItemfiles[i])
 		icon:setScale(0.65)
 		icon:setAnchorPoint(0,0.5)	
-		local needCount = XTHDLabel:create(needItemcoutns[i],18,"res/fonts/def.ttf")
+		local needCount = XTHDLabel:create(needItemcoutns[i],16,"res/fonts/def.ttf")
 		needCount:setAnchorPoint(0,0.5)
 		needCount:setColor(cc.c3b(0,0,0))
 
@@ -449,6 +486,7 @@ function PopShopLayer:refreshShopdata()
 				end
 				self:init()
             else
+				self:removeFromParent()
                 XTHDTOAST(data.msg or LANGUAGE_TIPS_WEBERROR)-----"网络请求失败!")
             end
         end,--成功回调

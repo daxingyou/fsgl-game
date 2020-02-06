@@ -62,12 +62,12 @@ function ShowRewardNode:ctor(params)
         -- 领取成功
         titleSpine:setAnimation(0.5, "lqcg", false)
         titleSpine:setAnimation(0.5, "lqcg_loop", true)
-        titleSpine:setPosition(bglayer:getBoundingBox().width / 2, bglayer:getBoundingBox().height / 2 + 50)
+        titleSpine:setPosition(bglayer:getBoundingBox().width / 2, bglayer:getBoundingBox().height / 2 + 30)
     elseif _type == 2 then
         -- 合成成功
         titleSpine:setAnimation(0.5, "hcjg", false)
         titleSpine:setAnimation(0.5, "hcjg_loop", true)
-        titleSpine:setPosition(bglayer:getBoundingBox().width / 2, bglayer:getBoundingBox().height / 2 + 50)
+        titleSpine:setPosition(bglayer:getBoundingBox().width / 2, bglayer:getBoundingBox().height / 2 + 30)
     elseif _type == 3 then
         -- 任务奖励
         titleSpine:setAnimation(0.5, "rwjl", false)

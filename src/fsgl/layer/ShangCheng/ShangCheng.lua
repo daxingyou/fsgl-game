@@ -213,10 +213,10 @@ function ShangCheng:init( )
 
 	-------左边的第二层背景    
 	local pinkBg = ccui.Scale9Sprite:create("res/image/common/scale9_bg1_25.png")
-	pinkBg:setContentSize(bg:getContentSize().width-160 - figurebg:getContentSize().width *0.5,bg:getContentSize().height-50)
+	pinkBg:setContentSize(bg:getContentSize().width-240 - figurebg:getContentSize().width *0.5,bg:getContentSize().height-50)
 	self._bg:addChild(pinkBg)
     pinkBg:setAnchorPoint(0,0)
-	pinkBg:setPosition(193 + figurebg:getContentSize().width *0.5,26)
+	pinkBg:setPosition(193 + figurebg:getContentSize().width *0.5,23)
     --pinkBg:setScale(0.94)
 	pinkBg:setOpacity(0)
     self._pinkBg = pinkBg
@@ -229,9 +229,10 @@ function ShangCheng:init( )
     self._groupTip = _tip
     ------每个商店的资源栏
 	local node = cc.Node:create()
-    node:setAnchorPoint(0,1)
+    node:setAnchorPoint(0.5,0.5)
+	node:setContentSize(pinkBg:getContentSize().width,30)
 	pinkBg:addChild(node,5)
-	node:setPosition(pinkBg:getContentSize().height*2 - 65,pinkBg:getContentSize().height - 10)
+	node:setPosition(pinkBg:getContentSize().width *0.5,pinkBg:getContentSize().height - node:getContentSize().height *0.5)
 	self._titleContainer = node
 
  	self:switchTitleContainer(self._storeIndex)
@@ -382,12 +383,14 @@ function ShangCheng:changeStoreList( index )
 	
     self._canChangeStore = false
     --ly
-    local _size = cc.size(self._pinkBg:getContentSize().width,self._pinkBg:getContentSize().height - 13)
+	local _size = cc.size(self._pinkBg:getContentSize().width,self._pinkBg:getContentSize().height - 10)
+
     local pos = cc.p(0,2)
     -- self:showMultiTypeLabels(false)
     if not self._storeList then 
         self:initStoreView(_size,pos)
     end     
+
     self._storeLocalData = self._storeLocalDataArray[index]
     self:stopActionByTag(self.Tag.ktag_countDown)
 
@@ -416,7 +419,7 @@ function ShangCheng:changeStoreList( index )
 			
 			self._storeList:setVisible(true)
 			self._figurebg:setVisible(true)
-			if (index == 7 and self._storeIndex ~= index) or (self._storeIndex == 7 and index ~= 7) or (index == 7 and self._storeIndex == 7) then -----仅当在团购商店与其它商店切换的时候刷新顶部信息
+			if (index == 7 and self._storeIndex ~= index) or (self._storeIndex == 7 and index ~= 7) or (index == 7 and self._storeIndex == 7) or (index == 15 and self._storeIndex == 15) then -----仅当在团购商店与其它商店切换的时候刷新顶部信息
 				self:switchTitleContainer(index)
 			else 
 	--            self._playerResIcon:setTexture(self._playerResPath[index])     
@@ -1031,31 +1034,44 @@ function ShangCheng:loadGroupStores(index)
 --		_bg:addChild(_tips)
 --		_tips:setAnchorPoint(1,0.5)
 --		_tips:setPosition(getBtn:getPositionX() - getBtn:getBoundingBox().width - 3,getBtn:getPositionY())
+		
+		local changeTime = XTHDLabel:createWithParams({
+			text = "限购：",
+			fontSize = 16,
+			color = cc.c3b(0,0,0)
+		})
+		changeTime:setAnchorPoint(0,0.5)
+--		changeTime:setPosition(10,_bg:getBoundingBox().height *0.3)
+--		_bg:addChild(changeTime)
 
 		------当前个人购买次数
 		local _count = data.serverD.selfSurplusCount
---		local changeLabel = XTHDLabel:createWithParams({
---			text = _count,
---			fontSize = 20,
---			color = cc.c3b(129,0,0)
---		})
---		changeLabel:setAnchorPoint(1,0.5)
---		changeLabel:setPosition(_bg:getBoundingBox().width - 15,_bg:getBoundingBox().height * 3/4)
+		local changeLabel = XTHDLabel:createWithParams({
+			text = _count,
+			fontSize = 16,
+			color = cc.c3b(0,0,0)
+		})
+		changeLabel:setAnchorPoint(0,0.5)
+--		changeLabel:setPosition(changeTime:getPositionX() + changeTime:getContentSize().width,_bg:getBoundingBox().height *0.3)
 --		_bg:addChild(changeLabel)
---		_bg.exchangeTimesL = changeLabel
+		_bg.exchangeTimesL = changeLabel
 
---		local changeTime = XTHDLabel:createWithParams({
---			text = "个人"..LANGUAGE_TIP_BUYTIMES..":",----"购买次数",
---			fontSize = 18,
---			color = cc.c3b(128,112,91)
---		})
---		changeTime:setAnchorPoint(1,0.5)
---		changeTime:setPosition(changeLabel:getPositionX() - changeLabel:getBoundingBox().width,changeLabel:getPositionY())
---		_bg:addChild(changeTime)
+		local node = cc.Node:create()
+		node:setContentSize(changeTime:getContentSize().width + changeLabel:getContentSize().width + 10,changeLabel:getContentSize().height)
+		node:setAnchorPoint(0.5,0.5)
+		_bg:addChild(node)
+		node:setPosition(_bg:getContentSize().width *0.5,_bg:getContentSize().height *0.3)
+		
+		node:addChild(changeTime)
+		changeTime:setPosition(5,node:getBoundingBox().height *0.5)
+		
+		node:addChild(changeLabel)
+		changeLabel:setPosition(changeTime:getPositionX() + changeTime:getContentSize().width,node:getContentSize().height *0.5)
 
-		------当前全服剩余次量
-		_count = data.serverD.allSurplusCount
-		_count = (_count == nil or _count < 0) and 0 or _count
+
+--		------当前全服剩余次量
+--		_count = data.serverD.allSurplusCount
+--		_count = (_count == nil or _count < 0) and 0 or _count
 --		local allChangeL = XTHDLabel:createWithParams({
 --			text = _count,
 --			fontSize = 20,
@@ -1475,7 +1491,7 @@ function ShangCheng:refreshPlayerData(data,localD,targ)
     if self._storeIndex ~= 7 then -----不是团购的商店
 --        self._playerResAmount:setString(_playerRes)
     end 
---   targ.exchangeTimesL:setString(restTime)
+   targ.exchangeTimesL:setString(restTime)
 end
 
 function ShangCheng:switchTitleContainer(index)
@@ -1489,8 +1505,8 @@ function ShangCheng:switchTitleContainer(index)
 				color = cc.c3b(200,200,200),
 			})
 			self._titleContainer:addChild(_label)
-			_label:setAnchorPoint(1,1)
-			_label:setPosition(-210,0)
+			_label:setAnchorPoint(0,0.5)
+			_label:setPosition(10,self._titleContainer:getContentSize().height *0.5)
 			self._countDownL = _label
 			----时间
 			local _countDown = XTHDLabel:createWithParams({
@@ -1499,8 +1515,8 @@ function ShangCheng:switchTitleContainer(index)
 				color = XTHD.resource.color.gray_desc,
 			})
 			self._titleContainer:addChild(_countDown)
-			_countDown:setAnchorPoint(0,1)
-			_countDown:setPosition(_label:getBoundingBox().width + _label:getPositionX(),-1)
+			_countDown:setAnchorPoint(0,0.5)
+			_countDown:setPosition(_label:getPositionX() + _label:getContentSize().width *0.5,_label:getPositionY())
 			self._groupCountDownT = _countDown
 
 			----刷新提示
@@ -1552,7 +1568,7 @@ function ShangCheng:refreshGroupStoreTitle( )
 			self._countDownL:setString(LANGUAGE_TIPS_WORDS221)
 		end	 
 		if time > 0 then 
-			self._groupCountDownT:setPositionX( self._countDownL:getPositionX())
+			self._groupCountDownT:setPositionX( self._countDownL:getPositionX() + self._countDownL:getContentSize().width)
 			local str = getCdStringWithNumber(time,{d = LANGUAGE_UNKNOWN.day,h = LANGUAGE_UNKNOWN.hour,m = LANGUAGE_UNKNOWN.minute,s = LANGUAGE_UNKNOWN.second})
 			self._groupCountDownT:setString(str)
 			self:startCountDown(time)

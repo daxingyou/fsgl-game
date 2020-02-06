@@ -213,13 +213,26 @@ function JingXiangZhiLuSingleChallengeLayer:createCell(id)
 	for i = 1,3 do
 		if self:getCurrentChapterData()[3*id + i] then
             --阴影
-            local shadow = cc.Sprite:create("res/image/challenge/yinying_33.png")
-            pic:addChild(shadow)
+--            local shadow = cc.Sprite:create("res/image/challenge/yinying_33.png")
+--            pic:addChild(shadow)
 			local heroBtn = XTHDPushButton:createWithParams({
-	            normalFile = "res/image/avatar/image_"..self:getCurrentChapterData()[3*id + i].bossid..".png",
-	            selectedFile = "res/image/avatar/image_"..self:getCurrentChapterData()[3*id + i].bossid..".png",
+--	            normalFile = "res/image/avatar/image_"..self:getCurrentChapterData()[3*id + i].bossid..".png",
+--	            selectedFile = "res/image/avatar/image_"..self:getCurrentChapterData()[3*id + i].bossid..".png",
 	            needEnableWhenOut = true,
 	        })   
+            local _strid = string.format("%03d", self:getCurrentChapterData()[3*id + i].bossid)
+	        local jsonFile = "res/spine/" .. _strid .. ".json"
+			local atlasFile = "res/spine/" .. _strid .. ".atlas"
+			if _strid ~= 322 and _strid ~= 026 and _strid ~= 042 then
+				hero =  sp.SkeletonAnimation:createWithBinaryFile("res/spine/" .. _strid .. ".skel", "res/spine/" .. _strid .. ".atlas", 1.0)
+			else
+				hero = sp.SkeletonAnimation:create(jsonFile , atlasFile , 1.0)
+			end
+            hero:setVisible(false)
+            hero:setPosition(heroBtn:getContentSize().width / 2 - 5,heroBtn:getContentSize().height/2 - 100)
+            hero:setName("heroSpine")
+            hero:setAnimation(0, "idle", true)
+	        heroBtn:addChild(hero)
             heroBtn:stopActionByTag(10)
             local frame = cc.Sprite:create("res/image/challenge/1.png")
             frame:setName("select"..i)
@@ -237,14 +250,14 @@ function JingXiangZhiLuSingleChallengeLayer:createCell(id)
                 end
             end,0.1,10)
             self.selectTable[3*id + i] = frame
-            heroBtn:setScale(0.4)
+            heroBtn:setScale(0.65)
             heroBtn:setTouchSize(cc.size(75,75))
             heroBtn:setTouchBeganCallback(function( )
-                heroBtn:setScale(0.3)
+                heroBtn:setScale(0.55)
             end)
             heroBtn:setTouchEndedCallback(function( )
                 self:onHeroBtnClick(3*id + i)
-                heroBtn:setScale(0.4)
+                heroBtn:setScale(0.65)
             end)
             --当前关卡
             local level = XTHDLabel:create("第 "..(3*id + i).." 关",23,"res/fonts/def.ttf")
@@ -257,7 +270,7 @@ function JingXiangZhiLuSingleChallengeLayer:createCell(id)
             pass:setColor(cc.c3b(55,18,9))
             pic:addChild(pass)
             heroBtn.pass = pass
-            heroBtn.shadow = shadow
+--            heroBtn.shadow = shadow
             heroBtn.select = frame
             heroBtn.index = 3*id + i
             if self:getLevelByType() >= self:getCurrentChapterData()[3*id + i].instancingid then
@@ -272,31 +285,44 @@ function JingXiangZhiLuSingleChallengeLayer:createCell(id)
 	end
 	if heroTable[1] then
         heroTable[1]:setPosition(self:getContentSize().width/2,self:getContentSize().height/4 - 20)
-        heroTable[1].shadow:setPosition(self:getContentSize().width/2 - 5,self:getContentSize().height/4 - 85)
+--        heroTable[1].shadow:setPosition(self:getContentSize().width/2 - 5,self:getContentSize().height/4 - 85)
         heroTable[1].select:setPosition(self:getContentSize().width/2 - 5,self:getContentSize().height/4 - 65)
         heroTable[1].level:setPosition(self:getContentSize().width/2 - 5,self:getContentSize().height/4 + 80)
         heroTable[1].pass:setPosition(self:getContentSize().width/2,self:getContentSize().height/4 - 115)
-        heroTable[1]:getStateNormal():setScaleX(-1)
-        heroTable[1]:getStateSelected():setScaleX(-1)
+--        heroTable[1]:getStateNormal():setScaleX(-1)
+--        heroTable[1]:getStateSelected():setScaleX(-1)
+        heroTable[1]:getChildByName("heroSpine"):setScaleX(-1)
+        heroTable[1]:getChildByName("heroSpine"):setScaleX(-1)
         pic:addChild(heroTable[1])
+        performWithDelay(heroTable[1], function()
+	        heroTable[1]:getChildByName("heroSpine"):setVisible(true)
+	    end, 0) 
 	end
 	if heroTable[2] then
         heroTable[2]:setPosition(self:getContentSize().width/4,self:getContentSize().height/2 + 15)
-        heroTable[2].shadow:setPosition(self:getContentSize().width/4 - 5,self:getContentSize().height/2 - 50)
+--        heroTable[2].shadow:setPosition(self:getContentSize().width/4 - 5,self:getContentSize().height/2 - 50)
         heroTable[2].select:setPosition(self:getContentSize().width/4 - 5,self:getContentSize().height/2 - 30)
         heroTable[2].level:setPosition(self:getContentSize().width/4 - 5,self:getContentSize().height/2 + 115)
         heroTable[2].pass:setPosition(self:getContentSize().width/4,self:getContentSize().height/2 - 75)
         pic:addChild(heroTable[2])
+        performWithDelay(heroTable[2], function()
+	        heroTable[2]:getChildByName("heroSpine"):setVisible(true)
+	    end, 0) 
 	end
 	if heroTable[3] then
         heroTable[3]:setPosition(self:getContentSize().width/2 + 30,self:getContentSize().height/4*3)
-        heroTable[3].shadow:setPosition(self:getContentSize().width/2 + 25,self:getContentSize().height/4*3 - 65)
+--        heroTable[3].shadow:setPosition(self:getContentSize().width/2 + 25,self:getContentSize().height/4*3 - 65)
         heroTable[3].select:setPosition(self:getContentSize().width/2 + 25,self:getContentSize().height/4*3 - 45)
         heroTable[3].level:setPosition(self:getContentSize().width/2 + 25,self:getContentSize().height/4*3 + 100)
         heroTable[3].pass:setPosition(self:getContentSize().width/2 + 30,self:getContentSize().height/4*3 - 95)
-        heroTable[3]:getStateNormal():setScaleX(-1)
-        heroTable[3]:getStateSelected():setScaleX(-1)        
+--        heroTable[3]:getStateNormal():setScaleX(-1)
+--        heroTable[3]:getStateSelected():setScaleX(-1)       
+        heroTable[3]:getChildByName("heroSpine"):setScaleX(-1)
+        heroTable[3]:getChildByName("heroSpine"):setScaleX(-1) 
         pic:addChild(heroTable[3])
+        performWithDelay(heroTable[3], function()
+	        heroTable[3]:getChildByName("heroSpine"):setVisible(true)
+	    end, 0) 
 	end
     self._curHeroTable = heroTable
 	return pic
