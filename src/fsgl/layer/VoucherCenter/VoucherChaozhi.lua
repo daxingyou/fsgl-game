@@ -1,24 +1,23 @@
 --region *.lua
 --Date
 --此文件由[BabeLua]插件自动生成
-local VoucherFuli = class("VoucherFuli",function()
+local VoucherChongzhi = class("VoucherChongzhi",function()
 	local node = cc.Node:create()
 	node:setAnchorPoint(0.5,0.5)
 	node:setContentSize(705,468)
 	return node
 end)
 
-function VoucherFuli:ctor(parent,data)
+function VoucherChongzhi:ctor(parent,data)
 	self._parent = parent
-	self._severData = data
-	self._buyIndex = 0
-	self._data = {}
-	dump(self._severData)
+	self._vipReward = data.vipReward
+	dump(data)
+	self._data = gameData.getDataFromCSV( "VipGradeAward" )
 	self:refreshData()
 	self:init()
 end
 
-function VoucherFuli:init()
+function VoucherChongzhi:init()
 	local _bg = cc.Sprite:create("res/image/newGuild/memberbg.png")
 	_bg:setContentSize(450,370)
 	self:addChild(_bg)
@@ -67,56 +66,54 @@ function VoucherFuli:init()
 	haibao:setScaleY(0.8)
 	haibao:setPosition(self:getContentSize().width *0.5 - 20,haibao:getContentSize().height *0.5 + 5)
 
-	local title = cc.Sprite:create("res/image/VoucherCenter/fulilibao/title.png")
+	local title = cc.Sprite:create("res/image/VoucherCenter/viplibao/title.png")
 	haibao:addChild(title)
 	title:setPosition(haibao:getContentSize().width *0.5,haibao:getContentSize().height *0.5)
+
 end
 
-function VoucherFuli:createTableViewCell(index,cell)
-	for i = 1,3 do
+function VoucherChongzhi:createTableViewCell(index,cell)
+	for i = 1, 3 do
 		local _index = index * 3 + i
-		print("-----------------index",_index)
+		
 		local _data = self._data[_index]
-		if _data == nil then
+
+		if not _data then
 			return
 		end
+
 		local cellbg = cc.Sprite:create("res/image/VoucherCenter/cellbg_2.png")
 		cell:addChild(cellbg)
 		cellbg:setScale(0.9)
 		local x = cellbg:getContentSize().width *0.5 + (i - 1) * (cellbg:getContentSize().width + 10)
 		cellbg:setPosition(x,cell:getContentSize().height *0.5)
-		
-		local itembtn = XTHDPushButton:createWithParams({
-			normalFile = "res/image/VoucherCenter/fulilibao/fulilibao_" .. _data.id ..".png",
-			selectedFile = "res/image/VoucherCenter/fulilibao/fulilibao_" .. _data.id ..".png",
-		})
-		cellbg:addChild(itembtn,10)
-		itembtn:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height *0.5 + 10)
-		itembtn:setScale(0.7)
-		itembtn:setTouchEndedCallback(function()
-			local layer = requires("src/fsgl/layer/VoucherCenter/ItemNodePop.lua"):create(_data,"fuli")
-			cc.Director:getInstance():getRunningScene():addChild(layer)
-			layer:show()
-		end)
 
-		local itemName = XTHDLabel:create(_data.name,18,"res/fonts/hkys.ttf")
+		local itemName = XTHDLabel:create("VIP".._data.viplevel.."礼包",18,"res/fonts/hkys.ttf")
 		itemName:setColor(cc.c3b(55,44,33))
 		itemName:enableOutline(cc.c4b(255,230,180,255),1)
 		cellbg:addChild(itemName)
 		itemName:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height - itemName:getContentSize().height *0.5 - 10)
 
-		local restrictSumLable = XTHDLabel:create("限购次数：".._data.restrictSum - _data.sum,16,"res/fonts/hkys.ttf")
-		restrictSumLable:setAnchorPoint(0.5,0.5)
-		restrictSumLable:setColor(cc.c3b(55,44,33))
-		restrictSumLable:enableOutline(cc.c4b(255,230,180,255),1)
-		cellbg:addChild(restrictSumLable)
-		restrictSumLable:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height *0.3 + 2)
+		local itemBtn = XTHDPushButton:createWithParams({
+			normalFile = "res/image/VoucherCenter/viplibao/itemNode.png",
+			selectedFile = "res/image/VoucherCenter/viplibao/itemNode.png",
+		})
+		cellbg:addChild(itemBtn,10)
+		itemBtn:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height *0.5 + 10)
+		itemBtn:setScale(0.7)
+		itemBtn:setTouchEndedCallback(function()
+			local layer = requires("src/fsgl/layer/VoucherCenter/ItemNodePop.lua"):create(_data,"chaozhi")
+			cc.Director:getInstance():getRunningScene():addChild(layer)
+			layer:show()
+		end)		
 
-		local money = XTHDLabel:create("￥".._data.rmb,20)
+		local _buySum  = string.split(_data.buySum,"#")
+		
+		local money = XTHDLabel:create(_buySum[2].."元宝",18,"res/fonts/hkys.ttf")
 		money:setColor(cc.c3b(55,44,33))
 		money:enableOutline(cc.c4b(255,230,180,255),1)
 		cellbg:addChild(money)
-		money:setPosition(cellbg:getContentSize().width *0.5,money:getContentSize().height *0.5 + 25)
+		money:setPosition(cellbg:getContentSize().width *0.5,money:getContentSize().height *0.5 + 27)
 		
 		local buyBtn = XTHDPushButton:createWithParams({
 			touchSize =cc.size(cellbg:getContentSize().width,cell:getContentSize().height),
@@ -134,62 +131,85 @@ function VoucherFuli:createTableViewCell(index,cell)
 		end)
 	
 		buyBtn:setTouchEndedCallback(function()
-			if _data.Rechargeid ~= 0 then
-				cellbg:setScale(0.85)
-				_data.needGold = 0
-				_data.configId = _data.Rechargeid
-				XTHD.pay(_data,nil,self)
-				self._buyIndex = _index
-			else
-
-			end
+			cellbg:setScale(0.85)
+			self:buyVipLibao(_index)
 		end)
-		
-		if _data.sum >= _data.restrictSum then
+
+		if _data.stata == 0 then
 			XTHD.setGray(cellbg,true)
 			buyBtn:setEnable(false)
 		end
-	
 	end
 end
 
-function VoucherFuli:refreshData()
-	local list = gameData.getDataFromCSV("WelfareMall")
-	for k,v in pairs(self._severData.list) do
-		list[k].state = v.state
-		list[k].sum = v.sum
-	end
-	
-	for i = 1 ,#list do
-		if list[i].tpyeA == 3 and list[i].state == 0 then
-			list[i] = nil
-		end
-	end
-	
-	self._data = {}
+function VoucherChongzhi:buyVipLibao(index)
+	    ClientHttp:requestAsyncInGameWithParams( {
+        modules = "vipOneReward?",
+        params = { level = self._data[index].viplevel},
+        successCallback = function(data)
+            dump(data,"cliamreward_data")
+            if not data or next(data) == nil then
+                XTHDTOAST(LANGUAGE_KEY_ERROR_NETWORK)
+                return
+            end
+            if data["result"] == 0 then
+				local show_list = {}
+				if data.items then
+					for i = 1,#data.items do
+						local _data = data.items[i]
+						local num = gameData.getDataFromDynamicDB(gameUser.getUserId(), DB_TABLE_NAME_ITEM,{itemid = _data.itemId}).count or 0 
+						local num_1 = _data.count - num
+						show_list[#show_list+1] = {rewardtype = 4,id =_data.itemId,num = num_1}
+					end
+				end
 
-	for k,v in pairs(list) do
-		self._data[#self._data + 1] = v
-	end
+				if data.property then
+					for i = 1, #data.property do
+						local _data = data.property[i]
+						local __data = string.split(_data,",")
+						gameUser.updateDataById(_data[1],_data[2])
+					end
+				end
+				self._vipReward = data.vipReward
+				self:refreshData()
+				self._talbeView:reloadData()
+				ShowRewardNode:create(show_list)
+				XTHD.dispatchEvent({ name = CUSTOM_EVENT.REFRESH_TOP_INFO })
+            else
+                XTHDTOAST(data["msg"])
+            end
+
+        end,
+        -- 成功回调
+        failedCallback = function()
+            XTHDTOAST(LANGUAGE_KEY_ERROR_NETWORK)
+        end,
+        -- 失败回调
+        targetNeedsToRetain = node,
+        -- 需要保存引用的目标
+        loadingParent = node,
+        loadingType = HTTP_LOADING_TYPE.CIRCLE,-- 加载图显示 circle 光圈加载 head 头像加载
+    } )
 end
 
-function VoucherFuli:updateCell()
-	for i = 1,#self._severData.list do
-		if self._severData.list[i].configId == self._data[self._buyIndex].id then
-			self._severData.list[i].sum = self._severData.list[i].sum + 1
-			if self._severData.list[i].sum >= self._data[self._buyIndex].restrictSum then
-				self._severData.list[i].state = 0
+function VoucherChongzhi:refreshData()
+	for i = 1, #self._data do
+		self._data[i].stata = 1
+	end	
+
+	for i = 1, #self._data do
+		for j = 1, #self._vipReward do
+			if self._vipReward[j] == self._data[i].viplevel then
+				self._data[i].stata = 0
 			end
 		end
 	end
-	self:refreshData()
-	self._talbeView:reloadData()
 end
 
-function VoucherFuli:create(parent,data)
-	return VoucherFuli.new(parent,data)
+function VoucherChongzhi:create(parent,data)
+	return VoucherChongzhi.new(parent,data)
 end
 
-return VoucherFuli
+return VoucherChongzhi
 
 --endregion

@@ -2,9 +2,10 @@
 	单笔充值活动
 ]]
 local NewDanBiChongZhiLayer = class("NewDanBiChongZhiLayer", function()
-    local layer = XTHD.createSprite()
-	layer:setContentSize( 539, 399 )
-	return layer
+    local node = cc.Node:create()
+	node:setAnchorPoint(0.5,0.5)
+	node:setContentSize(705,468)
+	return node
 end)
 
 function NewDanBiChongZhiLayer:ctor(parent,params)
@@ -45,32 +46,26 @@ function NewDanBiChongZhiLayer:onCleanup()
 end
 
 -- 创建界面
-function NewDanBiChongZhiLayer:initUI()
-	-- 背景
-	local titleBg = cc.Sprite:create("res/image/activities/newsinglerecharge/titlebg.png")
-	self:addChild(titleBg)
-	titleBg:setPosition(self:getContentSize().width/2 - 5,self:getContentSize().height - 40)
+function NewDanBiChongZhiLayer:initUI()	
+	local _bg = cc.Sprite:create("res/image/newGuild/memberbg.png")
+	_bg:setContentSize(450,370)
+	self:addChild(_bg)
+	_bg:setPosition(self:getContentSize().width *0.6 + 15,self:getContentSize().height *0.6 - 4)
+	self._bg = _bg	
+	self._bg:setOpacity(0)
 
-	self.Time = XTHDLabel:create("",15,"res/fonts/def.ttf")
-    self.Time:setColor(cc.c3b(255,255,255))
-    titleBg:addChild(self.Time)
-    self.Time:setPosition(titleBg:getContentSize().width - 130,titleBg:getContentSize().height - 20)
-    self:updateTime()
-	
-	self._talbeView = CCTableView:create(cc.size(535, 320))
-	self._talbeView:setPosition(0,3)
+	self._talbeView = cc.TableView:create(self._bg:getContentSize())
+	self._talbeView:setPosition(0,-2)
     self._talbeView:setBounceable(true)
     self._talbeView:setDirection(cc.SCROLLVIEW_DIRECTION_VERTICAL) --设置横向纵向
     self._talbeView:setDelegate()
     self._talbeView:setVerticalFillOrder(cc.TABLEVIEW_FILL_TOPDOWN)
-    self:addChild(self._talbeView)
-
-
+    self._bg:addChild(self._talbeView)
     local function cellSizeForTable(table,idx)
-        return self._talbeView:getContentSize().width,80
+        return self._talbeView:getContentSize().width,190
     end
     local function numberOfCellsInTableView(table)
-        return #self._localData
+        return math.ceil(#self._localData/3)
     end
     local function tableCellTouched(table,cell)
     end
@@ -78,7 +73,7 @@ function NewDanBiChongZhiLayer:initUI()
     	local cell = table1:dequeueCell()
         if cell == nil then
             cell = cc.TableViewCell:new()
-			cell:setContentSize(self._talbeView:getContentSize().width,80)
+			cell:setContentSize(self._talbeView:getContentSize().width,190)
         else
             cell:removeAllChildren()
         end
@@ -92,74 +87,92 @@ function NewDanBiChongZhiLayer:initUI()
     self._talbeView:registerScriptHandler(tableCellAtIndex,cc.TABLECELL_SIZE_AT_INDEX)
 
     self._talbeView:reloadData()
+
+	local haibao = cc.Sprite:create("res/image/VoucherCenter/haibaobg.png")
+	self:addChild(haibao)
+	haibao:setScaleX(0.85)
+	haibao:setScaleY(0.8)
+	haibao:setPosition(self:getContentSize().width *0.5 - 20,haibao:getContentSize().height *0.5 + 5)
+
+	local title = cc.Sprite:create("res/image/VoucherCenter/danbi/title.png")
+	haibao:addChild(title)
+	title:setPosition(haibao:getContentSize().width *0.5,haibao:getContentSize().height *0.5)
 end
 
 function NewDanBiChongZhiLayer:initCell(cell,index)
-	index = index + 1 
-	local cellbg = cc.Sprite:create("res/image/activities/newsinglerecharge/cellbg.png")
-	cellbg:setContentSize(cell:getContentSize().width - 5,cell:getContentSize().height - 10)
-	cellbg:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height *0.5)
-	cell:addChild(cellbg)
+	for i = 1, 3 do
+		local index = index * 3 + i
+		local cellbg = cc.Sprite:create("res/image/VoucherCenter/cellbg_2.png")
+		cellbg:setScale(0.9)
+		local x = cellbg:getContentSize().width *0.5 + (i - 1) * (cellbg:getContentSize().width + 10)
+		cellbg:setPosition(x,cell:getContentSize().height *0.5)
+		cell:addChild(cellbg)
+		
+		local itembtn = XTHDPushButton:createWithParams({
+			normalFile = "res/image/VoucherCenter/danbi/danbi_"..index ..".png",
+			selectedFile = "res/image/VoucherCenter/danbi/danbi_"..index ..".png",
+		})
+		cellbg:addChild(itembtn,10)
+		itembtn:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height *0.5 + 10)
+		itembtn:setScale(0.7)
+		itembtn:setTouchEndedCallback(function()
+			local layer = requires("src/fsgl/layer/VoucherCenter/ItemNodePop.lua"):create(self._localData[index],"danbi")
+			cc.Director:getInstance():getRunningScene():addChild(layer)
+			layer:show()
+		end)
 
-	--档位图片
-	local typeIcon = cc.Sprite:create("res/image/activities/newsinglerecharge/box"..self._localData[index].id..".png")
-	cellbg:addChild(typeIcon)
-	typeIcon:setPosition(typeIcon:getContentSize().width - 20,cellbg:getContentSize().height/2)
+		local buyTip = XTHDLabel:create("单笔充值"..self._localData[index].charge.."元",16,"res/fonts/hkys.ttf")
+		buyTip:setColor(cc.c3b(0,0,0))
+		cellbg:addChild(buyTip)
+		buyTip:setPosition(cellbg:getContentSize().width*0.5,cellbg:getContentSize().height - buyTip:getContentSize().height *0.5 - 15)
+		
+		local miaoshu = XTHDLabel:create(self._localData[index].charge.."元礼包",20,"res/fonts/hkys.ttf")
+		miaoshu:setColor(cc.c3b(55,44,33))
+		miaoshu:enableOutline(cc.c4b(255,230,180,255),1)
+		cellbg:addChild(miaoshu)
+		miaoshu:setPosition(cellbg:getContentSize().width *0.5,miaoshu:getContentSize().height *0.5 + 26)
 
-	for i = 1, #self._localData do
-		if self._localData[i]["item"..tostring(i).."num"] ~= nil and self._localData[i]["item"..tostring(i).."num"] > 0 then
-			local item = ItemNode:createWithParams({
-				_type_ = self._localData[index]["item"..tostring(i).."type"],
-				itemId = self._localData[index]["item"..tostring(i).."ID"],
-				count = self._localData[index]["item"..tostring(i).."num"]
+		--领取按钮
+		if self._localData[index].state == 1 then
+			local btn_lingqu = XTHDPushButton:createWithParams({
+				touchSize = cc.size(cellbg:getContentSize().width,cellbg:getContentSize().height),
+				needEnableWhenMoving = true,
 			})
-			item:setScale(0.5)
-			cellbg:addChild(item)
-			item:setPosition(item:getContentSize().width * 0.5 + (i-1) * item:getContentSize().width/5*4 + 70 , cellbg:getContentSize().height * 0.5)
+			cellbg:addChild(btn_lingqu)
+			btn_lingqu:setPosition(cellbg:getContentSize().width - btn_lingqu:getContentSize().width *0.5 - 25,cellbg:getContentSize().height *0.5 - 10)
+			
+			btn_lingqu:setTouchBeganCallback(function()
+				cellbg:setScale(0.83)
+			end)
+	
+			btn_lingqu:setTouchMovedCallback(function()
+				cellbg:setScale(0.85)
+			end)
+
+			btn_lingqu:setTouchEndedCallback(function()
+				cellbg:setScale(0.85)
+				self:receiveReward(index)
+			end)
+
+			local guang = cc.Sprite:create("res/image/VoucherCenter/danbi/guang.png")
+			cellbg:addChild(guang)
+			guang:setPosition(itembtn:getPosition())
+			guang:runAction(cc.RepeatForever:create(cc.RotateBy:create(1,15)))
+		else
+--			local normalnode = cc.Sprite:create("res/image/activities/newsinglerecharge/goBtn_normal.png")
+--			local selectednode = cc.Sprite:create("res/image/activities/newsinglerecharge/goBtn_selected.png")
+--			local btn_go = XTHD.createCommonButton({
+--				normalNode = normalnode,
+--				selectedNode = selectednode,
+--				isScrollView = true,
+--				endCallback = function ()
+--					XTHD.createRechargeVipLayer(self)
+--				end
+--			})
+--			cellbg:addChild(btn_go)
+--			btn_go:setPosition(cellbg:getContentSize().width - btn_go:getContentSize().width *0.5 - 25,cellbg:getContentSize().height *0.5 - 10)
 		end
 	end
-
-	local buyTip = XTHDLabel:create("单笔充值"..self._localData[index].charge.."元",15,"res/fonts/def.ttf")
-    buyTip:setColor(cc.c3b(0,0,0))
-    cellbg:addChild(buyTip)
-    buyTip:setPosition(cellbg:getContentSize().width - buyTip:getContentSize().width *0.5 - 20,cellbg:getContentSize().height *0.5 + 20)
-
-	--领取按钮
-	if self._localData[index].state == 1 then
-		local normalnode = cc.Sprite:create("res/image/activities/newsinglerecharge/receiveBtn_normal.png")
-		local selectednode = cc.Sprite:create("res/image/activities/newsinglerecharge/receiveBtn_selected.png")
-		local btn_lingqu = XTHD.createCommonButton({
-			normalNode = normalnode,
-			selectedNode = selectednode,
-			isScrollView = true,
-			endCallback = function ()
-				self:receiveReward(index)
-			end
-		})
-		cellbg:addChild(btn_lingqu)
-		btn_lingqu:setPosition(cellbg:getContentSize().width - btn_lingqu:getContentSize().width *0.5 - 25,cellbg:getContentSize().height *0.5 - 10)
-
-		local fetchSpine = sp.SkeletonAnimation:create("res/image/plugin/tasklayer/querenjinjie.json", "res/image/plugin/tasklayer/querenjinjie.atlas", 1.0)   
-		btn_lingqu:addChild(fetchSpine)
-		fetchSpine:setScaleX(0.65)
-		fetchSpine:setScaleY(0.6)
-		fetchSpine:setPosition(btn_lingqu:getBoundingBox().width*0.5 + 1, btn_lingqu:getContentSize().height*0.5+2)
-		fetchSpine:setAnimation(0, "querenjinjie", true )
-	else
-		local normalnode = cc.Sprite:create("res/image/activities/newsinglerecharge/goBtn_normal.png")
-		local selectednode = cc.Sprite:create("res/image/activities/newsinglerecharge/goBtn_selected.png")
-		local btn_go = XTHD.createCommonButton({
-			normalNode = normalnode,
-			selectedNode = selectednode,
-			isScrollView = true,
-			endCallback = function ()
-				XTHD.createRechargeVipLayer(self)
-			end
-		})
-		cellbg:addChild(btn_go)
-		btn_go:setPosition(cellbg:getContentSize().width - btn_go:getContentSize().width *0.5 - 25,cellbg:getContentSize().height *0.5 - 10)
-	end
-
 end
 
 function NewDanBiChongZhiLayer:receiveReward(index)
@@ -220,8 +233,6 @@ function NewDanBiChongZhiLayer:sortList(data)
         return a.sortid > b.sortid
     end )
 	self._parent:freshRedDot(self._parent.selectedIndex)
-	-- print("排好序的数据为")
- --    print_r(self._localData)
 end
 
 function NewDanBiChongZhiLayer:updateTime()

@@ -427,7 +427,7 @@ function XTHD.createSaintBeastChange(fNode, callback, zorder)
 end
 
 function XTHD.createServantChange(fNode,callback,zorder)
-    local ServantChangeLayer = requires("src/fsgl/layer/ShangCheng.lua"):create({which = 'servant',callback = callback}) -----神器商店
+    local ServantChangeLayer = requires("src/fsgl/layer/ShangCheng/ShangCheng.lua"):create({which = 'servant',callback = callback}) -----神器商店
     LayerManager.addLayout(ServantChangeLayer, {par = fNode, zz = zorder})
 end
 
@@ -523,7 +523,7 @@ function XTHD.createBibleLayer(fNode)
 end
 
 function XTHD.createCompetitiveChange(fNode, zorder, _type, callback)
-    local CompetitiveChangeLayer = requires("src/fsgl/layer/ShangCheng.lua"):create( { which = 'arena', callback = callback })
+    local CompetitiveChangeLayer = requires("src/fsgl/layer/ShangCheng/ShangCheng.lua"):create( { which = 'arena', callback = callback })
     ----竞技场
     LayerManager.addLayout(CompetitiveChangeLayer, { par = fNode, zz = zorder })
 end
@@ -901,16 +901,16 @@ function XTHD.createJaditeCopy(node, zorder, callFunc)
 end
 
 -- vip特权界面
-function XTHD.createVipLayer(node, node1, zorder)
+function XTHD.createVipLayer(node, parent)
 
-    print(XTHD.getVIPRewardExist(), "getVIPExistgetVIPExist")
-    print(XTHD.getVIPExist(), "getVIPExistgetVIPExist")
-    if XTHD.getVIPRewardExist() == true then
-        if XTHD.getVIPExist() == true then
-            LayerManager.removeLayout()
-        end
-        return
-    end
+--    print(XTHD.getVIPRewardExist(), "getVIPExistgetVIPExist")
+--    print(XTHD.getVIPExist(), "getVIPExistgetVIPExist")
+--    if XTHD.getVIPRewardExist() == true then
+--        if XTHD.getVIPExist() == true then
+--            LayerManager.removeLayout()
+--        end
+--        return
+--    end
     ClientHttp:requestAsyncInGameWithParams( {
         modules = "vipRewardRecord?",
         successCallback = function(data)
@@ -919,15 +919,9 @@ function XTHD.createVipLayer(node, node1, zorder)
                 return
             end
             if data["result"] == 0 then
-
-                -- 先移除后添加，否则会销毁吊topbar中刷新数据的通知
-                if node1 ~= nil then
-                    LayerManager.removeLayout(node1)
-                    -- node1:removeFromParent()
-                end
-
-                local vip = requires("src/fsgl/layer/Vip/VipRewardLayer1.lua"):create(data)
-                LayerManager.addLayout(vip, { par = node, zz = zorder })
+                local vip = requires("src/fsgl/layer/Vip/VipRewardLayer1.lua"):create(data,parent)
+                node:addChild(vip)
+				vip:show()
                 -- if zorder then
                 --     node:addChild(vip,zorder)
                 -- else

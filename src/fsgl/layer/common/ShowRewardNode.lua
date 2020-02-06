@@ -30,24 +30,25 @@ function ShowRewardNode:ctor(params)
     self:addChild(bglayer)
     self.popNode = bglayer
     bg:setType(cc.PROGRESS_TIMER_TYPE_BAR)
-    bg:setBarChangeRate(cc.p(1, 0))
+    bg:setBarChangeRate(cc.p(0, 1))
     bg:setMidpoint(cc.p(0.5, 0.5))
     bg:setPosition(bglayer:getContentSize().width / 2, bglayer:getContentSize().height / 2)
     bglayer:addChild(bg, 0)
     self._bg = bg
-    local rewardReelLeft = cc.Sprite:create("res/image/plugin/showreward/reward_reel.png")
-    rewardReelLeft:setPosition(bglayer:getBoundingBox().width / 2 - rewardReelLeft:getBoundingBox().width / 2, bg:getBoundingBox().height / 2)
-    bglayer:addChild(rewardReelLeft, 1)
+	
+    local rewardReelCeil = cc.Sprite:create("res/image/plugin/showreward/ceilbg.png")
+    rewardReelCeil:setPosition(bglayer:getBoundingBox().width / 2, bglayer:getBoundingBox().height *0.5 + rewardReelCeil:getContentSize().height *0.25)
+    bglayer:addChild(rewardReelCeil, 1)
 
-    local rewardReelRight = cc.Sprite:create("res/image/plugin/showreward/reward_reel.png")
-    rewardReelRight:setPosition(bglayer:getBoundingBox().width / 2 + rewardReelRight:getBoundingBox().width / 2, bg:getBoundingBox().height / 2)
-    bglayer:addChild(rewardReelRight, 1)
+    local rewardReelFloor = cc.Sprite:create("res/image/plugin/showreward/floorbg.png")
+    rewardReelFloor:setPosition(self._bg:getBoundingBox().width / 2 ,bglayer:getBoundingBox().height *0.5 - rewardReelCeil:getContentSize().height *0.25)
+    bglayer:addChild(rewardReelFloor, 1)
 
     bg:setPercentage(8.45)
     bg:runAction(cc.EaseOut:create(cc.ProgressTo:create(0.1, 100), 1.5))
 
-    rewardReelLeft:runAction(cc.Sequence:create((cc.EaseOut:create(cc.MoveTo:create(0.1, cc.p(bg:getPositionX() - bg:getBoundingBox().width / 2 - rewardReelLeft:getBoundingBox().width / 3, bg:getBoundingBox().height / 2)), 1.5)), cc.MoveBy:create(0.05, cc.p(rewardReelLeft:getBoundingBox().width / 3, 0))))
-    rewardReelRight:runAction(cc.Sequence:create((cc.EaseOut:create(cc.MoveTo:create(0.1, cc.p(bg:getPositionX() + bg:getBoundingBox().width / 2 + rewardReelLeft:getBoundingBox().width / 3, bg:getBoundingBox().height / 2)), 1.5)), cc.MoveBy:create(0.05, cc.p(- rewardReelLeft:getBoundingBox().width / 3, 0))))
+    rewardReelCeil:runAction(cc.Sequence:create((cc.EaseOut:create(cc.MoveTo:create(0.1, cc.p(rewardReelCeil:getPositionX(), bglayer:getBoundingBox().height + rewardReelCeil:getContentSize().height *0.5)), 1.5))))
+    rewardReelFloor:runAction(cc.Sequence:create((cc.EaseOut:create(cc.MoveTo:create(0.1, cc.p(rewardReelFloor:getPositionX(), -rewardReelFloor:getContentSize().height*0.5)), 1.5))))
 
     local _type = params._type or 1
     local titleSpine = sp.SkeletonAnimation:create("res/spine/effect/show_reward/lingquziti.json", "res/spine/effect/show_reward/lingquziti.atlas", 1.0)
@@ -106,7 +107,6 @@ function ShowRewardNode:ctor(params)
     end )))
     local rewardNum = table.nums(param)
     if rewardNum < 9 then
-
         for i = 1, #param do
             if param[i].rewardtype and param[i].num then
                 local _isLight = param[i].rewardtype == XTHD.resource.type.ingot and true or false
@@ -124,13 +124,13 @@ function ShowRewardNode:ctor(params)
                     local posY = bg:getBoundingBox().height / 2
                     if #param > 4 then
                         if i > 4 then
-                            posY = bg:getBoundingBox().height / 2 - 60 + 10
+                            posY = bg:getBoundingBox().height / 2 - 45 + 10
                         else
-                            posY = bg:getBoundingBox().height / 2 + 60 + 10
+                            posY = bg:getBoundingBox().height / 2 + 45 + 10
                         end
                     end
                     item:setPosition(XTHD.resource.getPosInArr( {
-                        lenth = 50,
+                        lenth = 10,
                         bgWidth = bg:getBoundingBox().width,
                         num = #param > 4 and 4 or #param,
                         nodeWidth = item:getBoundingBox().width,
@@ -141,7 +141,7 @@ function ShowRewardNode:ctor(params)
                     item:setOpacity(0)
                     bg:addChild(item, 1)
                     item:runAction(cc.Sequence:create(cc.DelayTime:create(0.1 + i *(0.2 -(i * 0.01))), cc.Spawn:create(cc.FadeIn:create(0.2),
-                    cc.Sequence:create(cc.DelayTime:create(0.1), cc.ScaleTo:create(0.15, 0.8), cc.CallFunc:create( function()
+                    cc.Sequence:create(cc.DelayTime:create(0.1), cc.ScaleTo:create(0.15, 0.6), cc.CallFunc:create( function()
                         -- item:setEnableTouch(true)
                         local Ashes = cc.Sprite:create("res/image/common/hero_orangeBg.png")
                         Ashes:setPosition(item:getPositionX(), item:getPositionY())
@@ -150,16 +150,16 @@ function ShowRewardNode:ctor(params)
 
                         local itemName = XTHDLabel:createWithParams( {
                             text = item._Name,
-                            fontSize = 18,
+                            fontSize = 16,
                             color = XTHD.resource.color.gray_desc
                         } )
                         itemName:setAnchorPoint(0.5, 1)
-                        itemName:setPosition(item:getPositionX(), item:getPositionY() - item:getBoundingBox().height / 2 - 10)
+                        itemName:setPosition(item:getPositionX(), item:getPositionY() - item:getBoundingBox().height / 2 - 2)
                         bg:addChild(itemName)
                         itemName:setOpacity(0)
                         itemName:runAction(cc.FadeIn:create(0.3))
                     end ),
-                    cc.ScaleTo:create(0.07, 0.9), cc.ScaleTo:create(0.03, 0.8), cc.CallFunc:create( function()
+                    cc.ScaleTo:create(0.07, 0.7), cc.ScaleTo:create(0.03, 0.6), cc.CallFunc:create( function()
                         item:setClickable(true)
                     end )))))
                 end
@@ -251,11 +251,11 @@ function ShowRewardNode:createRewardTablview(param, rewardNum)
         -- how much lines
         local lineNum = math.floor((rewardNum - 1) / 4) + 1
 
-        local _tableViewSize = cc.size(540, 240)
-        local _tableViewCellSize = cc.size(540, 120)
+        local _tableViewSize = cc.size(540, 190)
+        local _tableViewCellSize = cc.size(540, 90)
         self._tableView = CCTableView:create(_tableViewSize)
         self._tableView:setAnchorPoint(cc.p(0.5, 0.5))
-        self._tableView:setPosition(-270, -120)
+        self._tableView:setPosition(-270, -95)
         self._tableView:setDirection(cc.SCROLLVIEW_DIRECTION_VERTICAL)
         self._tableView:setVerticalFillOrder(cc.TABLEVIEW_FILL_TOPDOWN)
         self._tableView:setDelegate()
@@ -276,6 +276,7 @@ function ShowRewardNode:createRewardTablview(param, rewardNum)
             else
                 cell = cc.TableViewCell:create()
             end
+
 			if not self._showLineNum then
 				for i = 1, 4 do
 					if (idx * 4 + i) < rewardNum + 1 then
@@ -291,17 +292,17 @@ function ShowRewardNode:createRewardTablview(param, rewardNum)
 						} )
 						if item then
 							item:setClickable(true)
-							item:setScale(0.8)
-							item:setPosition(90 +(i - 1) * 120, 70)
+							item:setScale(0.6)
+							item:setPosition(110 +(i - 1) * 105, 50)
 							cell:addChild(item)
 
 							local itemName = XTHDLabel:createWithParams( {
 								text = item._Name,
-								fontSize = 18,
+								fontSize = 16,
 								color = XTHD.resource.color.gray_desc
 							} )
 							itemName:setAnchorPoint(0.5, 1)
-							itemName:setPosition(item:getPositionX(), item:getPositionY() - item:getBoundingBox().height / 2 - 10)
+							itemName:setPosition(item:getPositionX(), item:getPositionY() - item:getBoundingBox().height / 2 - 2)
 							cell:addChild(itemName)
 						end
 					end
@@ -322,17 +323,17 @@ function ShowRewardNode:createRewardTablview(param, rewardNum)
 						} )
 						if item then
 							item:setClickable(true)
-							item:setScale(0.7)
-							item:setPosition(60 +(i - 1) * 105, 70)
+							item:setScale(0.6)
+							item:setPosition(110 +(i - 1) * 105, 50)
 							cell:addChild(item)
 
 							local itemName = XTHDLabel:createWithParams( {
 								text = item._Name,
-								fontSize = 18,
+								fontSize = 16,
 								color = XTHD.resource.color.gray_desc
 							} )
 							itemName:setAnchorPoint(0.5, 1)
-							itemName:setPosition(item:getPositionX(), item:getPositionY() - item:getBoundingBox().height / 2 - 10)
+							itemName:setPosition(item:getPositionX(), item:getPositionY() - item:getBoundingBox().height / 2 - 2)
 							cell:addChild(itemName)
 						end
 					end

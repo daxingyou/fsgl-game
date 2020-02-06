@@ -771,9 +771,8 @@ function ZhuChengMenuLayer:initHeadBar(...)
     charge:setAnchorPoint(0, 1)
     charge:setPosition(vipBox:getPositionX() + vipBox:getBoundingBox().width + 35, vipBox:getPositionY() + 30)
     charge:setTouchEndedCallback( function()
-        LayerManager.addShieldLayout()
-        self:getParent():cleanOperatorBtns()
-        XTHD.createRechargeVipLayer(self)
+      	local voucherLayer = requires("src/fsgl/layer/VoucherCenter/VoucherCenterLayer.lua"):create()
+		LayerManager.addLayout(voucherLayer)
     end )
     self._chargeBtn = charge
 
@@ -1430,7 +1429,7 @@ function ZhuChengMenuLayer:initLeftUpMenu()
             self:openXYZP()
         elseif sIndex == 10 then
             -- 限时商城
-            local _store = requires("src/fsgl/layer/ShangCheng.lua"):create( { which = 'groupBuy' })
+            local _store = requires("src/fsgl/layer/ShangCheng/ShangCheng.lua"):create( { which = 'groupBuy' })
             LayerManager.addLayout(_store)
         elseif sIndex == 11 then
             self:QuanfuchongbangActivityLayer()
@@ -2547,7 +2546,7 @@ function ZhuChengMenuLayer:doTopAddButtons(index)
 end
 
 function ZhuChengMenuLayer:toStoreLayer()
-    local _store = requires("src/fsgl/layer/ShangCheng.lua"):create( { which = 'yuanbao' })
+    local _store = requires("src/fsgl/layer/ShangCheng/ShangCheng.lua"):create( { which = 'yuanbao' })
     LayerManager.addLayout(_store)
 end
 
@@ -3162,12 +3161,10 @@ end
 
 -- 超值兑换
 function ZhuChengMenuLayer:ChaozhiduihuanActivityLayer()
-	local voucherLayer = requires("src/fsgl/layer/VoucherCenter/VoucherCenterLayer.lua"):create()
-	LayerManager.addLayout(voucherLayer)
---    local biyedianliLayer = requires("src/fsgl/layer/HuoDong/ChaozhiduihuanActivityLayer.lua")
---    local layer = biyedianliLayer:create(data)
---    self:addChild(layer)
---    layer:show()
+    local biyedianliLayer = requires("src/fsgl/layer/HuoDong/ChaozhiduihuanActivityLayer.lua")
+    local layer = biyedianliLayer:create(data)
+    self:addChild(layer)
+    layer:show()
 end
 
 -- 投资计划

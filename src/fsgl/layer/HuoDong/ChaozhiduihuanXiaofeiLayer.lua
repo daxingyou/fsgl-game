@@ -114,7 +114,7 @@ function ChaozhiduihuanXiaofeiLayer:initUI()
 						local callback = function()
 							self._parent:SelectedActivityLayer(self._parent._selectedIndex)
 						end
-						local _store = requires("src/fsgl/layer/ShangCheng.lua"):create({which = 'yuanbao'},true,callback)
+						local _store = requires("src/fsgl/layer/ShangCheng/ShangCheng.lua"):create({which = 'yuanbao'},true,callback)
 						LayerManager.addLayout(_store)
 					end
 				})

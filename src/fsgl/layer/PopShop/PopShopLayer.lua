@@ -309,8 +309,7 @@ function PopShopLayer:buyItem(index)
 				self._iconCount:setString(self:getItemNum())
 				self._talbeView:reloadDataAndScrollToCurrentCell()
 			elseif tonumber(data.result) == 5501 then ----全服次数没了                
-				storeData.serverD.allSurplusCount = 0
-				targ.serverLeftTimesL:setString(0)
+				XTHDTOAST(data.msg)
 				XTHDTOAST(data.msg or LANGUAGE_TIPS_WEBERROR)-----"网络请求失败!")
 			else
 				XTHDTOAST(data.msg or LANGUAGE_TIPS_WEBERROR)-----"网络请求失败!")

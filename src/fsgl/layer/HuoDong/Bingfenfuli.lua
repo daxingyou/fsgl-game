@@ -132,16 +132,16 @@ function Bingfenfuli:getOpenActivity()
             pictureid = 3,
 			redPointId = 21,
         },
-        --单笔充值
-        [4] = {
-            url = "singlePayRewardList?",
-            file = "NewDanBiChongZhiLayer.lua", 
-            -- title = LANGUAGE_KEY_ACTIVITYTAB[13],
-            priority = 900,
-            isOpen = 0,                     -- 0：根据isOpenid控制活动是否开启，1：长期开启，不判断isOpenid
-            isOpenid = 4,                   -- 活动开启id，后端控制
-            pictureid = 4,
-        },
+--        单笔充值
+--        [4] = {
+--            url = "singlePayRewardList?",
+--            file = "NewDanBiChongZhiLayer.lua", 
+--             title = LANGUAGE_KEY_ACTIVITYTAB[13],
+--            priority = 900,
+--            isOpen = 0,                     -- 0：根据isOpenid控制活动是否开启，1：长期开启，不判断isOpenid
+--            isOpenid = 4,                   -- 活动开启id，后端控制
+--            pictureid = 4,
+--        },
 	}
 	local _openState = gameUser.getActivityOpenStatus() or {}
 	self._activityOpen = {}

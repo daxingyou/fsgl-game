@@ -1,18 +1,12 @@
 -- Create By hezhitao 2015年07月16日
 -- VIP特权界面
 local VipRewardLayer1 = class("VipRewardLayer1", function()
-    return XTHD.createBasePageLayer( {
-        isScale = true,
-        isShadow = true,
-        showGF = false,
-        showPlus = false,
-        bg = "res/image/vip/newBg.jpg"
-    } )
+   return XTHDPopLayer:create()
 end )
 
-function VipRewardLayer1:ctor(data)
+function VipRewardLayer1:ctor(data,parent)
+	self._parent = parent
     self:initUI(data)
-
     -- 添加监听事件
     XTHD.addEventListener( {
         name = CUSTOM_EVENT.REFRESH_RECHARGE_MSG,
@@ -26,13 +20,10 @@ end
 
 function VipRewardLayer1:initUI(data)
     XTHD.setVIPRewardExist(true)
-    -- dump(data,"ddddddd")
-
+	self._left_arrow = nil
+    self._right_arrow = nil
     self._cell_tab = { }
     self.__cell_tab = { }
-
-    self._left_arrow = nil
-    self._right_arrow = nil
     self._already_cliam_reward = { }
     self._vip = 1
     -- 记录当前混动到的vip
@@ -41,14 +32,21 @@ function VipRewardLayer1:initUI(data)
     self:dealDateForCell()
 
     
-    local center = cc.Sprite:create("res/image/common/layer_bottomBg.png")
+    local center = cc.Sprite:create("res/image/VoucherCenter/VipReward/bg.png")
     center:setAnchorPoint(0.5, 0.5)
-    center:setPosition(self:getContentSize().width * 0.5,self:getContentSize().height * 0.5 -  self.topBarHeight *0.5)
-    self:addChild(center)
+    center:setPosition(self:getContentSize().width * 0.5,self:getContentSize().height * 0.5)
+    self:addContent(center)
 	self._centerBg = center
 	
-	local title = "res/image/public/chongzhitequan_title.png"
-	XTHD.createNodeDecoration(self._centerBg,title)
+	local btn_close = XTHDPushButton:createWithParams({
+		normalFile = "res/image/VoucherCenter/VipReward/btn_close_1.png",
+		selectedFile = "res/image/VoucherCenter/VipReward/btn_close_2.png",
+	})
+	self._centerBg:addChild(btn_close)
+	btn_close:setPosition(self._centerBg:getContentSize().width - btn_close:getContentSize().width *0.5,self._centerBg:getContentSize().height - btn_close:getContentSize().height *0.5 - 48)
+	btn_close:setTouchEndedCallback(function()
+		self:hide()
+	end)
 
 	local size = center:getContentSize()
 
@@ -57,78 +55,26 @@ function VipRewardLayer1:initUI(data)
     background:setPosition(size.width / 2, size.height / 2 - 32)
     self._centerBg:addChild(background)
 
-	--animal_bg
-	local animal_bg = ccui.Scale9Sprite:create("res/image/vip/animal_bg.png")
-	animal_bg:setAnchorPoint(0,0.5)
-	animal_bg:setPosition(0,animal_bg:getContentSize().height * 0.5 - 62)
-	animal_bg:setScale(0.74)
-	self._centerBg:addChild(animal_bg)
-
-	--activity
-	local thisActivityPath = "res/image/vip/activity_1.png"
-	local activity = cc.Sprite:create(thisActivityPath)
-	self._centerBg:addChild(activity,1)
-	activity:setScale(0.8)
-	activity:setAnchorPoint(0.5,0)
-	activity:setPosition(355/2,activity:getContentSize().height/2)
-	--少府
-	local shaofu = cc.Sprite:create("res/image/vip/shaofu.png")
-	shaofu:setPosition(50,activity:getPositionY()+activity:getContentSize().height/2+15)
-	shaofu:setAnchorPoint(0,0)
-	shaofu:setScale(0.75)
-	self._centerBg:addChild(shaofu)
-	--送项羽
-	local song = cc.Sprite:create("res/image/vip/song.png")
-	song:setPosition(shaofu:getPositionX()+shaofu:getContentSize().width-20,activity:getPositionY()+activity:getContentSize().height/2+13)
-	song:setAnchorPoint(0,0)
-	song:setScale(0.75)
-	self._centerBg:addChild(song)
-	--animal
-	local thisAnimaPath = "res/image/vip/animal_1.png"
-	local animal = cc.Sprite:create(thisAnimaPath)
-	self._centerBg:addChild(animal,0)
-	 animal:setAnchorPoint(0.5,0)
-	animal:setScale(0.7)
-	animal:setPosition(361/2, activity:getContentSize().height+100)
-	--user vip level
-
-	local myvip = cc.Sprite:create("res/image/vip/myvip.png")
-	myvip:setAnchorPoint(0.5,0)
-	myvip:setScale(0.7)
-	myvip:setPosition(myvip:getContentSize().width * 0.7* 0.55 ,self._centerBg:getContentSize().height - 48 - myvip:getContentSize().height * 0.5)
-	self._centerBg:addChild(myvip,1)
-
-   -- local myviplevel = cc.Label:createWithBMFont("res/fonts/viplevel.fnt", tonumber(gameUser.getVip()))
-    local myviplevel = cc.Sprite:create("res/image/vip/vipl_0" .. tonumber(gameUser.getVip()) .. ".png")
-    myviplevel:setAnchorPoint(0,0) 
-    myviplevel:setScale(0.7)
-    myviplevel:setPosition(myvip:getPositionX()+myviplevel:getContentSize().width - 45,self._centerBg:getContentSize().height-59 - myviplevel:getContentSize().height * 0.5 + 6)
-    self._centerBg:addChild(myviplevel,1)
 
     local newInfobg = cc.Sprite:create()
-    newInfobg:setContentSize(cc.size(self._centerBg:getContentSize().width -activity:getContentSize().width , self._centerBg:getContentSize().height))
+    newInfobg:setContentSize(cc.size(self._centerBg:getContentSize().width , self._centerBg:getContentSize().height))
     newInfobg:setAnchorPoint(1,0.5)
     newInfobg:setPosition(size.width,background:getContentSize().height/2)
     self._centerBg:addChild(newInfobg)
 
-    local newInfoSize = newInfobg:getContentSize()
-
     -- 在充值多少的背景
-    self._vip_bg = ccui.Scale9Sprite:create("res/image/vip/vip_titile_bg.png")
-    self._vip_bg:setContentSize(cc.size(newInfoSize.width+90, 72))
-    self._vip_bg:setAnchorPoint(0.5,1)
-    self._vip_bg:setPosition(newInfoSize.width/2-2-25,newInfoSize.height - 10)
-    self._vip_bg:setScaleX(0.9)
-    newInfobg:addChild(self._vip_bg,2)
+    self._vip_bg = ccui.Scale9Sprite:create("res/image/VoucherCenter/VipRecharge/chongzhikuang.png")
+    self._vip_bg:setAnchorPoint(0.5,0.5)
+    self._vip_bg:setPosition(self._centerBg:getContentSize().width *0.45,self._vip_bg:getContentSize().height + 45)
+    self._centerBg:addChild(self._vip_bg,2)
 
-     -- local tableBg = ccui.Scale9Sprite:create(cc.rect(35,30,1,1), "res/image/vip/table_bg.png")
     local tableBg = ccui.Scale9Sprite:create("res/image/vip/chongzhi_scale9.png")
-    tableBg:setContentSize(cc.size(newInfoSize.width + 16, newInfoSize.height - 135))
-    tableBg:setAnchorPoint(0.5,0)
-    tableBg:setPosition(newInfoSize.width/2-2-27,40)
-    newInfobg:addChild(tableBg)
-    -- print("table size --> ", tableBg:getContentSize().width) -->  659
-    -- print("table size --> ", tableBg:getContentSize().height) -->  360
+    tableBg:setContentSize(cc.size(self._centerBg:getContentSize().width * 0.8, self._centerBg:getContentSize().height *0.6 + 10))
+    tableBg:setAnchorPoint(0.5,0.5)
+	tableBg:setOpacity(0)
+    tableBg:setPosition(self._centerBg:getContentSize().width *0.5 - 2,self._centerBg:getContentSize().height *0.5 + 15)
+    self._centerBg:addChild(tableBg)
+	self._tableBg = tableBg
 
     -- 当前vip等级，如果不是vip用户，则进入界面后，显示vip1的界面
     local current_vip = gameUser.getVip()
@@ -142,22 +88,6 @@ function VipRewardLayer1:initUI(data)
     if size.width < 1000 then
         initPosx = 5
     end
-    local recharge_label = XTHDLabel:createWithParams( {
-        text = LANGUAGE_KEY_RECHARGEAGIN,
-        ------再充值:",
-        fontSize = 22,
-        color = cc.c3b(153,20,23)
-    } )
-    recharge_label:setAnchorPoint(0, 0.5)
-    recharge_label:enableShadow(cc.c4b(153, 20, 23, 255), cc.size(0.2, -0.2), 0.2)
-    recharge_label:setPosition(initPosx, self._vip_bg:getContentSize().height - 25)
-    self._vip_bg:addChild(recharge_label)
-
-    local ingot = cc.Sprite:create("res/image/common/header_ingot.png")
-    ingot:setAnchorPoint(0, 0)
-    ingot:setScale(0.7)
-    ingot:setPosition(recharge_label:getPositionX() + recharge_label:getContentSize().width + 3, recharge_label:getPositionY() -13)
-    self._vip_bg:addChild(ingot)
 
     -- 再充多少元宝到达的下一个vip
     local total_gold = gameUser.getIngotTotal()
@@ -178,49 +108,45 @@ function VipRewardLayer1:initUI(data)
     -- 元宝数量
     local gold_num = XTHDLabel:createWithParams( {
         text = gold_number,
-        ------"元宝",  ..LANGUAGE_KEY_COIN
         fontSize = 22,
-        color = cc.c3b(249,248,137),
-        ttf = "res/fonts/def.ttf"
+        color = cc.c3b(28,71,80),
+        ttf = "res/fonts/hkys.ttf"
     } )
     gold_num:setAnchorPoint(0, 0.5)
-    gold_num:setPosition(ingot:getPositionX() + ingot:getContentSize().width / 2 + 11, recharge_label:getPositionY())
+    gold_num:setPosition(self._vip_bg:getContentSize().width *0.35 + 5, self._vip_bg:getContentSize().height *0.5 - 3)
     self._vip_bg:addChild(gold_num)
-
-    -- 可达到的vip
-    local can_levelup = XTHDLabel:createWithParams( {
-        text = LANGUAGE_TIPS_WORDS197,
-        ------"可升级至",
-        fontSize = 22,
-        color = cc.c3b(153,20,23)
-    } )
-    can_levelup:setAnchorPoint(0, 0.5)
-    can_levelup:enableShadow(cc.c4b(153, 20, 23, 255), cc.size(0.2, -0.2), 0.2)
-    can_levelup:setPosition(gold_num:getPositionX() + gold_num:getContentSize().width + 3, recharge_label:getPositionY())
-    self._vip_bg:addChild(can_levelup)
 
     -- 下个vip级别
     if gameUser.getVip() < 17 then
-		local next_vip = cc.Sprite:create("res/image/vip/vipl_0" .. tonumber(gameUser.getVip())+1 .. ".png")
-		next_vip:setAnchorPoint(0,0.5)
-		next_vip:setPosition(can_levelup:getPositionX()+can_levelup:getContentSize().width+3,can_levelup:getPositionY())
-		self._vip_bg:addChild(next_vip)
-		next_vip:setScale(0.6)
+			if gameUser.getVip() < 10 then
+			local next_vip = cc.Sprite:create("res/image/vip/vip_" .. tonumber(gameUser.getVip()).. ".png")
+			next_vip:setAnchorPoint(0,0.5)
+			next_vip:setPosition(self._vip_bg:getContentSize().width*0.75 + 5, self._vip_bg:getContentSize().height *0.5)
+			self._vip_bg:addChild(next_vip)
+			next_vip:setScale(0.6)
+		else
+			local vip_index = tonumber(gameUser.getVip() - 10)
+			local next_vip = cc.Sprite:create("res/image/vip/vip_1.png")
+			next_vip:setAnchorPoint(0,0.5)
+			next_vip:setPosition(self._vip_bg:getContentSize().width*0.7 + 20, self._vip_bg:getContentSize().height *0.5)
+			self._vip_bg:addChild(next_vip)
+			next_vip:setScale(0.6)
+	
+			local next_vip_2 = cc.Sprite:create("res/image/vip/vip_" .. vip_index ..".png")
+			next_vip_2:setAnchorPoint(0,0.5)
+			next_vip_2:setPosition(next_vip:getPositionX()+next_vip:getContentSize().width *0.5,next_vip:getPositionY())
+			self._vip_bg:addChild(next_vip_2)
+			next_vip_2:setScale(0.6)
+		end
 	end
-    -- local vipNum = cc.Label:createWithBMFont("res/fonts/yellowred.fnt", tonumber(gameUser.getVip())+1)
-    -- vipNum:setAnchorPoint(0,0.5)
-    -- vipNum:setPosition(next_vip:getPositionX()+next_vip:getContentSize().width+2,next_vip:getPositionY()-3)
-    -- self._vip_bg:addChild(vipNum)
-
-
 
     -- vip进度条背景
-    local bar_bg = cc.Sprite:create("res/image/vip/vip_barBg.png")
-    bar_bg:setPosition(400 / 2 + initPosx, self._vip_bg:getContentSize().height - 50)
-    self._vip_bg:addChild(bar_bg)
+    local bar_bg = cc.Sprite:create("res/image/VoucherCenter/VipRecharge/barbg.png")
+    bar_bg:setPosition(self._vip_bg:getPositionX(), self._vip_bg:getPositionY() - self._vip_bg:getContentSize().height*0.5 - bar_bg:getContentSize().height *0.5)
+    self._centerBg:addChild(bar_bg)
 
     -- vip进度条
-    local progress_bar = cc.ProgressTimer:create(cc.Sprite:create("res/image/vip/vip_bar.png"))
+    local progress_bar = cc.ProgressTimer:create(cc.Sprite:create("res/image/VoucherCenter/VipRecharge/bar.png"))
     progress_bar:setType(cc.PROGRESS_TIMER_TYPE_BAR)
     progress_bar:setMidpoint(cc.p(0, 0))
     progress_bar:setBarChangeRate(cc.p(1, 0))
@@ -239,92 +165,59 @@ function VipRewardLayer1:initUI(data)
             ------"恭喜你,你的VIP等级已经达到最高级",
             fontSize = 22,
             color = cc.c3b(178,27,27),
-            anchor = cc.p(0,0.5),
+            anchor = cc.p(0.5,0.5),
         } )
-        full_vip_msg:setPosition(initPosx, self._vip_bg:getContentSize().height / 2)
-        self._vip_bg:addChild(full_vip_msg)
+        full_vip_msg:setPosition(self._vip_bg:getPositionX(),self._vip_bg:getPositionY() - 5)
+		self._centerBg:addChild(full_vip_msg)
+		self._vip_bg:setVisible(false)
     else
         self._vip_bg:setVisible(true)
     end
 
     -- 充值按钮
-    local recharge_btn = XTHD.createCommonButton( {
-        text = LANGUAGE_TIPS_RECHARGE,
-        isScrollView = false,
-        btnSize = cc.size(120,46),
-        btnColor = "write_1"
-    } )
-    recharge_btn:setScale(0.6)
-    recharge_btn:setAnchorPoint(1, 0.5)
+    local recharge_btn = XTHDPushButton:createWithParams({
+		normalFile = "res/image/VoucherCenter/VipReward/btn_vip_1.png",
+		selectedFile = "res/image/VoucherCenter/VipReward/btn_vip_2.png",
+	})
+    recharge_btn:setAnchorPoint(0.5, 0.5)
     local adaptationX = 5
     if self:getContentSize().width > 1000 then
         adaptationX = 50
     end
-    recharge_btn:setPosition(self._vip_bg:getContentSize().width - adaptationX - 20, self._vip_bg:getContentSize().height - 40)
-    self._vip_bg:addChild(recharge_btn)
+    recharge_btn:setPosition(self._centerBg:getContentSize().width *0.8, self._centerBg:getContentSize().height *0.15 + 5)
+    self._centerBg:addChild(recharge_btn)
     recharge_btn:setTouchEndedCallback( function()
-        XTHD.createRechargeVipLayer(self:getParent(), self, 2)
+		self._parent:SwichVoucherNode(1)
+		self:removeFromParent()
     end )
+
+	local tishi = cc.Sprite:create("res/image/VoucherCenter/VipReward/tishi.png")
+	self._centerBg:addChild(tishi)
+	tishi:setPosition(recharge_btn:getPositionX(),recharge_btn:getPositionY() - recharge_btn:getContentSize().height)
+
+	local myvip = cc.Sprite:create("res/image/VoucherCenter/VipReward/vip_bg.png")
+	myvip:setAnchorPoint(0.5,0)
+	myvip:setPosition(self._centerBg:getContentSize().width *0.15,recharge_btn:getPositionY() - recharge_btn:getContentSize().height *0.5 - 30)
+	self._centerBg:addChild(myvip,1)
+
+    local myviplevel = cc.Sprite:create("res/image/VoucherCenter/VipReward/vip_" .. tonumber(gameUser.getVip()) .. ".png")
+    myviplevel:setAnchorPoint(0.5,0) 
+    myviplevel:setPosition(myvip:getContentSize().width *0.5,myvip:getContentSize().height *0.5)
+    myvip:addChild(myviplevel,1)
 
     local current_max_vip = 17
     local bsize = tableBg:getContentSize()
     self.psize = cc.size(bsize.width - 6, bsize.height)
-
-    local pager = ccui.PageView:create()
-    PageViewPlug.init(pager)
-    pager:setContentSize(self.psize)
-	pager:setTouchEnabled(false)
-    pager:setPosition(5, -0.5)
-    tableBg:addChild(pager)
-    self.pager = pager
-
-    pager:onLoadListener( function(page,index)
-        -- 左边背景框
-        local left_background = ccui.Scale9Sprite:create("res/image/vip/info_scale9.png")
-        left_background:setAnchorPoint(0, 0)
-        left_background:setContentSize(self.psize.width / 2 - 15, self.psize.height*3/4 + 82)
-        -- left_background:setAnchorPoint(0,0.5)
-        left_background:setPosition(8, 6)
-		self._left_background = left_background
-        page:addChild(left_background)
-
-        local left_top_bar = cc.Sprite:create()
-        left_top_bar:setContentSize(cc.size(left_background:getContentSize().width, 35))
-        left_top_bar:setAnchorPoint(0, 1)
-        left_top_bar:setPosition(0, left_background:getContentSize().height)
-        left_background:addChild(left_top_bar)
-        self:initLeftUI(left_background, index)
-
-        -- 右边背景框
-        local right_background = ccui.Scale9Sprite:create("res/image/vip/info_scale9.png")
-        right_background:setAnchorPoint(0, 0)
-        right_background:setContentSize(self.psize.width / 2 - 15, self.psize.height*3/4 + 82)
-        right_background:setPosition(self.psize.width / 2 + 4, 6)
-        page:addChild(right_background)
-
-        local right_top_bar = cc.Sprite:create()
-        right_top_bar:setContentSize(self.psize.width / 2, 35)
-        right_top_bar:setAnchorPoint(0, 1)
-        right_top_bar:setPosition(0, right_background:getContentSize().height)
-        right_background:addChild(right_top_bar)
-        self:initRightUI(right_background, index)
-    end )
-
-    pager:onSelectedListener( function(page, index)
-		self._vip = index
-    end )
-
-    pager:reloadData(self._vip,current_max_vip)
-
-    -- 左右箭头
+	
+				-- 左右箭头
     local left_arrow = XTHDPushButton:createWithParams( {
         normalFile = "res/image/common/arrow_left_normal.png",
         selectedFile = "res/image/common/arrow_left_selected.png",
         musicFile = XTHD.resource.music.effect_btn_common,
         touchSize = cc.size(80,80)
     } )
-    left_arrow:setPosition(10, tableBg:getContentSize().height*3/4-70)
-    left_arrow:setScale(0.85)
+	left_arrow:setScale(1.2)
+    left_arrow:setPosition(20 + left_arrow:getContentSize().width *1.2 *0.5, tableBg:getContentSize().height*3/4-70)
     tableBg:addChild(left_arrow)
 
     local right_arrow = XTHDPushButton:createWithParams( {
@@ -333,8 +226,8 @@ function VipRewardLayer1:initUI(data)
         musicFile = XTHD.resource.music.effect_btn_common,
         touchSize = cc.size(80,80)
     } )
-    right_arrow:setPosition(tableBg:getContentSize().width - 10, left_arrow:getPositionY())
-    right_arrow:setScale(0.85)
+	right_arrow:setScale(1.2)
+    right_arrow:setPosition(tableBg:getContentSize().width - 20 - right_arrow:getContentSize().width * 1.2 *0.5, left_arrow:getPositionY())
     tableBg:addChild(right_arrow)
 
     left_arrow:setTouchEndedCallback( function()
@@ -347,6 +240,68 @@ function VipRewardLayer1:initUI(data)
 
     self._left_arrow = left_arrow
     self._right_arrow = right_arrow
+
+	local lastVip = cc.Sprite:create("res/image/vip/vipl_01.png")
+	tableBg:addChild(lastVip)
+	lastVip:setPosition(self._left_arrow:getPositionX(),self._left_arrow:getPositionY() - self._left_arrow:getContentSize().height *0.5 - 10)
+	lastVip:setScale(0.6)
+	self._lastVip = lastVip
+
+	local nextVip = cc.Sprite:create("res/image/vip/vipl_01.png")
+	tableBg:addChild(nextVip)
+	nextVip:setPosition(self._right_arrow:getPositionX(),self._right_arrow:getPositionY() - self._right_arrow:getContentSize().height *0.5 - 10)
+	nextVip:setScale(0.6)
+	self._nextVip = nextVip
+
+    local pager = ccui.PageView:create()
+    PageViewPlug.init(pager)
+    pager:setContentSize(self.psize)
+	pager:setTouchEnabled(false)
+    pager:setPosition(5, -0.5)
+    tableBg:addChild(pager)
+    self.pager = pager
+
+    pager:onLoadListener( function(page,index)
+        -- 左边背景框
+        local left_background = ccui.Scale9Sprite:create("res/image/VoucherCenter/VipReward/cellbg.png")
+        left_background:setAnchorPoint(0, 0)
+        left_background:setContentSize(self.psize.width, self.psize.height)
+        -- left_background:setAnchorPoint(0,0.5)
+		left_background:setOpacity(0)
+        left_background:setPosition(0, 0)
+		self._left_background = left_background
+        page:addChild(left_background)
+
+        local left_top_bar = cc.Sprite:create()
+        left_top_bar:setContentSize(cc.size(left_background:getContentSize().width, 35))
+        left_top_bar:setAnchorPoint(0, 1)
+        left_top_bar:setPosition(0, left_background:getContentSize().height)
+        left_background:addChild(left_top_bar)
+        self:initLeftUI(left_background, index)
+
+--        -- 右边背景框
+--        local right_background = ccui.Scale9Sprite:create("res/image/vip/info_scale9.png")
+--        right_background:setAnchorPoint(0, 0)
+--        right_background:setContentSize(self.psize.width / 2 - 15, self.psize.height*3/4 + 82)
+--        right_background:setPosition(self.psize.width / 2 + 4, 6)
+--        page:addChild(right_background)
+
+--        local right_top_bar = cc.Sprite:create()
+--        right_top_bar:setContentSize(self.psize.width / 2, 35)
+--        right_top_bar:setAnchorPoint(0, 1)
+--        right_top_bar:setPosition(0, right_background:getContentSize().height)
+--        right_background:addChild(right_top_bar)
+--        self:initRightUI(right_background, index)
+    end )
+
+    pager:onSelectedListener( function(page, index)
+		self._vip = index
+		self:refreshVipOnArrow(index)
+    end )
+
+    pager:reloadData(self._vip,current_max_vip)
+
+
 
     self:checkRewardCliam()
 end
@@ -634,12 +589,18 @@ end
 
 -- 更新箭头上的vip显示
 function VipRewardLayer1:refreshVipOnArrow(vip_num)
+	if vip_num - 1 >= 1 then
+		self._lastVip:setTexture("res/image/vip/vipl_0" .. vip_num - 1 .. ".png")
+	end
+	if  vip_num + 1 <= 17 then
+		self._nextVip:setTexture("res/image/vip/vipl_0" .. vip_num + 1 .. ".png")
+	end
     -- 更新箭头上的vip显示
-
-    -- 更新箭头的显示
-    if vip_num == 1 then
+	if vip_num == 1 then
+		self._lastVip:setVisible(false)
         self._left_arrow:setVisible(false)
     else
+		self._lastVip:setVisible(true)
         self._left_arrow:setVisible(true)
     end
 
@@ -654,12 +615,12 @@ function VipRewardLayer1:refreshVipOnArrow(vip_num)
     end
 
     if vip_num == current_max_vip then
+		self._nextVip:setVisible(false)
         self._right_arrow:setVisible(false)
     else
+		self._nextVip:setVisible(true)
         self._right_arrow:setVisible(true)
     end
-
-
 
 end
 
@@ -673,7 +634,6 @@ function VipRewardLayer1:initLeftUI(left_bg, idx)
     --     tequan:removeFromParent()
     --     tequan_font:removeFromParent()
     -- end
-
     local offset_x = 14
     local offset_x2 = 8
     if idx > 9 then
@@ -681,25 +641,32 @@ function VipRewardLayer1:initLeftUI(left_bg, idx)
         offset_x2 = 14
     end
 
-    -- vip奖励
-    local iconBg = cc.Sprite:create("res/image/vip/myvip_bg.png")
-    iconBg:setPosition(left_bg:getContentSize().width / 2, left_bg:getContentSize().height - 20)
-    iconBg:setScale(0.6)
-    left_bg:addChild(iconBg)
+	local lastFile = nil
+	local nextFile = nil
 
-    -- vip特权
-    local vipLabel = XTHDLabel:createWithParams( {
-        text = LANGUAGE_KEY_VIP_SPECIAL(VIPLABEL[idx + 1]),
-        fontSize = 24,
-        color = cc.c3b(19,15,182),
-        anchor = cc.p(0.5,0.5),
-        pos = cc.p(iconBg:getContentSize().width / 2,iconBg:getContentSize().height / 2),
-    } )
-    iconBg:addChild(vipLabel)
+	local jianglibg = cc.Sprite:create("res/image/VoucherCenter/VipReward/bg2.png")
+	local vip_level = cc.Sprite:create("res/image/vip/vipl_0"..idx..".png")
+	local vip_jieshao = cc.Sprite:create("res/image/VoucherCenter/VipReward/title.png")
+
+	local nodeSize = cc.size(jianglibg:getContentSize().width + vip_level:getContentSize().width + vip_jieshao:getContentSize().width,jianglibg:getContentSize().height)
+	
+	local node = cc.Node:create()
+	node:setContentSize(nodeSize)
+	node:setAnchorPoint(0.5,0.5)
+	left_bg:addChild(node)
+	node:setPosition(left_bg:getContentSize().width *0.5,left_bg:getContentSize().height - node:getContentSize().height *0.5 - 15)
+
+	node:addChild(jianglibg)
+	node:addChild(vip_level)
+	node:addChild(vip_jieshao)
+
+	jianglibg:setPosition(jianglibg:getContentSize().width *0.5,node:getContentSize().height *0.5)
+	vip_level:setPosition(jianglibg:getPositionX() + jianglibg:getContentSize().width *0.5 + vip_level:getContentSize().width *0.5 + 5,node:getContentSize().height *0.5)
+	vip_jieshao:setPosition(vip_level:getPositionX() + vip_level:getContentSize().width *0.5 + vip_jieshao:getContentSize().width *0.5 + 5, node:getContentSize().height *0.5)
 
 
     -- 遍历数组，确定scrollview的大小
-    local scrollview_size = cc.size(left_bg:getContentSize().width, left_bg:getContentSize().height - 60)
+    local scrollview_size = cc.size(left_bg:getContentSize().width - 30, left_bg:getContentSize().height - 30 - node:getContentSize().height*0.6)
     local scrollview_inner_size = scrollview_size
     local _idx = 1
     if idx > 0 and idx < 18 then
@@ -709,7 +676,7 @@ function VipRewardLayer1:initLeftUI(left_bg, idx)
     end
     -- local tmp_tab = self._cell_tab[_idx] or {}
     local tmp_tab = self:compareDataForVip(_idx) or { }
-    scrollview_inner_size = cc.size(left_bg:getContentSize().width, #tmp_tab * 23)
+    scrollview_inner_size = cc.size(left_bg:getContentSize().width, #tmp_tab * 31)
 
     local scrollview = ccui.ScrollView:create()
     scrollview:setTouchEnabled(true)
@@ -717,7 +684,7 @@ function VipRewardLayer1:initLeftUI(left_bg, idx)
     scrollview:setDirection(ccui.ScrollViewDir.vertical)
     scrollview:setContentSize(scrollview_size)
     scrollview:setInnerContainerSize(scrollview_inner_size)
-    scrollview:setPosition(0, 22)
+    scrollview:setPosition(10, 0)
     self._left_background:addChild(scrollview)
 
     local need_gold_label = XTHDLabel:createWithParams( {
@@ -728,21 +695,30 @@ function VipRewardLayer1:initLeftUI(left_bg, idx)
         ttf = "res/fonts/def.ttf"
     } )
     need_gold_label:setAnchorPoint(0, 0.5)
-    need_gold_label:setPosition(20, scrollview:getInnerContainerSize().height - 12)
-    scrollview:addChild(need_gold_label)
 
     local gold_num = gameData.getDataFromCSV("VipInfo", { id = 1 })["vip" .. _idx] or 0
 
     local need_gold_num = XTHDLabel:createWithParams( {
         text = gold_num,
-        fontSize = 18,
+        fontSize = 22,
         color = cc.c3b(182,15,19)
 
     } )
     need_gold_num:setAnchorPoint(0, 0.5)
-    need_gold_num:setPosition(need_gold_label:getPositionX() + need_gold_label:getContentSize().width - 10, need_gold_label:getPositionY())
-    scrollview:addChild(need_gold_num)
 
+	local node_2 = cc.Node:create()
+	node_2:setContentSize(need_gold_label:getContentSize().width + need_gold_num:getContentSize().width,need_gold_num:getContentSize().height)
+	node_2:setAnchorPoint(0.5,0.5)
+	scrollview:addChild(node_2)
+	node_2:setPosition(scrollview:getContentSize().width *0.5,scrollview:getInnerContainerSize().height - node_2:getContentSize().height)
+
+	node_2:addChild(need_gold_label)
+	node_2:addChild(need_gold_num)
+
+	need_gold_label:setPosition(5,node_2:getContentSize().height *0.5)
+	need_gold_num:setPosition(need_gold_label:getPositionX() + need_gold_label:getContentSize().width + 5,node_2:getContentSize().height *0.5)	
+
+	local _index = 0
     for i = 1, #tmp_tab do
         local item_data = tmp_tab[i]
         local temp_color = cc.c3b(182, 15, 19)
@@ -762,22 +738,30 @@ function VipRewardLayer1:initLeftUI(left_bg, idx)
         local textStr = string.sub(temp_str1, 4, string.len(temp_str1))
         local stkuangLabr = XTHDLabel:createWithParams( {
             text = i .. ".",
-            fontSize = 12,
+            fontSize = 16,
             color = temp_color,
             ttf = "res/fonts/def.ttf"
         } )
         stkuangLabr:setAnchorPoint(0, 0.5)
-        stkuangLabr:setPosition(20, scrollview:getInnerContainerSize().height - 27 -(i - 1) * 22 - 9)
-        scrollview:addChild(stkuangLabr)
         local str = XTHDLabel:createWithParams( {
             text = textStr,
-            fontSize = 13,
+            fontSize = 18,
             color = temp_color,
             ttf = "res/fonts/def.ttf"
-        } )
-        str:setAnchorPoint(0, 0.5)
-        str:setPosition(stkuangLabr:getPositionX() + stkuangLabr:getContentSize().width, scrollview:getInnerContainerSize().height - 27 -(i - 1) * 22 - 9)
-        scrollview:addChild(str)
+        } )	
+		str:setAnchorPoint(0,0.5)
+		
+		local node = cc.Node:create()
+		node:setContentSize(stkuangLabr:getContentSize().width + str:getContentSize().width,str:getContentSize().height)
+		node:setAnchorPoint(0.5,0.5)
+		scrollview:addChild(node)
+		node:setPosition(scrollview:getContentSize().width *0.5,scrollview:getInnerContainerSize().height - node:getContentSize().height - node_2:getContentSize().height - (i - 1)* 30 - 20)
+
+		node:addChild(stkuangLabr)
+		node:addChild(str)
+
+		stkuangLabr:setPosition(5,node:getContentSize().height *0.5)
+		str:setPosition(stkuangLabr:getPositionX() + stkuangLabr:getContentSize().width + 5,node:getContentSize().height *0.5)	
     end
 end
 
@@ -1120,8 +1104,8 @@ function VipRewardLayer1:dealDateForCell()
 end
 
 
-function VipRewardLayer1:create(data)
-    return VipRewardLayer1.new(data)
+function VipRewardLayer1:create(data,parent)
+    return VipRewardLayer1.new(data,parent)
 end
 
 function VipRewardLayer1:onExit()
@@ -1146,7 +1130,7 @@ function VipRewardLayer1:onCleanup(...)
     self._cell_tab = nil
     self.__cell_tab = nil
 
-    self._left_arrow:removeFromParent()
+	self._left_arrow:removeFromParent()
     self._right_arrow:removeFromParent()
     self._already_cliam_reward = nil
 end

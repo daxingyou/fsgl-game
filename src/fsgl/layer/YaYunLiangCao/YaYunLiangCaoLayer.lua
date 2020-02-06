@@ -174,7 +174,7 @@ function YaYunLiangCaoLayer:initUI(data)
     -- normalChange:setPosition(self:getBoundingBox().width-20,bottomShadow:getContentSize().height/2)
     -- self:addChild(normalChange)
     -- normalChange:setTouchEndedCallback(function( )
-    --     local _store = requires("src/fsgl/layer/ShangCheng.lua"):create({which = 'yunBiao'})
+    --     local _store = requires("src/fsgl/layer/ShangCheng/ShangCheng.lua"):create({which = 'yunBiao'})
     --     LayerManager.addLayout(_store)
     -- end)
 

@@ -4,7 +4,7 @@
 local VoucherDanbi = class("VoucherDanbi",function()
 	local node = cc.Node:create()
 	node:setAnchorPoint(0.5,0.5)
-	node:setContentSize(705,430)
+	node:setContentSize(705,468)
 	return node
 end)
 
@@ -14,9 +14,9 @@ end
 
 function VoucherDanbi:init()
 	local _bg = cc.Sprite:create("res/image/newGuild/memberbg.png")
-	_bg:setContentSize(460,330)
+	_bg:setContentSize(450,370)
 	self:addChild(_bg)
-	_bg:setPosition(self:getContentSize().width *0.65 + 10,self:getContentSize().height *0.6)
+	_bg:setPosition(self:getContentSize().width *0.6 + 15,self:getContentSize().height *0.6 - 4)
 	self._bg = _bg	
 	self._bg:setOpacity(0)
 
@@ -71,8 +71,8 @@ function VoucherDanbi:createTableViewCell(index,cell)
 	for i = 1, 3 do
 		local cellbg = cc.Sprite:create("res/image/VoucherCenter/cellbg_2.png")
 		cell:addChild(cellbg)
-		cellbg:setScale(0.85)
-		local x = 15 + cellbg:getContentSize().width *0.5 + (i - 1) * (cellbg:getContentSize().width *0.85 + 20)
+		cellbg:setScale(0.9)
+		local x = cellbg:getContentSize().width *0.5 + (i - 1) * (cellbg:getContentSize().width + 10)
 		cellbg:setPosition(x,cell:getContentSize().height *0.5)
 
 		local itemNode = ItemNode:createWithParams({

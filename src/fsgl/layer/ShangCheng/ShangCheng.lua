@@ -21,6 +21,7 @@ function ShangCheng:ctor(params,isUpdate,callFunc)
 
 	self._storeServerData = nil ----商店数据（服务器全部）
 	self._storeLocalData = nil ----商店数据（本地）
+	self._OtherShopNode = nil
 
 	self._displayDatas = {} ---需要显示的数据组
     self._storeCell = {} -----商店物品们
@@ -33,13 +34,13 @@ function ShangCheng:ctor(params,isUpdate,callFunc)
 	}
 
     -- self._storeTags = {6,8,1,2,3,4,5,7,9} ----团购、运镖、竞技商店、回收商店、神器商店、阵营商店、悬赏、修罗,帮派
-    self._funcValid = {84,33,34,35,32,73,74,77,76,72,35,84,84}-----元宝、竞技商店、回收商店、神器商店、阵营商店、悬赏、团购/修罗、运镖，帮派,将军府,强化
+    self._funcValid = {84,33,34,35,32,73,74,77,76,72,35,84,84,84,84,84}-----元宝、竞技商店、回收商店、神器商店、阵营商店、悬赏、团购/修罗、运镖，帮派,将军府,强化
    -- self._storeTags = {1,12,2,3,4,5,6,8,10,11} ----元宝、竞技商店、回收商店、神器商店、阵营商店、悬赏、团购/修罗,帮派,将军府,强化,鲜花
 	if gameUser.getLimitTimeShopState() == 1 then
-        self._storeTags = {1,12,7}
+        self._storeTags = {1,12,7,14,15}
 		-- self._storeTags = {1,12,2,3,4,5,6,7,8,10,13}
 	else
-        self._storeTags = {1,12}
+        self._storeTags = {1,12,14,15}
 		-- self._storeTags = {1,12,2,3,4,5,6,8,10,13}
 	end
 
@@ -57,6 +58,7 @@ function ShangCheng:ctor(params,isUpdate,callFunc)
         gameData.getDataFromCSV("ServantExchange"),
 		gameData.getDataFromCSV("StrengthenShop"),
 		gameData.getDataFromCSV("FlowerShop"),
+		gameData.getDataFromCSV("WanbaogeStore"),
     }-----元宝、竞技商店、回收商店、神器商店、阵营商店、悬赏、团购/修罗、运镖 帮派
     self._storeRequest = {
         "yuanbaoShopList?",
@@ -71,7 +73,8 @@ function ShangCheng:ctor(params,isUpdate,callFunc)
         "guildExchangeList?",
         "servantExchangeList?",
 		"strengthenShopList?",
-		"flowerShopList?"
+		"flowerShopList?",
+		"weaponWindow?"
     }----元宝、竞技场、回收、神器、阵营、悬赏、团购(服务器原始数据请求),修罗、运镖 帮派
     self._storeExRequest = {
         "yuanbaoShopBuy?",
@@ -87,6 +90,7 @@ function ShangCheng:ctor(params,isUpdate,callFunc)
         "servantExchange?",
 		"strengthenShopBuy?",
 		"flowerShopBuy?",
+		"buyWeaponItem?"
     } ----元宝、竞技场、回收、神器、阵营、悬赏、团购(执行商品兑换请求)，修罗、运镖 帮派、元宝
     self._playerResPath = { ----商店对应的消耗资源图标
         IMAGE_KEY_HEADER_INGOT,
@@ -161,6 +165,44 @@ function ShangCheng:init( )
 
 	local title = "res/image/public/shangdian_title.png"
 	XTHD.createNodeDecoration(self._bg,title)
+
+	local figurebg = cc.Sprite:create("res/image/store/figure.png")
+	self._bg:addChild(figurebg)
+	figurebg:setAnchorPoint(0,0.5)
+	figurebg:setPosition(195,self._bg:getContentSize().height *0.5 - 5)
+	self._figurebg = figurebg
+
+	local normalnode = cc.Sprite:create("res/image/common/btn/btn_write_up.png")
+	normalnode:setContentSize(cc.size(120,60))
+	local selectednode = cc.Sprite:create("res/image/common/btn/btn_write_down.png")
+	selectednode:setContentSize(cc.size(120,60))
+	local refreshbtn = XTHD.createCommonButton({
+		text = "立即刷新",
+		btnColor = "write_1",
+		normalNode = normalnode,
+		selectedNode = selectednode,
+		isScrollView = true,
+		fontSize = 18,
+		endCallback = function ()
+			self:refreshShenMiStore()
+		end
+	})
+	self._bg:addChild(refreshbtn)
+	refreshbtn:setPosition(self._bg:getContentSize().width *0.3 + 20,self._bg:getContentSize().height *0.1)
+	self._refreshbtn = refreshbtn
+	self._refreshbtn:setVisible(false)
+
+	local iconbg = cc.Sprite:create("res/image/store/shenmiStore/iconbg.png")
+	self._bg:addChild(iconbg)
+	iconbg:setPosition(self._refreshbtn:getPositionX(),self._refreshbtn:getPositionY() + self._refreshbtn :getContentSize().height *0.5 + 20)
+	self._iconbg = iconbg
+	self._iconbg:setVisible(false)
+	
+	local iconNum = XTHDLabel:create(XTHD.resource.getItemNum(2303),18)
+	iconNum:setColor(cc.c3b(255,255,255))
+	iconbg:addChild(iconNum)
+	iconNum:setPosition(iconbg:getContentSize().width *0.5 + 5,iconbg:getContentSize().height *0.5)
+	self._iconNum = iconNum
     ------分隔
     -- local _vLine = cc.Sprite:create("res/image/common/common_split_v.png")
     -- _vLine:setScaleY(self._bg:getContentSize().height / _vLine:getContentSize().height)
@@ -171,10 +213,10 @@ function ShangCheng:init( )
 
 	-------左边的第二层背景    
 	local pinkBg = ccui.Scale9Sprite:create("res/image/common/scale9_bg1_25.png")
-	pinkBg:setContentSize(bg:getContentSize().width-160,bg:getContentSize().height-50)
+	pinkBg:setContentSize(bg:getContentSize().width-160 - figurebg:getContentSize().width *0.5,bg:getContentSize().height-50)
 	self._bg:addChild(pinkBg)
     pinkBg:setAnchorPoint(0,0)
-	pinkBg:setPosition(203,26)
+	pinkBg:setPosition(193 + figurebg:getContentSize().width *0.5,26)
     --pinkBg:setScale(0.94)
 	pinkBg:setOpacity(0)
     self._pinkBg = pinkBg
@@ -219,7 +261,7 @@ function ShangCheng:loadButtons( )
             local normal = cc.Sprite:create("res/image/store/store_button1.png")
             normal:setContentSize(normal:getContentSize().width + 30,normal:getContentSize().height)
             local _word
-            if v == 1 or v == 12 or v == 7 then
+            if v == 1 or v == 12 or v == 7 or v == 14 or v == 15 or v == 16 then
                 _word = cc.Sprite:create("res/image/store/newname_"..v..".png")
             else
                 _word = XTHDLabel:createWithSystemFont(LANGUAGE_KEY_STORENAMES[v],XTHD.SystemFont,22)
@@ -229,7 +271,7 @@ function ShangCheng:loadButtons( )
             _word:setPosition(normal:getContentSize().width / 2,normal:getContentSize().height / 2)
             local selected = cc.Sprite:create("res/image/store/store_button2.png")
             selected:setContentSize(selected:getContentSize().width + 30,selected:getContentSize().height)
-            if v == 1 or v == 12 or v == 7 then
+            if v == 1 or v == 12 or v == 7 or v == 14 or v == 15 or v == 16 then
                 _word = cc.Sprite:create("res/image/store/newname_"..v..".png")
             else
                 _word = XTHDLabel:createWithSystemFont(LANGUAGE_KEY_STORENAMES[v],XTHD.SystemFont,22)
@@ -272,7 +314,7 @@ function ShangCheng:initStoreView(viewSize,pos)
     end
 
     local function numberOfCellsInTableView(table)
-		return math.ceil(#self._displayDatas / 4)
+		return math.ceil(#self._displayDatas / 3)
     end
 
     local function scrollViewDidScroll(view)
@@ -286,10 +328,20 @@ function ShangCheng:initStoreView(viewSize,pos)
             cell = cc.TableViewCell:create()
 			cell:setContentSize(table:getContentSize().width,105)
         end
+	
+		if self._storeIndex == 14 then
+			if self._storeCell[idx + 1] then
+				self._storeCell[idx + 1]:removeFromParent()
+			end
+			self._storeCell[idx + 1] = nil
+		end 		
         local node = self._storeCell[idx + 1]
         if not node then 
             if self._storeIndex == 7 then ---团购商店 
                 node = self:loadGroupStores(idx + 1)
+				node:setPosition(node:getPositionX(),node:getPositionY() - 5)
+			elseif self._storeIndex == 14 then
+				node = self:loadShenMiStores(idx)
 				node:setPosition(node:getPositionX(),node:getPositionY() - 5)
             else 
             	node = self:loadStores(idx)
@@ -327,6 +379,7 @@ function ShangCheng:changeStoreList( index )
 		XTHDTOAST("侍仆商店暂未开放，敬请期待！")
 		return
 	end
+	
     self._canChangeStore = false
     --ly
     local _size = cc.size(self._pinkBg:getContentSize().width,self._pinkBg:getContentSize().height - 13)
@@ -338,30 +391,63 @@ function ShangCheng:changeStoreList( index )
     self._storeLocalData = self._storeLocalDataArray[index]
     self:stopActionByTag(self.Tag.ktag_countDown)
 
-	self:requestServerDatas(index,function()
-        if (index == 7 and self._storeIndex ~= index) or (self._storeIndex == 7 and index ~= 7) or (index == 7 and self._storeIndex == 7) then -----仅当在团购商店与其它商店切换的时候刷新顶部信息
-            self:switchTitleContainer(index)
-        else 
---            self._playerResIcon:setTexture(self._playerResPath[index])     
-            if index == 13 then
---                self._playerResIcon:setScale(0.7)
-            else
---                self._playerResIcon:setScale(1)
-            end 
-        end 
-        self._storeIndex = index
-        if self._selectedButton then 
+	if index == 15 then
+		self._canChangeStore = true
+		if self._selectedButton then 
             self._selectedButton:setSelected(false)
         end 
 		self._storeButtons[index]:setSelected(true)
-        self._selectedButton = self._storeButtons[index]
+		self:runAction(cc.Sequence:create(cc.DelayTime:create(0.3),cc.CallFunc:create(function() 
+			self._storeIndex = index
+			self._selectedButton = self._storeButtons[index]
+			self._refreshbtn:setVisible(false)
+			self._iconbg:setVisible(false)
+			self._figurebg:setVisible(false)
+			self._storeList:setVisible(false)
+			self:createOtherStore()
+		end)))	
+		return
+	else
+		self:requestServerDatas(index,function()
+			if self._OtherShopNode then
+				self._OtherShopNode:removeFromParent()
+				self._OtherShopNode = nil
+			end
+			
+			self._storeList:setVisible(true)
+			self._figurebg:setVisible(true)
+			if (index == 7 and self._storeIndex ~= index) or (self._storeIndex == 7 and index ~= 7) or (index == 7 and self._storeIndex == 7) then -----仅当在团购商店与其它商店切换的时候刷新顶部信息
+				self:switchTitleContainer(index)
+			else 
+	--            self._playerResIcon:setTexture(self._playerResPath[index])     
+				if index == 13 then
+	--                self._playerResIcon:setScale(0.7)
+				else
+	--                self._playerResIcon:setScale(1)
+				end 
+			end 
+			self._storeIndex = index
+			if self._selectedButton then 
+				self._selectedButton:setSelected(false)
+			end 
+			self._storeButtons[index]:setSelected(true)
+			if self._storeIndex ~= 14 then
+				self._refreshbtn:setVisible(false)
+				self._iconbg:setVisible(false)
+			else
+				self._refreshbtn:setVisible(true)
+				self._iconbg:setVisible(true)
+			end
 
-        self._displayDatas = self:selecteDataByTab()
+			self._selectedButton = self._storeButtons[index]
+
+			self._displayDatas = self:selecteDataByTab()
         
-        self:createStoreCellBat()
-		self._storeList:reloadData()
-		self:refreshGroupStoreTitle()
-	end)
+			self:createStoreCellBat()
+			self._storeList:reloadData()
+			self:refreshGroupStoreTitle()
+		end)
+	end
 end
 
 function ShangCheng:showMultiTypeLabels( isDisplay )
@@ -434,13 +520,128 @@ function ShangCheng:refreshBuyLabel()
 	
 end
 
+--神秘商店
+function ShangCheng:loadShenMiStores(index)
+	local layout = ccui.Layout:create()
+    layout:setContentSize(cc.size(self._storeList:getContentSize().width,215))  
+
+	local _index = 0
+	for i = (index + 1) * 3 - 2,(index + 1) * 3 do
+		_index = _index + 1
+		
+        local data = self._displayDatas[i]
+		
+    	if not data then 
+    		return layout
+    	end 
+		local _bg = ccui.Scale9Sprite:create("res/image/store/cellBg.png")
+    	layout:addChild(_bg)
+		_bg:setScale(1.05)
+    	_bg:setPosition(_bg:getContentSize().width *0.5 + 5 + ((_index-1) * (_bg:getContentSize().width + 44)),layout:getContentSize().height / 2 + 20)
+
+		local _type = 4
+        local _itemID = data.localD.itemid
+        local _amount = data.localD.num
+		local icon = ItemNode:createWithParams({
+            _type_ = _type,
+            itemId = _itemID,
+            count = _amount,
+        })
+        _bg:addChild(icon)
+		icon:setScale(0.7)
+        icon:setAnchorPoint(0.5,0.5)
+		
+		if data.serverD.tuijian == 1 then
+			local recommended = cc.Sprite:create("res/image/store/shenmiStore/activity_tips_tag_tuijian.png")
+            recommended:setAnchorPoint(0.5,0.5)
+            recommended:setPosition(recommended:getContentSize().width *0.5 + 3,_bg:getContentSize().height - recommended:getContentSize().height *0.5 - 43)
+            _bg:addChild(recommended)
+		end
+        --ly
+        local itemName = XTHDLabel:createWithParams({
+            text = icon._Name,
+            fontSize = 22,
+            color = cc.c3b(255,255,200),
+            ttf = "res/fonts/hkys.ttf",
+            anchor = cc.p(0.5,0.5)
+        })
+		itemName:enableOutline(cc.c4b(30,0,0,255),1)
+        itemName:setScale(0.8)
+        itemName:setPosition(_bg:getContentSize().width *0.5,_bg:getContentSize().height - itemName:getContentSize().height *0.5 - 18.5)
+        _bg:addChild(itemName) 
+
+		self._selectedName = icon._Name  
+		icon:setPosition(_bg:getContentSize().width *0.5,_bg:getContentSize().height * 0.6 - 8)
+
+		--消耗道具
+		local __data = string.split(data.localD.price,"#")
+		local item_img = nil
+		print("=====================",tostring(__data[1]),XTHD.resource.type.ingot)
+		if tonumber(__data[1]) == XTHD.resource.type.ingot then
+			item_img = IMAGE_KEY_HEADER_INGOT
+		elseif tonumber(__data[1]) == XTHD.resource.type.gold then
+			item_img = IMAGE_KEY_HEADER_GOLD
+		elseif tonumber(__data[1]) == XTHD.resource.type.feicui then
+			item_img = IMAGE_KEY_HEADER_FEICUI
+		end
+		local xiaohao_icon = cc.Sprite:create(item_img)
+		_bg:addChild(xiaohao_icon)
+		xiaohao_icon:setAnchorPoint(0,0.5)
+		xiaohao_icon:setPosition(25,xiaohao_icon:getContentSize().height *0.5 + 20)
+
+		local xiaohao_numLable = XTHDLabel:create(__data[3],16,"res/fonts/def.ttf")
+		_bg:addChild(xiaohao_numLable)
+		xiaohao_numLable:setColor(cc.c3b(255,255,200))
+		xiaohao_numLable:enableOutline(cc.c4b(30,0,0,255),1)
+		xiaohao_numLable:setAnchorPoint(0,0.5)
+		xiaohao_numLable:setPosition(xiaohao_icon:getContentSize().width + xiaohao_icon:getPositionX() + 5,xiaohao_icon:getPositionY() - 3)
+		
+		local btn = XTHDPushButton:createWithParams({
+			touchSize =cc.size(_bg:getContentSize().width,_bg:getContentSize().height - 30),
+			needEnableWhenMoving = true,
+			musicFile = XTHD.resource.music.effect_btn_common,
+		})
+
+		btn:setTag(index)
+		_bg:addChild(btn)
+		btn:setPosition(_bg:getContentSize().width*0.5,_bg:getContentSize().height *0.5 - 5)
+		btn:setTouchBeganCallback(function()
+			_bg:setScale(0.98)
+		end)
+
+		btn:setTouchMovedCallback(function()
+			_bg:setScale(1)
+		end)
+
+		btn:setTouchEndedCallback(function()
+			_bg:setScale(1)
+			self:doExchange(data,btn:getTag(),_bg,nil,i)
+		end)
+
+		if data.serverD.state == 1 then
+			local Sold = cc.Sprite:create("res/image/plugin/weaponshop/weapon_sold.png")
+            Sold:setPosition(_bg:getBoundingBox().width*0.5 - 5,_bg:getBoundingBox().height*0.5 - 10)
+            _bg:addChild(Sold)
+            Sold:setContentSize(_bg:getContentSize().width - 10,_bg:getContentSize().height - 30)
+
+            local SoldLabel = cc.Sprite:create("res/image/plugin/weaponshop/sold.png")
+            SoldLabel:setAnchorPoint(0.5,0.5)
+            SoldLabel:setPosition(_bg:getContentSize().width *0.5,_bg:getContentSize().height *0.5)
+            _bg:addChild(SoldLabel)
+
+            btn:setEnable(false)
+		end
+	end
+	return layout
+end
+
 function ShangCheng:loadStores(index)
     local layout = ccui.Layout:create()
     --ly
     layout:setContentSize(cc.size(self._storeList:getContentSize().width,215))  
 	local _index = 0	
 
-    for i = (index + 1) * 4 - 3,(index + 1) * 4 do
+    for i = (index + 1) * 3 - 2,(index + 1) * 3 do
 		_index = _index + 1
 		
         local data = self._displayDatas[i]
@@ -450,7 +651,8 @@ function ShangCheng:loadStores(index)
     	---------背景
     	local _bg = ccui.Scale9Sprite:create("res/image/store/cellBg.png")
     	layout:addChild(_bg)
-    	_bg:setPosition(_bg:getContentSize().width *0.5 + 20 + ((_index-1) * (_bg:getContentSize().width + 52)),layout:getContentSize().height / 2 + 20)
+		_bg:setScale(1.05)
+    	_bg:setPosition(_bg:getContentSize().width *0.5 + 5 + ((_index-1) * (_bg:getContentSize().width + 44)),layout:getContentSize().height / 2 + 20)
         -------图标
         local _type = 4
         local _itemID = data.localD.itemid
@@ -471,11 +673,11 @@ function ShangCheng:loadStores(index)
         local itemName = XTHDLabel:createWithParams({
             text = icon._Name,
             fontSize = 22,
-            color = cc.c3b(255,252,201),
-            ttf = "res/fonts/def.ttf",
+            color = cc.c3b(255,255,200),
+            ttf = "res/fonts/hkys.ttf",
             anchor = cc.p(0.5,0.5)
         })
-		itemName:enableOutline(cc.c4b(0,0,0,255),1)
+		itemName:enableOutline(cc.c4b(30,0,0,255),1)
         itemName:setScale(0.8)
         itemName:setPosition(_bg:getContentSize().width *0.5,_bg:getContentSize().height - itemName:getContentSize().height *0.5 - 18.5)
         _bg:addChild(itemName) 
@@ -531,10 +733,10 @@ function ShangCheng:loadStores(index)
                 local consumeIcon,numLabel
                 if self._storeIndex == 4 or self._storeIndex == 5 or self._storeIndex == 11 then 
                     consumeIcon = XTHD.createHeaderIcon(data.localD["type"..j])
-                    numLabel = getCommonWhiteBMFontLabel(price)
+                    numLabel = XTHDLabel:create(price,16,"res/fonts/def.ttf")
 				elseif self._storeIndex == 12 then
 					consumeIcon = cc.Sprite:create(consumePath)
-					numLabel = getCommonWhiteBMFontLabel(price) 
+					numLabel = XTHDLabel:create(price,16,"res/fonts/def.ttf")
                 else
 					consumeIcon = cc.Sprite:create(j == 1 and self._playerResPath[self._storeIndex] or consumePath)
                     if self._storeIndex == 13 then
@@ -542,7 +744,7 @@ function ShangCheng:loadStores(index)
                     else
                         consumeIcon:setScale(1)
                     end
-					numLabel = getCommonWhiteBMFontLabel(price)           
+					numLabel = XTHDLabel:create(price,16,"res/fonts/def.ttf")          
                 end 
                 --消耗框
                 local rewardBg = ccui.Scale9Sprite:create()
@@ -554,9 +756,10 @@ function ShangCheng:loadStores(index)
                 consumeIcon:setPosition(0,rewardBg:getBoundingBox().height/2)
                 rewardBg:addChild(consumeIcon)
 				
+				numLabel:setColor(cc.c3b(255,255,200))
+				numLabel:enableOutline(cc.c4b(30,0,0,255),1)
 				numLabel:setAnchorPoint(0,0.5)
-                numLabel:setScale(0.8)
-                numLabel:setPosition(25,6)
+                numLabel:setPosition(consumeIcon:getContentSize().width *0.5 + consumeIcon:getPositionX() + 5,consumeIcon:getPositionY() - 3)
                 rewardBg:addChild(numLabel)
 
             	x = x + rewardBg:getBoundingBox().width
@@ -711,7 +914,7 @@ function ShangCheng:loadGroupStores(index)
     
 	local _index = 0
 	--self._displayDatas[idx + 1]
-    for i = index * 4 - 3,index * 4 do
+    for i = index *3 - 2,index * 3 do
 		_index = _index + 1
 		local data = self._displayDatas[i]
 		if not data then 
@@ -720,7 +923,8 @@ function ShangCheng:loadGroupStores(index)
 
 		local _bg = ccui.Scale9Sprite:create("res/image/store/cellBg.png")
 		layout:addChild(_bg)
-		_bg:setPosition(_bg:getContentSize().width *0.5 + 20 + ((_index-1) * (_bg:getContentSize().width + 52)),layout:getContentSize().height / 2 + 20)
+		_bg:setScale(1.05)
+		_bg:setPosition(_bg:getContentSize().width *0.5 + 5 + ((_index-1) * (_bg:getContentSize().width + 44)),layout:getContentSize().height / 2 + 20)
 		
 		-------图标
 		local icon = ItemNode:createWithParams({
@@ -757,11 +961,11 @@ function ShangCheng:loadGroupStores(index)
 		local itemName = XTHDLabel:createWithParams({
 			text = icon._Name,
             fontSize = 22,
-            color = cc.c3b(255,252,201),
-            ttf = "res/fonts/def.ttf",
+            color = cc.c3b(255,255,200),
+            ttf = "res/fonts/hkys.ttf",
             anchor = cc.p(0.5,0.5)
 		})
-		itemName:enableOutline(cc.c4b(0,0,0,255),1)
+		itemName:enableOutline(cc.c4b(30,0,0,255),1)
         itemName:setScale(0.8)
         itemName:setPosition(_bg:getContentSize().width *0.5,_bg:getContentSize().height - itemName:getContentSize().height *0.5 - 18.5)
         _bg:addChild(itemName) 
@@ -920,11 +1124,12 @@ function ShangCheng:loadGroupStores(index)
 
 				local consumeNum = data.localD.ingotprice2 --(j == 1 and  or data.localD.ingotprice2)
 				consumeNum = getHugeNumberWithLongNumber(consumeNum,10000)
-				local numLabel = getCommonWhiteBMFontLabel(consumeNum)
+				local numLabel = XTHDLabel:create(consumeNum,16,"res/fonts/def.ttf")
 				numLabel:setAnchorPoint(0,0.5)
 				_bg:addChild(numLabel)
-				numLabel:setScale(0.8)
-				numLabel:setPosition(icon:getPositionX() + icon:getContentSize().width + 5,icon:getPositionY() - 5)
+				numLabel:setColor(cc.c3b(255,255,200))
+				numLabel:enableOutline(cc.c4b(30,0,0,255),1)
+				numLabel:setPosition(icon:getPositionX() + icon:getContentSize().width + 5,icon:getPositionY() - 2)
 			end
 
 			if data.localD.dazhe == 0 then 
@@ -1006,30 +1211,41 @@ function ShangCheng:selecteDataByTab( ) ----把商品按钮良品、高级等分
     	}
 --    	if self._playerResAmount and self._storeIndex ~= 7 then
 --    		self._playerResAmount:setString(_value[self._storeIndex])
---    	end     	
-    	for k,v in pairs(self._storeServerData.list) do 
-    		local _local = self._storeLocalData[tonumber(v.configId)]		
-             if _local then 
-                 data[#data + 1] = {localD = _local,serverD = v}
-             end
-    		-- if self._storeIndex == 1 or self._storeIndex == 2 or self._storeIndex == 5 or self._storeIndex == 6 then 
-    		-- 	if _local and _local.tab == self._goodsType then 
-    		-- 		data[#data + 1] = {localD = _local,serverD = v}
-    		-- 	end
-    		-- else 
-    		-- 	if _local then 
-    		-- 		data[#data + 1] = {localD = _local,serverD = v}
-    		-- 	end
-    		-- end  
-    	end 
+--    	end 
+		if self._storeIndex == 14 then
+			self._storeServerData.items = self:SortList(self._storeServerData.items)
+			for k,v in pairs(self._storeServerData.items) do 
+    			local _local = self._storeLocalData[tonumber(v.configId)]		
+				 if _local then 
+					 data[#data + 1] = {localD = _local,serverD = v}
+				 end
+    		end
+		else
+    		for k,v in pairs(self._storeServerData.list) do 
+    			local _local = self._storeLocalData[tonumber(v.configId)]		
+				 if _local then 
+					 data[#data + 1] = {localD = _local,serverD = v}
+				 end
+    			-- if self._storeIndex == 1 or self._storeIndex == 2 or self._storeIndex == 5 or self._storeIndex == 6 then 
+    			-- 	if _local and _local.tab == self._goodsType then 
+    			-- 		data[#data + 1] = {localD = _local,serverD = v}
+    			-- 	end
+    			-- else 
+    			-- 	if _local then 
+    			-- 		data[#data + 1] = {localD = _local,serverD = v}
+    			-- 	end
+    			-- end  
+    		end 
+			table.sort( data,function(a,b)
+			   return a.serverD.configId < b.serverD.configId
+			end)
+		end
     end 
-    table.sort( data,function(a,b)
-       return a.serverD.configId < b.serverD.configId
-    end)
+    
     return data
 end
 
-function ShangCheng:doExchange( storeData,index,targ, name)
+function ShangCheng:doExchange( storeData,index,targ, name,_index)
 	if not storeData then 
 		return 
 	end 
@@ -1043,26 +1259,63 @@ function ShangCheng:doExchange( storeData,index,targ, name)
 	local text =  self:getNumTable(storeData,name,index)
 	
 	local rightFunc = function()
-		XTHDHttp:requestAsyncInGameWithParams({
-			modules = self._storeExRequest[self._storeIndex],
-			params = param,
-			successCallback = function(data)
-				if tonumber(data.result) == 0 then
-            		self:refreshPlayerData(data,storeData,targ)
-				elseif tonumber(data.result) == 5501 then ----全服次数没了                
-					storeData.serverD.allSurplusCount = 0
-					--targ.serverLeftTimesL:setString(0)
-					XTHDTOAST(data.msg or LANGUAGE_TIPS_WEBERROR)-----"网络请求失败!")
-				else
-					XTHDTOAST(data.msg or LANGUAGE_TIPS_WEBERROR)-----"网络请求失败!")
-				end
-			end,--成功回调
-			failedCallback = function()
-				XTHDTOAST(LANGUAGE_TIPS_WEBERROR)-----"网络请求失败")
-			end,--失败回调        
-			loadingParent = self,        
-			loadingType = HTTP_LOADING_TYPE.CIRCLE,--加载图显示 circle 光圈加载 head 头像加载
-		})
+		if self._storeIndex == 14 then
+			XTHDHttp:requestAsyncInGameWithParams({
+				modules = self._storeExRequest[self._storeIndex],
+				params = {configId = storeData.localD.id},
+				successCallback = function(data)
+					if tonumber(data.result) == 0 then
+						dump(data)
+            			gameUser.updateDataById(402,data.gold)
+						gameUser.updateDataById(403,data.ingot)
+						gameUser.updateDataById(418,data.feicui)
+						if data.items then
+							local show_data = {}
+							for i = 1,#data.items do
+								local _data = data.items[i]
+								local num = gameData.getDataFromDynamicDB(gameUser.getUserId(), DB_TABLE_NAME_ITEM,{itemid = _data.itemId}).count or 0
+								local num2 = _data.count - num
+								show_data[#show_data+1] = {rewardtype = 4, id =_data.itemId, num = num2}
+								DBTableItem.updateCount(gameUser.getUserId(),_data,_data["dbId"])
+							end
+							ShowRewardNode:create(show_data)
+						end
+						self._displayDatas[_index].serverD.state = 1
+						 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
+						XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
+						self._storeList:reloadData()
+					else
+						XTHDTOAST(data.msg or LANGUAGE_TIPS_WEBERROR)-----"网络请求失败!")
+					end
+				end,--成功回调
+				failedCallback = function()
+					XTHDTOAST(LANGUAGE_TIPS_WEBERROR)-----"网络请求失败")
+				end,--失败回调        
+				loadingParent = self,        
+				loadingType = HTTP_LOADING_TYPE.CIRCLE,--加载图显示 circle 光圈加载 head 头像加载
+			})
+		else
+			XTHDHttp:requestAsyncInGameWithParams({
+				modules = self._storeExRequest[self._storeIndex],
+				params = param,
+				successCallback = function(data)
+					if tonumber(data.result) == 0 then
+            			self:refreshPlayerData(data,storeData,targ)
+					elseif tonumber(data.result) == 5501 then ----全服次数没了                
+						storeData.serverD.allSurplusCount = 0
+						--targ.serverLeftTimesL:setString(0)
+						XTHDTOAST(data.msg or LANGUAGE_TIPS_WEBERROR)-----"网络请求失败!")
+					else
+						XTHDTOAST(data.msg or LANGUAGE_TIPS_WEBERROR)-----"网络请求失败!")
+					end
+				end,--成功回调
+				failedCallback = function()
+					XTHDTOAST(LANGUAGE_TIPS_WEBERROR)-----"网络请求失败")
+				end,--失败回调        
+				loadingParent = self,        
+				loadingType = HTTP_LOADING_TYPE.CIRCLE,--加载图显示 circle 光圈加载 head 头像加载
+			})
+		end
 	end
     local _confirmLayer = XTHDConfirmDialog:createWithParams( {
             rightText = self._storeIndex == 7 and "购买" or "兑换",
@@ -1073,7 +1326,6 @@ function ShangCheng:doExchange( storeData,index,targ, name)
 end
 
 function ShangCheng:refreshPlayerData(data,localD,targ)
-    dump(data)
     if data.property then 
 	    for i=1,#data.property do
             local _tb = string.split(data.property[i],",")
@@ -1316,7 +1568,6 @@ function ShangCheng:startCountDown( time )
 		if time <= 0 then 
             gameUser.setLimitTimeShopState(0)  --关闭主界面的限时礼包按钮
             XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_INFO})
-            XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
             XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) 
 			self:stopActionByTag(self.Tag.ktag_countDown)
 			return 
@@ -1393,8 +1644,141 @@ function ShangCheng:isHideGroupShop(isHide )
     end 
 end
 
+--刷新神秘商店
+function ShangCheng:refreshShenMiStore()
+	XTHDHttp:requestAsyncInGameWithParams({
+		modules = "refreshWeapon?",
+        successCallback = function(data)
+			if tonumber(data.result) == 0 then
+				dump(data)
+				if data.costItems then
+					for i = 1,#data.costItems do
+						local _data = data.costItems[i]
+						DBTableItem.updateCount(gameUser.getUserId(),_data,_data["dbId"])
+					end
+				end
+				self._iconNum:setString(XTHD.resource.getItemNum(2303))
+				self._storeServerData = data
+				self._displayDatas = self:selecteDataByTab()
+				self._storeList:reloadData()
+            else
+                XTHDTOAST(data.msg)
+            end
+         end,--成功回调
+         failedCallback = function()
+			XTHDTOAST(LANGUAGE_TIPS_WEBERROR)------"网络请求失败")
+         end,--失败回调
+         targetNeedsToRetain = self,--需要保存引用的目标
+         loadingType = HTTP_LOADING_TYPE.CIRCLE,--加载图显示 circle 光圈加载 head 头像加载
+	})
+end
+
+--神秘商店界面排序
+function ShangCheng:SortList(list)
+	local ranklist = {{},{},{},{},{},{}}
+	for i = 1, #list do
+		local rank = gameData.getDataFromCSV("ArticleInfoSheet",{itemid = list[i].itemId}).rank
+		if tonumber(rank) == 6 then
+			ranklist[1][#ranklist[1] + 1] = list[i]
+			ranklist[1][#ranklist[1]].rank = rank
+		elseif tonumber(rank) == 5 then
+			ranklist[2][#ranklist[2] + 1] = list[i]
+			ranklist[2][#ranklist[2]].rank = rank
+		elseif tonumber(rank) == 4 then
+			ranklist[3][#ranklist[3] + 1] = list[i]
+			ranklist[3][#ranklist[3]].rank = rank
+		elseif tonumber(rank) == 3 then
+			ranklist[4][#ranklist[4] + 1] = list[i]
+			ranklist[4][#ranklist[4]].rank = rank
+		elseif tonumber(rank) == 2 then
+			ranklist[5][#ranklist[5] + 1] = list[i]
+			ranklist[5][#ranklist[5]].rank = rank
+		elseif tonumber(rank) == 1 then
+			ranklist[6][#ranklist[6] + 1] = list[i]
+			ranklist[6][#ranklist[6]].rank = rank
+		end
+	end
+
+	local list_2 = {{},{},{}}
+
+	for i = 1,#ranklist do
+		if #ranklist[i] > 0 then
+			for k, v in pairs(ranklist[i]) do
+				local data = string.split(v.price,"#")
+				if tonumber(data[1]) == 2 then
+					v._type = 1
+				elseif tonumber(data[1]) == 6 then
+					v._type = 2
+				elseif tonumber(data[1]) == 3 then
+					v._type = 3
+				elseif tonumber(data[1]) == 4 then
+					v._type = 4
+				end
+			end
+		end
+	end
+
+	for i = 1,#ranklist do
+		if #ranklist[i] > 0 then
+			table.sort(ranklist[i],function( a,b )
+                return a._type < b._type 
+            end)
+		end
+	end
+	
+	list = {}
+	
+	for i = 1,#ranklist do
+		for k, v in pairs(ranklist[i]) do
+			list[#list + 1] = v
+		end
+	end
+
+	return list
+	
+end
+
+function ShangCheng:createOtherStore()
+	self._OtherShopNode = cc.Node:create()
+	self._OtherShopNode:setAnchorPoint(0.5,0.5)
+	self._OtherShopNode:setContentSize(self._bg:getContentSize())
+	self._bg:addChild(self._OtherShopNode)
+	self._OtherShopNode:setPosition(self._bg:getContentSize().width *0.5,self._bg:getContentSize().height *0.5)
+
+	local _type = {"recycle","arena","guild","Artifact","camp","flower","shura","reward"}
+	local index = 0
+	for i = 1, 2 do
+		for j = 1, 4 do
+			index = index + 1
+			local btn = XTHDPushButton:create({
+				normalFile = "res/image/store/gongnengStore/btn_shangcheng_".. index .. ".png",
+				selectedFile = "res/image/store/gongnengStore/btn_shangcheng_".. index .. ".png",
+			})
+			self._OtherShopNode:addChild(btn)
+			local x = 200 + btn:getContentSize().width *0.5 + (j - 1)*(btn:getContentSize().width + 5)
+			local y = self._bg:getContentSize().height - i * btn:getContentSize().height *0.5 - (i - 1)*btn:getContentSize().height *0.7 - 30
+			btn:setPosition(x,y)
+			btn:setTag(index)			
+
+			btn:setTouchBeganCallback(function()
+				btn:setScale(0.98)
+			end)
+			
+			btn:setTouchMovedCallback(function()
+				btn:setScale(1)
+			end)
+
+			btn:setTouchEndedCallback(function()
+				btn:setScale(1)
+				local layer = requires("src/fsgl/layer/PopShop/PopShopLayer"):create(_type[btn:getTag()])
+				cc.Director:getInstance():getRunningScene():addChild(layer)
+				layer:show()
+			end)
+		end
+	end
+end
+
 function ShangCheng:getNumTable(data,name,index)
-	dump(data)
 	if name == nil then
 		name = ""
 	end
@@ -1426,6 +1810,17 @@ function ShangCheng:getNumTable(data,name,index)
 		table[1] = data.localD.ingotprice2
 		table[2] = data.localD.num
 		text = "您是否确认使用" .. table[1] .. "个" .. _playeLablePath .. "购买" .. table[2] .. "个" .. data.localD.itemname
+		return text
+	elseif self._storeIndex == 14 then
+		local _data = string.split(data.localD.price,"#")
+		if tonumber(_data[1]) == 2 then
+			_playeLablePath = "银两"
+		elseif tonumber(_data[1]) == 3 then
+			_playeLablePath = "元宝"
+		else
+			_playeLablePath = "翡翠"
+		end
+		text = "您是否确认使用" .. _data[3] .. "个" .. _playeLablePath .. "购买" .. "1个" .. data.localD.itemfalsename
 		return text
 	else
 		table[1] = data.localD.coinprice
