@@ -13,7 +13,7 @@ function ShowRewardNode:ctor(params)
     self:setName("ShowRewardNode")
     local param = { }
     for i = 1, #params.showData do
-        if params.showData[i].rewardtype > 0 then
+        if params.showData[i].rewardtype and params.showData[i].rewardtype > 0 then
             param[#param + 1] = params.showData[i]
         end
     end

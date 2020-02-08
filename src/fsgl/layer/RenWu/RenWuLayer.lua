@@ -277,7 +277,7 @@ function RenWuLayer:initTopTask()
 	for i = 1, #self._huoyueRenwu do
 		local data = self._huoyueRenwu[i]
 		local _data = string.split(data.taskparam,"#")
-		local x = self._HuoyueNode:getContentSize().width  / 100  * _data[2] * 1.75 - 60
+		local x = self._HuoyueNode:getContentSize().width  / 100  * _data[2] - 10
 		
 		local btnbg = cc.Sprite:create("res/image/plugin/tasklayer/itembg.png")
 		self._HuoyueNode:addChild(btnbg)
@@ -287,13 +287,19 @@ function RenWuLayer:initTopTask()
 		btnbg:addChild(box)
 		box:setPosition(btnbg:getContentSize().width *0.5 - 1,btnbg:getContentSize().height *0.5 + 3)
 		self._HuoyueNode.boxlist[#self._HuoyueNode.boxlist + 1] = box
-
-		if self._huoyueRenwu[i].taskid < self._tabTopTaskData[self._selectIndex][1].taskid then
+		
+		if #self._tabTopTaskData[self._selectIndex] >= 1 then
+			if self._huoyueRenwu[i].taskid < self._tabTopTaskData[self._selectIndex][1].taskid then
+				box:setTexture("res/image/plugin/tasklayer/btn_box_2.png")
+			end
+		else
 			box:setTexture("res/image/plugin/tasklayer/btn_box_2.png")
 		end
 		
+		
 		local btn_spine = sp.SkeletonAnimation:create( "res/image/homecity/frames/spine/renwu.json", "res/image/homecity/frames/spine/renwu.atlas", 1.0) 
 		btn_spine:setScale( 0.4)
+		btn_spine:setVisible(false)
 		btnbg:addChild( btn_spine )
 		btn_spine:setPosition(box:getPosition())
 		self._HuoyueNode.btnSpine[#self._HuoyueNode.btnSpine + 1] = btn_spine
@@ -422,22 +428,7 @@ function RenWuLayer:initTasks()
     			cellBg:addChild( icons )
     			-- 任务进度
     			if data.curNum and data.maxNum then
-	    			-- 任务进度文字
-	    			local taskProcessText = XTHD.createLabel({
-	    				text      = LANGUAGE_TASK_PROGRESS..":",
-						fontSize  = 14,
-						anchor    = cc.p( 1, 0.5 ),
-						pos       = cc.p( cellBg:getContentSize().width - 40, cellBg:getContentSize().height - 40 ),
-						color     = cc.c3b( 82, 47, 16 ),
-						clickable = false,
-					})
-	    			cellBg:addChild( taskProcessText )
-	    			if self._tabIndex < 4 then
-	    				taskProcessText:setVisible(true)
-	    			else
-	    				taskProcessText:setVisible(false)
-	    			end
-	    			-- 任务进度数字
+					-- 任务进度数字
 	    			local taskProcessNumText = ""
 	    			if data.maxNum > 1000 then
 	    				local tmp = math.modf(data.curNum/data.maxNum*100)
@@ -447,9 +438,9 @@ function RenWuLayer:initTasks()
 	    			end
 	    			local taskProcessNum = XTHD.createLabel({
 	    				text      = taskProcessNumText,
-						fontSize  = 14,
-						anchor    = cc.p( 0, 0.5 ),
-						pos       = cc.p( cellBg:getContentSize().width - 35, cellBg:getContentSize().height - 40 ),
+						fontSize  = 12,
+						anchor    = cc.p( 1, 0.5 ),
+						pos       = cc.p( cellBg:getContentSize().width - 10, cellBg:getContentSize().height - 40 ),
 						color     = cc.c3b( 255, 112, 62 ),
 						clickable = false,
 					})
@@ -459,6 +450,23 @@ function RenWuLayer:initTasks()
 	    			else
 	    				taskProcessNum:setVisible(false)
 	    			end
+	
+	    			-- 任务进度文字
+	    			local taskProcessText = XTHD.createLabel({
+	    				text      = LANGUAGE_TASK_PROGRESS..":",
+						fontSize  = 12,
+						anchor    = cc.p( 1, 0.5 ),
+						color     = cc.c3b( 82, 47, 16 ),
+						clickable = false,
+					})
+					taskProcessText:setPosition(taskProcessNum:getPositionX() - taskProcessNum:getContentSize().width - 5,taskProcessNum:getPositionY())
+	    			cellBg:addChild( taskProcessText )
+	    			if self._tabIndex < 4 then
+	    				taskProcessText:setVisible(true)
+	    			else
+	    				taskProcessText:setVisible(false)
+	    			end
+	    			
 				end
     			-- 任务按钮
     			if data.task_status == 1 then
@@ -883,14 +891,16 @@ function RenWuLayer:refreshTopTask()
 	end
 	-- dump( self._tabTopTask, "self._tabTopTask" )
 	if #self._tabTopTaskData[self._tabIndex] == 0 then
-		self._loadingbar:setVisible( false )
-		self._loadingbarBg:setVisible( false )
 		self._topTaskTip:setVisible( false )
 		self._loadingbarNum:setVisible( false )
 		self._topRewardIcon:setVisible( false )
 		self._topRewardIcon:setEnable( false )
 		if  self._selectIndex ~= 1 then
 			self._topFinishAllTasks:setVisible( true )
+			self._loadingbarBg:setVisible( false )
+			self._loadingbar:setVisible( false )
+		else
+			self._loadingbar:setPercentage(100)
 		end
 	else
 		if  self._selectIndex ~= 1 then
@@ -994,11 +1004,12 @@ function RenWuLayer:refreshTopTask()
 	    		end)
 				self._loadingbarNum:setString( data.curNum.."/"..data.maxNum )
 			else
+				local data = self._tabTopTaskData[self._tabIndex][1]
+				self._loadingbar:setPercentage(data.curNum)
 				for i = 1, #self._huoyueRenwu do
 					if self._huoyueRenwu[i].taskid == self._tabTopTaskData[self._selectIndex][1].taskid then
-						if self._HuoyueNode.btnSpine[i] then
-							self._HuoyueNode.btnSpine[i]:setAnimation( 0, "renwu", true )
-						end
+						self._HuoyueNode.btnSpine[i]:setVisible(true)
+						self._HuoyueNode.btnSpine[i]:setAnimation( 0, "renwu", true )
 						self._HuoyueNode.boxlist[i]:setVisible(false)
 						self._HuoyueNode.btnList[i]:setEnable(true)
 						self._HuoyueNode.btnList[i]:setTouchEndedCallback(function()
@@ -1057,8 +1068,7 @@ end
 function RenWuLayer:refresshHuoyueNode()
 	for i = 1, #self._huoyueRenwu do
 		self._HuoyueNode.boxlist[i]:setVisible(true)
-		self._HuoyueNode.btnSpine[i]:removeFromParent()
-		self._HuoyueNode.btnSpine[i] = nil
+		self._HuoyueNode.btnSpine[i]:setVisible(false)
 		if self._huoyueRenwu[i].taskid <= self._tabTopTaskData[self._selectIndex][1].taskid then
 			self._HuoyueNode.boxlist[i]:setTexture("res/image/plugin/tasklayer/btn_box_2.png")
 		end 

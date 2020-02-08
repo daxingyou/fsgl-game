@@ -327,6 +327,7 @@ function BangPaiJuanXian:worship_do_http( _type )
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_GUILDMAIN_INFO})
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_GUILDMAIN_LIST})
+		XTHD.dispatchEvent({ name = CUSTOM_EVENT.REFRESH_TASKLIST})
 		--XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_GUILDRANKLIST})
 
         if self.worshipItems[tonumber(_type)]~=nil then
