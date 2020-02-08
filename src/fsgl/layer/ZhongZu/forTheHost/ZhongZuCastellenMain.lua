@@ -301,8 +301,11 @@ function ZhongZuCastellenMain:initRightCities( )
 
 	button:setTouchEndedCallback(function( )
 		button:setScale(0.8)
+        YinDaoMarg:getInstance():overCurrentGuide(true)
 		self:doFight()
 	end)
+    self.duoquanBtn = button
+    self:addGuide()
 	--剩余挑战次数框
 	local kuang3 = ccui.Scale9Sprite:create("res/image/camp/kuang2.png")
 	kuang3:setPosition(32,150)
@@ -426,6 +429,15 @@ function ZhongZuCastellenMain:doFight( )
     local SelHeroLayer = requires("src/fsgl/layer/ChuZhan/XuanZeYingXiongNewLayer.lua")
     local _layerHandler = SelHeroLayer:create(BattleType.CASTELLAN_FIGHT, nil, challageData)
     fnMyPushScene(_layerHandler)
+end
+
+function ZhongZuCastellenMain:addGuide( )
+    YinDaoMarg:getInstance():addGuide({
+        parent = self,
+        target = self.duoquanBtn, -----点击挑战按钮
+        index = 3,
+    },24)
+    YinDaoMarg:getInstance():doNextGuide()    
 end
 
 return ZhongZuCastellenMain

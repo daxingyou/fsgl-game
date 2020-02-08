@@ -36,6 +36,6 @@ FlowerMall =
     { id = 34, itemid = 2008, sellnum = 20, itemfalsename = "经验果", price = 2, stuffnumber = 0, weight = 200, probability = 0.0258064516129032, itemname = "经验果", recommended = 0, xiyou = 0, nomore = 0, vip = 0, },
     { id = 35, itemid = 2008, sellnum = 30, itemfalsename = "经验果", price = 3, stuffnumber = 0, weight = 200, probability = 0.0258064516129032, itemname = "经验果", recommended = 0, xiyou = 0, nomore = 0, vip = 0, },
     { id = 36, itemid = 2008, sellnum = 50, itemfalsename = "经验果", price = 5, stuffnumber = 0, weight = 200, probability = 0.0258064516129032, itemname = "经验果", recommended = 1, xiyou = 0, nomore = 0, vip = 0, },
-    { id = 37, itemid = 1047, sellnum = 5, itemfalsename = "碎片.琼宵仙子（神）", price = 200, stuffnumber = 0, weight = 500, probability = 0.0258064516129032, itemname = "碎片.李师师（神）", recommended = 1, xiyou = 0, nomore = 0, vip = 0, },
+    { id = 37, itemid = 1047, sellnum = 5, itemfalsename = "碎片·琼宵（神）", price = 200, stuffnumber = 0, weight = 500, probability = 0.0258064516129032, itemname = "碎片·琼宵（神）", recommended = 1, xiyou = 0, nomore = 0, vip = 0, },
 }
 

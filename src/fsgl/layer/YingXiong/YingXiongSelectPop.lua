@@ -48,6 +48,7 @@ function YingXiongSelectPop:initUI(callFunc)
     })
     confirm:setScale(0.6)
     Bg:addChild(confirm)
+    self.confrimBtn = confirm
 
 	local allHero = gameData.getDataFromDynamicDB(gameUser.getUserId(), DB_TABLE_NAME_HERO)
 	local allartifact = gameData.getDataFromDynamicDB(gameUser.getUserId(), DB_TABLE_NAME_ARTIFACT)
@@ -157,6 +158,9 @@ function YingXiongSelectPop:initUI(callFunc)
                     end
                     self:createMask(heroIcon)
         		end)
+                if idx == 1 and i == 1 then
+                    self.iconBtn = heroIcon
+                end
         		cell:addChild(heroIcon)
         	end
         end
@@ -167,6 +171,7 @@ function YingXiongSelectPop:initUI(callFunc)
     heroTable:registerScriptHandler(cellSizeForTable,cc.TABLECELL_SIZE_FOR_INDEX)
     heroTable:registerScriptHandler(tableCellAtIndex,cc.TABLECELL_SIZE_AT_INDEX)
     heroTable:reloadData()
+    self:addGuide()
 end
 
 function YingXiongSelectPop:SortList(list)
@@ -194,6 +199,20 @@ function YingXiongSelectPop:createMask(heroIcon)
 end
 function YingXiongSelectPop:create(callFunc)
 	return YingXiongSelectPop.new(callFunc)
+end
+
+function YingXiongSelectPop:addGuide()
+    YinDaoMarg:getInstance():addGuide({
+        parent = self,
+        target = self.iconBtn, -----点击英雄头像
+        index = 4,
+    },26)
+    YinDaoMarg:getInstance():addGuide({
+        parent = self,
+        target = self.confrimBtn, -----点击确定按钮
+        index = 5,
+    },26)
+    YinDaoMarg:getInstance():doNextGuide()    
 end
 
 return YingXiongSelectPop

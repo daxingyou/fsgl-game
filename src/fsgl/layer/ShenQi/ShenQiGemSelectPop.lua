@@ -139,6 +139,7 @@ function ShenQiGemSelectPop:initUI(allGem,callFunc)
 		         	cell_bg:setScale(0.95)
 		    	end)
 			    cell_bg:setTouchEndedCallback(function()
+                    YinDaoMarg:getInstance():overCurrentGuide(true)
 		         	callFunc(nowData.dbid)
 		         	self:hide()
 			    end)
@@ -147,6 +148,10 @@ function ShenQiGemSelectPop:initUI(allGem,callFunc)
 			    cell_bg:setAnchorPoint(i==1 and 0 or 1 , 0)
 			    cell_bg:setPosition(i==1 and 2 or tableSize.width-22,7)
 			    cell:addChild(cell_bg)
+
+                if idx == 0 and i == 1 then
+                    self.xuanfuBtn = cell_bg
+                end
 
 			    local itemIcon = ItemNode:createWithParams({
 			    	itemId = nowData.itemid,
@@ -231,9 +236,8 @@ function ShenQiGemSelectPop:initUI(allGem,callFunc)
     self._gemTable:registerScriptHandler(tableCellTouched,cc.TABLECELL_TOUCHED)
     self._gemTable:registerScriptHandler(cellSizeForTable,cc.TABLECELL_SIZE_FOR_INDEX)
     self._gemTable:registerScriptHandler(tableCellAtIndex,cc.TABLECELL_SIZE_AT_INDEX)
-
-
     self._gemTable:reloadData()
+    self:addGuide()
 end
 
 function ShenQiGemSelectPop:changeTab(_type)
@@ -275,6 +279,15 @@ end
 
 function ShenQiGemSelectPop:create(allGem,callFunc)
 	return ShenQiGemSelectPop.new(allGem,callFunc)
+end
+
+function ShenQiGemSelectPop:addGuide()
+    YinDaoMarg:getInstance():addGuide({
+        parent = self,
+        target = self.xuanfuBtn, -----点击玄符
+        index = 7,
+    },26)
+    YinDaoMarg:getInstance():doNextGuide()    
 end
 
 return ShenQiGemSelectPop

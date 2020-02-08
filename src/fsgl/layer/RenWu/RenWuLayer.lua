@@ -12,6 +12,9 @@ function RenWuLayer:ctor( data, CallFunc, index ,sdata)
     self:setOpacity( 50 )
     self._CallFunc = CallFunc
     self._first = true
+	self._huoyueRenwu = {}
+	self._selectIndex = 1
+	self._HuoyueNode = nil
 
     -- 变量
     self._size = self:getContentSize()
@@ -92,10 +95,10 @@ function RenWuLayer:SpecifalDeal(index)
     self._tabsTable = {}
     -- 红点条件
     self._redDot = {}
-
+	self:buildData()
     --  创建界面
     self:initUI()
-	self:buildData()
+	
     XTHD.addEventListener({
         name = CUSTOM_EVENT.REFRESH_TASKLIST,
         callback = function ()
@@ -110,7 +113,7 @@ end
 -- 初始化界面
 function RenWuLayer:initUI()
     -- 底层背景
-    self._bottomBg = XTHD.createSprite( "res/image/common/layer_bottomBg.png" )
+    self._bottomBg = XTHD.createSprite( "res/image/plugin/tasklayer/taskbg.png" )
     self._bottomBg:setAnchorPoint( cc.p( 0.5, 0.5 ) )
 	self._bottomBg:setPosition( self:getContentSize().width * 0.5, ( self:getContentSize().height - self.topBarHeight ) * 0.5 )
 	self._bottomSize = self._bottomBg:getContentSize()
@@ -118,14 +121,10 @@ function RenWuLayer:initUI()
 
 	local title = "res/image/public/renwu_title.png"
 	XTHD.createNodeDecoration(self._bottomBg,title)
-	--阴影
-	self._shadow = ccui.Scale9Sprite:create("res/image/common/common_black_shadow.png")
-	self._shadow:setPosition(self._bottomSize.width,self._bottomSize.height/2)
-	self._shadow:setAnchorPoint(1,0.5)
-	self._bottomBg:addChild(self._shadow)
+
 	-- 创建界面
 	self:initTabs()
-    self:initTopTask()
+	self:initTopTask()
     self:initTasks()
 end
 -- 创建tabs层
@@ -186,12 +185,13 @@ function RenWuLayer:initTabs()
 			selectedNode = tabBtn_selected,
 			anchor = cc.p( 0, 0 ),
 			endCallback = function()
+				self._selectIndex = i
 				tabCallback( i )
 			end,
 		})
 		tabBtn:setScale(0.7)
-		tabBtn:setPosition( 31, 432 - 85*i )
-		self._shadow:addChild( tabBtn, 0 )
+		tabBtn:setPosition( self._bottomBg:getContentSize().width *0.9 + 5, 385 - 80*i )
+		self._bottomBg:addChild( tabBtn, 0 )
 		self._tabsTable[i] = tabBtn
 		-- 红点
 		local redDot = cc.Sprite:create( "res/image/common/heroList_redPoint.png" )
@@ -204,13 +204,14 @@ function RenWuLayer:initTabs()
 	self._tabsTable[self._tabIndex]:setEnable( false )
 	self._tabsTable[self._tabIndex]:setLocalZOrder( 1 )
 end
+
 -- 创建顶部任务
 function RenWuLayer:initTopTask()
 	-- 容器
 	local topTask = XTHD.createSprite()
-	topTask:setContentSize( self._size.width - 88, 50 )
+	topTask:setContentSize( self._size.width, 50 )
 	topTask:setAnchorPoint( cc.p( 0, 1 ) )
-	topTask:setPosition( self._bottomSize.width*0.5 - self._size.width*0.5, self._bottomSize.height - 20 )
+	topTask:setPosition( self._bottomSize.width*0.5 - self._size.width*0.5, self._bottomSize.height - 30 )
 	self._bottomBg:addChild( topTask, 3 )
 	local topTaskSize = topTask:getContentSize()
 	self._topTask = topTask
@@ -226,12 +227,12 @@ function RenWuLayer:initTopTask()
 		ttf = "res/fonts/def.ttf"
 	})
 	topTask:addChild( self._topFinishAllTasks )
+	self._topFinishAllTasks:setVisible(false)
 
 	-- 创建进度条
 	self._loadingbarBg = XTHD.createSprite( "res/image/plugin/tasklayer/common_progressBg_2.png" )
     self._loadingbarBg:setAnchorPoint( 0.5, 0.5 )
-	self._loadingbarBg:setPosition( topTaskSize.width*0.5 + 80, topTaskSize.height*0.5 - 2 )
-	self._loadingbarBg:setScaleX(0.8)
+	self._loadingbarBg:setPosition( topTaskSize.width*0.5, topTaskSize.height*0.3 )
     topTask:addChild( self._loadingbarBg )
     self._loadingbar = cc.ProgressTimer:create( cc.Sprite:create( "res/image/plugin/tasklayer/common_progress_2.png" ) )
     self._loadingbar:setType(cc.PROGRESS_TIMER_TYPE_BAR)
@@ -249,24 +250,79 @@ function RenWuLayer:initTopTask()
 	})
 	self._loadingbarNum:enableShadow( cc.c4b(0,0,0,255), cc.size(2,-2) )
 	self._loadingbarBg:addChild( self._loadingbarNum )
+
 	-- 创建进度条提示文字
 	self._topTaskTip = XTHD.createLabel({
-		fontSize  = 18,
-		anchor    = cc.p( 1, 0.5 ),
-		pos       = cc.p( self._loadingbarBg:getPositionX() - self._loadingbarBg:getContentSize().width*0.5 - 10+50, topTaskSize.height*0.5 - 2 ),
+		fontSize  = 16,
+		anchor    = cc.p( 0.5, 0.5 ),
+		pos       = cc.p( topTask:getContentSize().width *0.5, topTaskSize.height*0.5 + 15),
 		color     = cc.c3b( 255, 255, 255 ),
 		clickable = false,
 		ttf = "res/fonts/def.ttf"
 	})
 	self._topTaskTip:enableOutline(cc.c4b(106,36,13,255),2)
 	topTask:addChild( self._topTaskTip )
+	self._topTaskTip:setVisible(false)
+
+	self._HuoyueNode = cc.Node:create()
+	self._HuoyueNode:setAnchorPoint(0.5,0.5)
+	self._HuoyueNode:setContentSize(self._loadingbarBg:getContentSize())
+	self._loadingbarBg:addChild(self._HuoyueNode)
+	self._HuoyueNode:setPosition(self._loadingbarBg:getContentSize().width *0.5,self._loadingbarBg:getContentSize().height *0.5)
+	self._HuoyueNode.btnList = {}
+	self._HuoyueNode.btnSpine = {}
+	self._HuoyueNode.boxlist = {}
+	
+	-- 创建活跃奖励按钮
+	for i = 1, #self._huoyueRenwu do
+		local data = self._huoyueRenwu[i]
+		local _data = string.split(data.taskparam,"#")
+		local x = self._HuoyueNode:getContentSize().width  / 100  * _data[2] * 1.75 - 60
+		
+		local btnbg = cc.Sprite:create("res/image/plugin/tasklayer/itembg.png")
+		self._HuoyueNode:addChild(btnbg)
+		btnbg:setPosition(x,btnbg:getContentSize().height *0.5 + 10)
+		
+		local box = cc.Sprite:create("res/image/plugin/tasklayer/btn_box_1.png")
+		btnbg:addChild(box)
+		box:setPosition(btnbg:getContentSize().width *0.5 - 1,btnbg:getContentSize().height *0.5 + 3)
+		self._HuoyueNode.boxlist[#self._HuoyueNode.boxlist + 1] = box
+
+		if self._huoyueRenwu[i].taskid < self._tabTopTaskData[self._selectIndex][1].taskid then
+			box:setTexture("res/image/plugin/tasklayer/btn_box_2.png")
+		end
+		
+		local btn_spine = sp.SkeletonAnimation:create( "res/image/homecity/frames/spine/renwu.json", "res/image/homecity/frames/spine/renwu.atlas", 1.0) 
+		btn_spine:setScale( 0.4)
+		btnbg:addChild( btn_spine )
+		btn_spine:setPosition(box:getPosition())
+		self._HuoyueNode.btnSpine[#self._HuoyueNode.btnSpine + 1] = btn_spine
+
+		local btn = XTHDPushButton:createWithParams({
+			touchSize =cc.size(btnbg:getContentSize().width,btnbg:getContentSize().height),
+			needEnableWhenMoving = true,
+			musicFile = XTHD.resource.music.effect_btn_common,
+		})
+		btnbg:addChild(btn)
+		btn:setPosition(btnbg:getContentSize().width *0.5,btnbg:getContentSize().height *0.5)
+		btn:setEnable(false)
+		self._HuoyueNode.btnList[#self._HuoyueNode.btnList + 1] = btn
+
+		local huoyueLable = XTHDLabel:create(_data[2].."活跃",16)
+		self._HuoyueNode:addChild(huoyueLable)
+		huoyueLable:setAnchorPoint(0.5,1)
+		huoyueLable:setColor(cc.c3b(82,82,81))
+		huoyueLable:setPosition(btnbg:getPositionX(), 0)
+		
+	end
+	
 	-- 创建奖励图标
 	self._topRewardIcon = XTHD.createButton()
 	self._topRewardIcon:setScale(0.8)
 	self._topRewardIcon:setContentSize( cc.size( 71, 54 ) )
 	self._topRewardIcon:setTouchSize( cc.size( 71, 54 ) )
 	self._topRewardIcon:setAnchorPoint( cc.p( 0.5, 0.5 ) )
-	self._topRewardIcon:setPosition( self._loadingbarBg:getPositionX() + self._loadingbarBg:getContentSize().width*0.5, topTaskSize.height*0.5 -2)
+	self._topRewardIcon:setPosition( self._loadingbarBg:getPositionX() + self._loadingbarBg:getContentSize().width*0.5 + 50, topTaskSize.height*0.5 -2)
 	topTask:addChild( self._topRewardIcon )
 	--任务奖励图片
 	-- local taskreward = cc.Sprite:create("res/image/plugin/tasklayer/taskreward.png")
@@ -281,38 +337,36 @@ function RenWuLayer:initTopTask()
     self._iconSpine:setScale( 0.7 )
     self._topRewardIcon:addChild( self._iconSpine )
     self._iconSpine:setPosition( self._topRewardIcon:getBoundingBox().width*0.5, self._topRewardIcon:getContentSize().height/3+10 )
+	if self._selectIndex == 1 then
+		self._topRewardIcon:setVisible(false)
+	end
 end
 -- 创建任务列表
 function RenWuLayer:initTasks()
-	-- 容器
-	local tasksBg = XTHD.createSprite()
-	tasksBg:setContentSize( self._bottomSize.width - 118, self._bottomSize.height - 90 )
-	tasksBg:setAnchorPoint( cc.p( 0, 0 ) )
-	tasksBg:setPosition( -6, 20 )
-	self._bottomBg:addChild( tasksBg, 2 )
-	local tasksSize = tasksBg:getContentSize()
 
 	-- tableView背景
 	local tableViewBg = ccui.Scale9Sprite:create( "res/image/common/scale9_bg2_25.png" )
-	tableViewBg:setContentSize( tasksSize.width -6, tasksSize.height - 4 )
+	tableViewBg:setContentSize( self._bottomBg:getContentSize().width *0.8 + 45,self._bottomBg:getContentSize().height *0.7 - 4 )
 	tableViewBg:setAnchorPoint( cc.p( 0.5, 0.5 ) )
-	tableViewBg:setPosition( tasksSize.width*0.5 + 35, tasksSize.height*0.5 )
-	tasksBg:addChild( tableViewBg )
+	tableViewBg:setPosition( self._bottomBg:getContentSize().width *0.45 + 7.5,self._bottomBg:getContentSize().height *0.4 - 2)
+	self._bottomBg:addChild( tableViewBg )
+	tableViewBg:setOpacity(0)
 
 	-- tableView
-	self._taskTableView = cc.TableView:create( cc.size( tableViewBg:getContentSize().width, tasksSize.height - 12 ) )
+	self._taskTableView = cc.TableView:create( cc.size( tableViewBg:getContentSize().width - 4,tableViewBg:getContentSize().height - 2 ) )
 	TableViewPlug.init(self._taskTableView)
-    self._taskTableView:setPosition( 35, 6 )
+    self._taskTableView:setPosition( 3, 0 )
 	self._taskTableView:setBounceable( true )
 	self._taskTableView:setDirection( cc.SCROLLVIEW_DIRECTION_VERTICAL )
 	self._taskTableView:setDelegate()
 	self._taskTableView:setVerticalFillOrder( cc.TABLEVIEW_FILL_TOPDOWN )
-	tasksBg:addChild( self._taskTableView )
+	tableViewBg:addChild( self._taskTableView )
+
 	local function numberOfCellsInTableView( table )
-		return #self._tabTaskData[self._tabIndex]
+		return math.ceil(#self._tabTaskData[self._tabIndex] / 2)
 	end
 	local function cellSizeForTable( table, index )
-		return  tableViewBg:getContentSize().width,135
+		return  tableViewBg:getContentSize().width,115
 	end
 	local function tableCellAtIndex( table, index )
 		local cell = table:dequeueCell()
@@ -321,201 +375,152 @@ function RenWuLayer:initTasks()
         else
             cell = cc.TableViewCell:new()
         end
-		cell:setContentSize(table:getContentSize().width,135)
+		cell:setContentSize(table:getContentSize().width,115)
         -- 数据
-        index = index + 1
-        local data = self._tabTaskData[self._tabIndex][index]
-        -- dump( data, "data"..index )
-        -- cell背景
-        local cellBg = ccui.Scale9Sprite:create( "res/image/common/scale9_bg1_26.png" )
-        cellBg:setContentSize( tableViewBg:getContentSize().width - 30, 128 )
-        cellBg:setAnchorPoint( cc.p( 0, 0 ) )
-        cellBg:setPosition( 16, -8 )
-        cell:addChild( cellBg )
-        -- 分隔线
-        -- local splitCellLine = ccui.Scale9Sprite:create( "res/image/ranklistreward/splitcell.png" )
-        -- splitCellLine:setContentSize( tableViewBg:getContentSize().width - 3, 2 )
-        -- splitCellLine:setAnchorPoint( cc.p( 0, 0 ) )
-        -- splitCellLine:setPosition( 3, 1 )
-        -- cell:addChild( splitCellLine )
-        -- 任务图标背景
-        local taskIconBg = XTHD.createSprite( "res/image/plugin/tasklayer/iconbg.png" )
-        taskIconBg:setAnchorPoint( cc.p( 0.5, 0.5 ) )
-		taskIconBg:setPosition( 60, 58 )
-		taskIconBg:setScale(0.8)
-        cellBg:addChild( taskIconBg )
-        -- 任务图标
-        local taskIcon = XTHD.createSprite( "res/image/plugin/tasklayer/taskicon/"..( data.icon or 1 )..".png" )
-        taskIcon:setAnchorPoint( cc.p( 0.5, 0.5 ) )
-		taskIcon:setPosition( 60, 60 )
-		taskIcon:setScale(0.75)
-        cellBg:addChild( taskIcon )
-        -- 任务图标边框
-        -- local taskIconSide = XTHD.createSprite( "res/image/plugin/tasklayer/iconside.png" )
-        -- taskIconSide:setAnchorPoint( cc.p( 0.5, 0.5 ) )
-        -- taskIconSide:setPosition( 60, 53 )
-		-- cellBg:addChild( taskIconSide )
-		--任务目标背景
-		local rw_bg = ccui.Scale9Sprite:create("res/image/plugin/tasklayer/name_bg.png")
-		rw_bg:setContentSize(cellBg:getContentSize().width-150,cellBg:getContentSize().height/4+10)
-		rw_bg:setPosition(cc.p( 100, cellBg:getContentSize().height - 30 ))
-		rw_bg:setAnchorPoint(0,0.5)
-		cellBg:addChild(rw_bg)
-        -- 任务目标
-        local taskDest = XTHD.createLabel({
-        	text      = LANGUAGE_KEY_TASKTARGET..":",
-			fontSize  = 22,
-			anchor    = cc.p( 0, 0.5 ),
-			pos       = cc.p( 120, cellBg:getContentSize().height - 30 ),
-			color     = cc.c3b( 54, 55, 112 ),
-			clickable = false,
-			ttf = "res/fonts/def.ttf"
-    	})
-    	cellBg:addChild( taskDest )
-    	-- 任务描述
-    	local taskDesc = XTHD.createLabel({
-    		text      = data.description,
-			fontSize  = 20,
-			anchor    = cc.p( 0, 0.5 ),
-			pos       = cc.p( taskDest:getPositionX() + taskDest:getContentSize().width + 10, cellBg:getContentSize().height - 30 ),
-			color     = cc.c3b( 54, 55, 112 ),
-			clickable = false,
-			ttf = "res/fonts/def.ttf"
-		})
-    	cellBg:addChild( taskDesc )
-    	-- 任务奖励分隔
-    	-- local spliteRewardLine = ccui.Scale9Sprite:create( cc.rect( 0, 0, 20, 2 ), "res/image/ranklistreward/splitX.png" )
-        -- spliteRewardLine:setContentSize( tableViewBg:getContentSize().width - 130, 2 )
-        -- spliteRewardLine:setAnchorPoint( cc.p( 0, 0 ) )
-        -- spliteRewardLine:setPosition( 130, 70 )
-        -- cellBg:addChild( spliteRewardLine )
-    	-- 任务奖励图片
-		-- local taskReward = getCompositeNodeWithImg( "res/image/plugin/tasklayer/taskrewardbg.png", "res/image/plugin/tasklayer/taskrewardtext.png" )
-		local taskReward = cc.Sprite:create("res/image/plugin/tasklayer/taskrewardtext.png" )
-		taskReward:setScale(0.7)
-    	taskReward:setPosition( 130, 36 +15)
-    	cellBg:addChild( taskReward )
-    	-- 任务奖励icons
-    	local icons, iconData = self:createIcons( data )
-		icons:setAnchorPoint( cc.p( 0, 0.5 ) )
-		icons:setPosition( 135, 40 )
-    	cellBg:addChild( icons )
-    	-- 任务进度
-    	if data.curNum and data.maxNum then
-	    	-- 任务进度文字
-	    	local taskProcessText = XTHD.createLabel({
-	    		text      = LANGUAGE_TASK_PROGRESS..":",
-				fontSize  = 18,
-				anchor    = cc.p( 1, 0.5 ),
-				pos       = cc.p( cellBg:getContentSize().width - 90, cellBg:getContentSize().height - 30 ),
-				color     = cc.c3b( 54, 55, 112 ),
-				clickable = false,
-			})
-	    	cellBg:addChild( taskProcessText )
-	    	if self._tabIndex < 4 then
-	    		taskProcessText:setVisible(true)
-	    	else
-	    		taskProcessText:setVisible(false)
-	    	end
-	    	-- 任务进度数字
-	    	local taskProcessNumText = ""
-	    	if data.maxNum > 1000 then
-	    		local tmp = math.modf(data.curNum/data.maxNum*100)
-	    		taskProcessNumText = tmp.."%"
-	    	else
-	    		taskProcessNumText = data.curNum.."/"..data.maxNum
-	    	end
-	    	local taskProcessNum = XTHD.createLabel({
-	    		text      = taskProcessNumText,
-				fontSize  = 18,
-				anchor    = cc.p( 0, 0.5 ),
-				pos       = cc.p( cellBg:getContentSize().width - 87, cellBg:getContentSize().height - 30 ),
-				color     = cc.c3b( 255, 112, 62 ),
-				clickable = false,
-			})
-	    	cellBg:addChild( taskProcessNum )
-	    	if self._tabIndex < 4 then
-	    		taskProcessNum:setVisible(true)
-	    	else
-	    		taskProcessNum:setVisible(false)
-	    	end
-	    end
-    	-- 任务按钮
-    	if data.task_status == 1 then
-    		-- 领取
-    		local fetchButton = XTHD.createCommonButton({
-				text = LANGUAGE_KEY_SPACEFETCH,
-				isScrollView = true,
-				fontColor = cc.c3b( 255, 255, 255 ),
-				fontSize = 24,
-				isScrollView = true,
-				anchor = cc.p( 0.5, 0.5 ),
-				touchSize = cc.size(130, 60),
-				pos = cc.p( cellBg:getContentSize().width - 115, 43 ),
-				endCallback = function()
-					if self._tabIndex < 4 then
-						self:receiveTask(data.configId,iconData)
-					else
-						self:reciveRewardOne(data.configId)
-					end 
-				end})
-			fetchButton:setScale(0.8)
-			cellBg:addChild( fetchButton )
-			local fetchSpine = sp.SkeletonAnimation:create( "res/image/plugin/tasklayer/querenjinjie.json", "res/image/plugin/tasklayer/querenjinjie.atlas", 1.0)  
-			fetchSpine:setScaleX(1.2) 
-		    fetchButton:addChild( fetchSpine )
-		    fetchSpine:setPosition( fetchButton:getContentSize().width*0.5+7, fetchButton:getContentSize().height/2+3 )
-			fetchSpine:setAnimation( 0, "querenjinjie", true )
-    	elseif data.gotype ~= 0 then
-    		-- 前往
-    		local gotoButton = XTHD.createCommonButton({
-				btnColor = "write",
-				isScrollView = true,
-				text = LANGUAGE_KEY_SPACEGOTO,
-				fontColor = cc.c3b( 255, 255, 255 ),
-				isScrollView = true,
-				fontSize = 24,
-				anchor = cc.p( 0.5, 0.5 ),
-				touchSize = cc.size(130, 60),
-				pos = cc.p( cellBg:getContentSize().width - 115, 43 ),
-				endCallback = function()
-					LayerManager.addShieldLayout()
-					replaceLayer({
-                        fNode = self,
-                        id = data.gotype,
-                        chapterId = data.goparam,
-                        -- callback = function ()
-                        --     self:refreshData()
-                        -- end,
-                    })
-				end,
-			})
-			gotoButton:setScale(0.8)
-			cellBg:addChild( gotoButton )
-		elseif data.task_status == 2 then
-			-- 已领取
-	    	local yilingqu = XTHD.createLabel({
-	    		text      = "已领取",
-				fontSize  = 18,
-				anchor    = cc.p( 0.5, 0.5 ),
-				pos       = cc.p( cellBg:getContentSize().width - 60, 36 ),
-				color     = cc.c3b( 54, 55, 112 ),
-				clickable = false,
-			})
-	    	cellBg:addChild( yilingqu )
-    	else
-    		-- 未完成
-	    	local taskNotFinishText = XTHD.createLabel({
-	    		text      = LANGUAGE_TASK_TASKNOTFINISH,
-				fontSize  = 18,
-				anchor    = cc.p( 0.5, 0.5 ),
-				pos       = cc.p( cellBg:getContentSize().width - 60, 36 ),
-				color     = cc.c3b( 54, 55, 112 ),
-				clickable = false,
-			})
-	    	cellBg:addChild( taskNotFinishText )
-    	end
+		for i = 1, 2 do
+			local _index = index *2 + i
+			print("=======================",_index)
+			local data = self._tabTaskData[self._tabIndex][_index]
+			if data then
+				-- dump( data, "data"..index )
+				-- cell背景
+				local cellBg = ccui.Scale9Sprite:create( "res/image/plugin/tasklayer/cellbg.png" )
+				cellBg:setAnchorPoint( cc.p( 0.5, 0.5 ) )
+				local x = 25 + cellBg:getContentSize().width *0.5 + (i - 1)*(cellBg:getContentSize().width + 40)
+				cellBg:setPosition( x, cell:getContentSize().height * 0.5 )
+				cell:addChild( cellBg )
 
+				-- 任务图标背景
+				local taskIconBg = cc.Sprite:create( "res/image/plugin/tasklayer/iconbg.png" )
+				taskIconBg:setAnchorPoint( cc.p( 0.5, 0.5 ) )
+				taskIconBg:setPosition( taskIconBg:getContentSize().width *0.5 + 10, cellBg:getContentSize().height *0.5 - 2 )
+				taskIconBg:setScale(0.92)
+				cellBg:addChild( taskIconBg )
+				-- 任务图标
+				local taskIcon = XTHD.createSprite( "res/image/plugin/tasklayer/taskicon/"..( data.icon or 1 )..".png" )
+				taskIcon:setAnchorPoint( cc.p( 0.5, 0.5 ) )
+				taskIcon:setPosition( taskIconBg:getContentSize().width*0.5,taskIconBg:getContentSize().height *0.5 + 2 )
+				taskIcon:setScale(0.68)
+				taskIconBg:addChild( taskIcon )
+
+    			-- 任务描述
+    			local taskDesc = XTHD.createLabel({
+    				text      = data.description,
+					fontSize  = 14,
+					anchor    = cc.p( 0, 0.5 ),
+					pos       = cc.p(taskIconBg:getContentSize().width + 20, cellBg:getContentSize().height - 30 ),
+					color     = cc.c3b( 82, 47, 16 ),
+					clickable = false,
+					ttf = "res/fonts/def.ttf"
+				})
+    			cellBg:addChild( taskDesc )
+
+    			-- 任务奖励icons
+    			local icons, iconData = self:createIcons( data )
+				icons:setAnchorPoint( cc.p( 0, 0.5 ) )
+				icons:setPosition( 75, 20 )
+    			cellBg:addChild( icons )
+    			-- 任务进度
+    			if data.curNum and data.maxNum then
+	    			-- 任务进度文字
+	    			local taskProcessText = XTHD.createLabel({
+	    				text      = LANGUAGE_TASK_PROGRESS..":",
+						fontSize  = 14,
+						anchor    = cc.p( 1, 0.5 ),
+						pos       = cc.p( cellBg:getContentSize().width - 40, cellBg:getContentSize().height - 40 ),
+						color     = cc.c3b( 82, 47, 16 ),
+						clickable = false,
+					})
+	    			cellBg:addChild( taskProcessText )
+	    			if self._tabIndex < 4 then
+	    				taskProcessText:setVisible(true)
+	    			else
+	    				taskProcessText:setVisible(false)
+	    			end
+	    			-- 任务进度数字
+	    			local taskProcessNumText = ""
+	    			if data.maxNum > 1000 then
+	    				local tmp = math.modf(data.curNum/data.maxNum*100)
+	    				taskProcessNumText = tmp.."%"
+	    			else
+	    				taskProcessNumText = data.curNum.."/"..data.maxNum
+	    			end
+	    			local taskProcessNum = XTHD.createLabel({
+	    				text      = taskProcessNumText,
+						fontSize  = 14,
+						anchor    = cc.p( 0, 0.5 ),
+						pos       = cc.p( cellBg:getContentSize().width - 35, cellBg:getContentSize().height - 40 ),
+						color     = cc.c3b( 255, 112, 62 ),
+						clickable = false,
+					})
+	    			cellBg:addChild( taskProcessNum )
+	    			if self._tabIndex < 4 then
+	    				taskProcessNum:setVisible(true)
+	    			else
+	    				taskProcessNum:setVisible(false)
+	    			end
+				end
+    			-- 任务按钮
+    			if data.task_status == 1 then
+    				-- 领取
+    				local fetchButton = XTHDPushButton:createWithParams({
+						normalFile = "res/image/plugin/tasklayer/btn_lingqu_1.png",
+						selectedFile = "res/image/plugin/tasklayer/btn_lingqu_2.png",
+						isScrollView = true,
+						pos = cc.p( cellBg:getContentSize().width - 55, 30 ),
+						endCallback = function()
+							if self._tabIndex < 4 then
+								self:receiveTask(data.configId,iconData)
+							else
+								self:reciveRewardOne(data.configId)
+							end 
+						end})
+					cellBg:addChild( fetchButton )
+    			elseif data.gotype ~= 0 then
+    				-- 前往
+    				local gotoButton = XTHDPushButton:createWithParams({
+						normalFile = "res/image/plugin/tasklayer/btn_qianwang_1.png",
+						selectedFile = "res/image/plugin/tasklayer/btn_qianwang_2.png",
+						isScrollView = true,
+						pos = cc.p( cellBg:getContentSize().width - 55, 30 ),
+						endCallback = function()
+							LayerManager.addShieldLayout()
+							replaceLayer({
+								fNode = self,
+								id = data.gotype,
+								chapterId = data.goparam,
+								-- callback = function ()
+								--     self:refreshData()
+								-- end,
+							})
+						end,
+					})
+					cellBg:addChild( gotoButton )
+				elseif data.task_status == 2 then
+					-- 已领取
+	    			local yilingqu = XTHD.createLabel({
+	    				text      = "已领取",
+						fontSize  = 18,
+						anchor    = cc.p( 0.5, 0.5 ),
+						pos       = cc.p( cellBg:getContentSize().width - 60, 36 ),
+						color     = cc.c3b( 54, 55, 112 ),
+						clickable = false,
+					})
+	    			cellBg:addChild( yilingqu )
+    			else
+    				-- 未完成
+	    			local taskNotFinishText = XTHD.createLabel({
+	    				text      = LANGUAGE_TASK_TASKNOTFINISH,
+						fontSize  = 18,
+						anchor    = cc.p( 0.5, 0.5 ),
+						pos       = cc.p( cellBg:getContentSize().width - 60, 30 ),
+						color     = cc.c3b( 54, 55, 112 ),
+						clickable = false,
+					})
+	    			cellBg:addChild( taskNotFinishText )
+    			end
+			end
+		end
     	return cell
     end
 	self._taskTableView.getCellNumbers=numberOfCellsInTableView
@@ -659,7 +664,7 @@ function RenWuLayer:createIcons( data )
 	-- print("任务面板奖励数据：")
 	-- print_r(data)
 	local icons = XTHD.createSprite()
-	icons:setContentSize( 500, 100 )
+	icons:setContentSize( 300, 100 )
 	-- icons数据，ShowResult弹窗使用
 	local iconData = {}
 	if data.taskType < 4 then
@@ -672,14 +677,15 @@ function RenWuLayer:createIcons( data )
 	                itemid = tempTable[1]
 	                count = tempTable[2]
 	            end
+		
 	            local rewardIcon = ItemNode:createWithParams({
 	                _type_ = data["reward"..i.."type"],
 	                itemId = itemid,
 	                count = count,
 	            })
-	            rewardIcon:setScale(0.6)
+	            rewardIcon:setScale(0.4)
 	            rewardIcon:setAnchorPoint(0.5, 0.5 )
-	            rewardIcon:setPosition( 80*i, 55 )
+	            rewardIcon:setPosition( 50 *i, icons:getContentSize().height *0.5 + 10)
 	            icons:addChild( rewardIcon )
 	            if data["reward"..i.."type"] == 4 then
 	            	iconData[#iconData + 1] = {
@@ -697,16 +703,17 @@ function RenWuLayer:createIcons( data )
 	    end
 	else
 		if data["reward"] then
+
             local tempTable = string.split(data["reward"],"#")
             local rewardIcon = ItemNode:createWithParams({
                 _type_ = tonumber(tempTable[1]),
                 itemId = tonumber(tempTable[2]),
                 count = tonumber(tempTable[3]),
             })
-            rewardIcon:setScale(0.6)
+            rewardIcon:setScale(0.35)
             rewardIcon:setAnchorPoint(0.5, 0.5 )
-            rewardIcon:setPosition( 80, 55 )
-            icons:addChild( rewardIcon )
+	        rewardIcon:setPosition( 50, icons:getContentSize().height *0.5 + 10)
+	        icons:addChild( rewardIcon )
             iconData[#iconData + 1] = {
                 rewardtype = tonumber(tempTable[1]),
                 num = tonumber(tempTable[3]),
@@ -768,6 +775,16 @@ function RenWuLayer:buildData()
 			
     	end
     end
+	self._huoyueRenwu = {}
+	--在这筛选出活跃任务
+	local renwuList = gameData.getDataFromCSV( "RenwuList")
+	for k,v in pairs(renwuList) do
+		if v["type"] == 3 and  v.needtype == 12 then
+			self._huoyueRenwu[#self._huoyueRenwu + 1] = v
+		end
+	end
+
+
     -- 对任务列表排序
     for i = 1, 4 do
     	table.sort( self._tabTaskData[i], function( a, b )
@@ -859,6 +876,11 @@ function RenWuLayer:refreshTopTask()
 	if not self._iconSpine then
 		return
 	end
+	if self._selectIndex ~= 1 then
+		self._HuoyueNode:setVisible(false)
+	else
+		self._HuoyueNode:setVisible(true)
+	end
 	-- dump( self._tabTopTask, "self._tabTopTask" )
 	if #self._tabTopTaskData[self._tabIndex] == 0 then
 		self._loadingbar:setVisible( false )
@@ -867,102 +889,182 @@ function RenWuLayer:refreshTopTask()
 		self._loadingbarNum:setVisible( false )
 		self._topRewardIcon:setVisible( false )
 		self._topRewardIcon:setEnable( false )
-		self._topFinishAllTasks:setVisible( true )
+		if  self._selectIndex ~= 1 then
+			self._topFinishAllTasks:setVisible( true )
+		end
 	else
-		self._loadingbar:setVisible( true )
-		self._loadingbarBg:setVisible( true )
-		self._topTaskTip:setVisible( true )
-		self._loadingbarNum:setVisible( true )
-		self._topRewardIcon:setVisible( true )
-		self._topRewardIcon:setEnable( true )
-		self._topFinishAllTasks:setVisible( false )
+		if  self._selectIndex ~= 1 then
+			self._loadingbar:setVisible( true )
+			self._loadingbarBg:setVisible( true )
+			self._topTaskTip:setVisible( true )
+			self._loadingbarNum:setVisible( true )
+			self._topRewardIcon:setVisible( true )
+			self._topRewardIcon:setEnable( true )
+			self._topFinishAllTasks:setVisible( false )
+		end
 		local data = self._tabTopTaskData[self._tabIndex][1]
 		if data.curNum < data.maxNum then
-			self._topTaskTip:setString( LANGUAGE_TASK_FORMAT1( ( data.maxNum - data.curNum ), LANGUAGE_KEY_TASKTYPE( self._tabIndex ), "" ) )
-			self._loadingbar:setPercentage( ( data.curNum/data.maxNum )*100 )
-			self._iconSpine:setAnimation( 0, "idle", true )
-	    	self._topRewardIcon:setTouchEndedCallback(function()
-	    		local icons, iconData = self:createIcons( data )
-	    		-- 预览弹窗
-	   			local popLayer = XTHD.createPopLayer({opacityValue = 1})
-   				popLayer._containerLayer:setContentSize( #iconData*80 + 20, 130 )
-   				popLayer._containerLayer:setAnchorPoint( cc.p( 0.5, 1 ) )
-   				popLayer._containerLayer:setPosition( self._topRewardIcon:getContentSize().width*0.5, 0 )
-   				self._topRewardIcon:addChild( popLayer )
-   				popLayer:show()
-   				-- 预览背景
-   				local previewPop = ccui.Scale9Sprite:create( "res/image/common/scale9_bg2_25.png" )
-	    		previewPop:setAnchorPoint( cc.p( 0, 1 ) )
-	    		previewPop:setPosition( 0, 110 )
-	    		previewPop:setContentSize( #iconData*80 + 20, 100 )
-	    		popLayer:addContent( previewPop )
-	    		-- 预览标题
-   				local previewTitle = XTHD.createSprite( "res/image/plugin/tasklayer/rewardtext.png" )
-	    		previewTitle:setAnchorPoint( cc.p( 0.5, 1 ) )
-	    		previewTitle:setPosition( previewPop:getContentSize().width*0.5, previewPop:getContentSize().height - 5 )
-	    		previewPop:addChild( previewTitle )
-	    		icons:setAnchorPoint( cc.p( 0, 0 ) )
-				icons:setPosition( -30, -10 )
-	    		previewPop:addChild( icons ) 
-	    	end)
+			if self._selectIndex ~= 1 then
+				self._topTaskTip:setString( LANGUAGE_TASK_FORMAT1( ( data.maxNum - data.curNum ), LANGUAGE_KEY_TASKTYPE( self._tabIndex ), "" ) )
+				self._loadingbar:setPercentage( ( data.curNum/data.maxNum )*100 )
+				self._iconSpine:setAnimation( 0, "idle", true )
+	    		self._topRewardIcon:setTouchEndedCallback(function()
+	    			local icons, iconData = self:createIcons( data )
+	    			-- 预览弹窗
+	   				local popLayer = XTHD.createPopLayer({opacityValue = 1})
+   					popLayer._containerLayer:setContentSize( #iconData*80 + 20, 130 )
+   					popLayer._containerLayer:setAnchorPoint( cc.p( 0.5, 1 ) )
+   					popLayer._containerLayer:setPosition( self._topRewardIcon:getContentSize().width*0.5, 0 )
+   					self._topRewardIcon:addChild( popLayer )
+   					popLayer:show()
+   					-- 预览背景
+   					local previewPop = ccui.Scale9Sprite:create( "res/image/common/scale9_bg2_25.png" )
+	    			previewPop:setAnchorPoint( cc.p( 0, 1 ) )
+	    			previewPop:setPosition( 0, 110 )
+	    			previewPop:setContentSize( #iconData*80 + 20, 100 )
+	    			popLayer:addContent( previewPop )
+	    			-- 预览标题
+   					local previewTitle = XTHD.createSprite( "res/image/plugin/tasklayer/rewardtext.png" )
+	    			previewTitle:setAnchorPoint( cc.p( 0.5, 1 ) )
+	    			previewTitle:setPosition( previewPop:getContentSize().width*0.5, previewPop:getContentSize().height - 5 )
+	    			previewPop:addChild( previewTitle )
+	    			icons:setAnchorPoint( cc.p( 0, 0 ) )
+					icons:setPosition( -30, -10 )
+	    			previewPop:addChild( icons ) 
+	    		end)
+			else
+				self._loadingbar:setPercentage(data.curNum)
+--				for i = 1,#self._HuoyueNode.btnList do
+--					if self._huoyueRenwu[i].taskid >= self._tabTopTaskData[self._selectIndex][1].taskid then
+--						self._HuoyueNode.btnList[i]:setTouchEndedCallback(function()
+--							XTHDTOAST("未满足领取条件")
+--						end)
+--					end
+--				end
+			end
 		else
-			self._topTaskTip:setString( LANGUAGE_KEY_CANFETCHREWARD )
-			self._loadingbar:setPercentage( 100 )
-			-- self._iconSpine:setAnimation( 0, "2atk", true )
-			self._iconSpine:setAnimation( 0, "renwu", true )
-	    	self._topRewardIcon:setTouchEndedCallback(function()
-	    		XTHDHttp:requestAsyncInGameWithParams({
-		            modules="finishTask?",
-		            params = {taskId = data.taskid},
-		            successCallback = function( finishTask )
-		                -- dump(finishTask,"领取顶部任务奖励返回")
-		                if tonumber( finishTask.result ) == 0 then
-		                	local icons, iconData = self:createIcons( data )
-		     --                self._allTaskList = finishTask.task_list
-							-- self:buildData()
-		     --                self:refreshUI( true, true )
-		     				self:freshDataAndUI(finishTask)
-		                    -- 成功获取弹窗
-					    	ShowRewardNode:createWithParams({
-								showData = iconData,
-								target = self,
-								zorder = 10
-					    	})
-					    	-- 更新属性
-					    	if finishTask.property and #finishTask.property > 0 then
-				                for i=1, #finishTask.property do
-				                    local pro_data = string.split( finishTask.property[i], ',' )
-				                    DBUpdateFunc:UpdateProperty( "userdata", pro_data[1], pro_data[2] )
-				                end
-				                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) --刷新数据信息
-				            end
-				            -- 更新背包
-				            if finishTask.bagItems and #finishTask.bagItems ~= 0 then
-				                for i=1, #finishTask.bagItems do
-				                    local item_data = finishTask.bagItems[i]
-				                    if item_data.count and tonumber( item_data.count ) ~= 0 then
-				                        DBTableItem.updateCount( gameUser.getUserId(), item_data, item_data.dbId )
-				                    else
-				                        DBTableItem.deleteData( gameUser.getUserId(), item_data.dbId )
-				                    end
-				                end
-				            end
-							XTHD.FristChongZhiPopLayer(cc.Director:getInstance():getRunningScene())
-		                else
-		                    XTHDTOAST(finishTask.msg)
-		                end
-		            end,--成功回调
-		            failedCallback = function()
-		                XTHDTOAST(LANGUAGE_TIPS_WEBERROR)------"网络请求失败")
-		            end,--失败回调
-		            targetNeedsToRetain = self,--需要保存引用的目标
-		            loadingType = HTTP_LOADING_TYPE.CIRCLE,--加载图显示 circle 光圈加载 head 头像加载
-	            })
-	    	end)
-		end
-		self._loadingbarNum:setString( data.curNum.."/"..data.maxNum )
+			if self._selectIndex ~= 1 then
+				self._topTaskTip:setString( LANGUAGE_KEY_CANFETCHREWARD )
+				self._loadingbar:setPercentage( 100 )
+				self._iconSpine:setAnimation( 0, "renwu", true )
+	    		self._topRewardIcon:setTouchEndedCallback(function()
+	    			XTHDHttp:requestAsyncInGameWithParams({
+						modules="finishTask?",
+						params = {taskId = data.taskid},
+						successCallback = function( finishTask )
+							if tonumber( finishTask.result ) == 0 then
+		                		local icons, iconData = self:createIcons( data )
+		     					self:freshDataAndUI(finishTask)
+								-- 成功获取弹窗
+					    		ShowRewardNode:createWithParams({
+									showData = iconData,
+									target = self,
+									zorder = 10
+					    		})
+					    		-- 更新属性
+					    		if finishTask.property and #finishTask.property > 0 then
+									for i=1, #finishTask.property do
+										local pro_data = string.split( finishTask.property[i], ',' )
+										DBUpdateFunc:UpdateProperty( "userdata", pro_data[1], pro_data[2] )
+									end
+									XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) --刷新数据信息
+								end
+								-- 更新背包
+								if finishTask.bagItems and #finishTask.bagItems ~= 0 then
+									for i=1, #finishTask.bagItems do
+										local item_data = finishTask.bagItems[i]
+										if item_data.count and tonumber( item_data.count ) ~= 0 then
+											DBTableItem.updateCount( gameUser.getUserId(), item_data, item_data.dbId )
+										else
+											DBTableItem.deleteData( gameUser.getUserId(), item_data.dbId )
+										end
+									end
+								end
+								XTHD.FristChongZhiPopLayer(cc.Director:getInstance():getRunningScene())
+							else
+								XTHDTOAST(finishTask.msg)
+							end
+						end,--成功回调
+						failedCallback = function()
+							XTHDTOAST(LANGUAGE_TIPS_WEBERROR)
+						end,--失败回调
+						targetNeedsToRetain = self,--需要保存引用的目标
+						loadingType = HTTP_LOADING_TYPE.CIRCLE,--加载图显示 circle 光圈加载 head 头像加载
+					})
+	    		end)
+				self._loadingbarNum:setString( data.curNum.."/"..data.maxNum )
+			else
+				for i = 1, #self._huoyueRenwu do
+					if self._huoyueRenwu[i].taskid == self._tabTopTaskData[self._selectIndex][1].taskid then
+						if self._HuoyueNode.btnSpine[i] then
+							self._HuoyueNode.btnSpine[i]:setAnimation( 0, "renwu", true )
+						end
+						self._HuoyueNode.boxlist[i]:setVisible(false)
+						self._HuoyueNode.btnList[i]:setEnable(true)
+						self._HuoyueNode.btnList[i]:setTouchEndedCallback(function()
+							XTHDHttp:requestAsyncInGameWithParams({
+								modules="finishTask?",
+								params = {taskId = data.taskid},
+								successCallback = function( finishTask )
+									if tonumber( finishTask.result ) == 0 then
+		                				local icons, iconData = self:createIcons( data )
+		     							self:freshDataAndUI(finishTask)
+										-- 成功获取弹窗
+					    				ShowRewardNode:createWithParams({
+											showData = iconData,
+											target = self,
+											zorder = 10
+					    				})
+					    				-- 更新属性
+					    				if finishTask.property and #finishTask.property > 0 then
+											for i=1, #finishTask.property do
+												local pro_data = string.split( finishTask.property[i], ',' )
+												DBUpdateFunc:UpdateProperty( "userdata", pro_data[1], pro_data[2] )
+											end
+											XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO}) --刷新数据信息
+										end
+										-- 更新背包
+										if finishTask.bagItems and #finishTask.bagItems ~= 0 then
+											for i=1, #finishTask.bagItems do
+												local item_data = finishTask.bagItems[i]
+												if item_data.count and tonumber( item_data.count ) ~= 0 then
+													DBTableItem.updateCount( gameUser.getUserId(), item_data, item_data.dbId )
+												else
+													DBTableItem.deleteData( gameUser.getUserId(), item_data.dbId )
+												end
+											end
+										end
+										self:refresshHuoyueNode()
+										XTHD.FristChongZhiPopLayer(cc.Director:getInstance():getRunningScene())
+									else
+										XTHDTOAST(finishTask.msg)
+									end
+								end,--成功回调
+								failedCallback = function()
+									XTHDTOAST(LANGUAGE_TIPS_WEBERROR)
+								end,--失败回调
+								targetNeedsToRetain = self,--需要保存引用的目标
+								loadingType = HTTP_LOADING_TYPE.CIRCLE,--加载图显示 circle 光圈加载 head 头像加载
+							})
+						end)
+					end
+				end
+			end
+		end	
 	end
 end
+
+function RenWuLayer:refresshHuoyueNode()
+	for i = 1, #self._huoyueRenwu do
+		self._HuoyueNode.boxlist[i]:setVisible(true)
+		self._HuoyueNode.btnSpine[i]:removeFromParent()
+		self._HuoyueNode.btnSpine[i] = nil
+		if self._huoyueRenwu[i].taskid <= self._tabTopTaskData[self._selectIndex][1].taskid then
+			self._HuoyueNode.boxlist[i]:setTexture("res/image/plugin/tasklayer/btn_box_2.png")
+		end 
+	end
+end
+
 -- 重新请求数据，刷新界，完成任务的回调使用
 function RenWuLayer:refreshData()
 	XTHDHttp:requestAsyncInGameWithParams({

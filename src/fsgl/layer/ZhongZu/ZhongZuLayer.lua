@@ -222,7 +222,6 @@ function ZhongZuLayer:init()
     self:addChild(goBattle)
     goBattle:setContentSize(cc.size(250,250))
     goBattle:setPosition(selfSize.width / 2,selfSize.height / 2)   
-
 	goBattle:setTouchBeganCallback(function()
 		taiji:setScale(0.78)
 	end)
@@ -237,11 +236,14 @@ function ZhongZuLayer:init()
             self.__gotoBattleCounter = self.__gotoBattleCounter + 1
             -- taiji:setAnimation(0,"atk",true)
             performWithDelay(self,function( )
+                YinDaoMarg:getInstance():guideTouchEnd()
                 requires("src/fsgl/layer/ZhongZu/ZhongZuMap.lua"):create(self)
                 -- taiji:setAnimation(0,"idle",true)
             end,0.5)
         end 
     end)
+    self.goBattleBtn = goBattle
+    self:addGuide()
     -----参与奖励
     local _joinTips = cc.Sprite:create("res/image/camp/camp_join_tips.png")
     self:addChild(_joinTips)
@@ -452,6 +454,15 @@ function ZhongZuLayer:showExtraTips( )
             campName:setPosition(number:getPositionX(),y + number:getContentSize().height + 10)
         end 
     end     
+end
+
+function ZhongZuLayer:addGuide( )
+    YinDaoMarg:getInstance():addGuide({
+        parent = self,
+        target = self.goBattleBtn, -----点击开战按钮
+        index = 4,
+    },25)
+    YinDaoMarg:getInstance():doNextGuide()    
 end
 
 return ZhongZuLayer

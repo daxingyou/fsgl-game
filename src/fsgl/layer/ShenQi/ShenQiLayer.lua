@@ -855,8 +855,8 @@ function ShenQiLayer:refreshDataById(godid,data, isShowAni)
     self.ownHero:setAnchorPoint(0.5,0)
     self.ownHero:setPosition(self._leftBg:getBoundingBox().width/2,100)
     self._leftBg:addChild(self.ownHero)
-
     self:createConsume(nowCSV)
+    self:addGuide()
 end
 
 function ShenQiLayer:createConsume(nowCSV)
@@ -1061,6 +1061,10 @@ function ShenQiLayer:createGemWithData(data) --Data为动态库中的一条数�
 
             self._gemList[#self._gemList+1] = gemBg
             -- nowBox = nowBox + 1
+
+             if i == 1 then
+                self.jiaBtn = gemBgUnlock
+            end
 
             if showUnlockTip then
                 local tip = XTHDLabel:createWithParams({
@@ -1350,10 +1354,21 @@ function ShenQiLayer:refreshWearer( heroid)
 
         self:refreshDataById(self._godid)
     end 
+    self:addGuide()
 end
 
-function ShenQiLayer:addGuide( )
-    
+function ShenQiLayer:addGuide()
+    YinDaoMarg:getInstance():addGuide({
+        parent = self,
+        target = self.ownHero, -----点击人物装备
+        index = 3,
+    },26)
+    YinDaoMarg:getInstance():addGuide({
+        parent = self,
+        target = self.jiaBtn, -----点击人物装备
+        index = 6,
+    },26)
+    YinDaoMarg:getInstance():doNextGuide()    
 end
 
 return ShenQiLayer

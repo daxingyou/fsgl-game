@@ -1065,6 +1065,7 @@ function ZhuChengMenuLayer:initBottomMenu()
             BangPaiFengZhuangShuJu.createGuildLayer( { parNode = self })
         elseif sIndex == 7 then
             ----神器
+            YinDaoMarg:getInstance():guideTouchEnd()
             self:enterArtifact()
         elseif sIndex == 8 then
             self:onEquipSmeltBtn()
@@ -1207,7 +1208,7 @@ function ZhuChengMenuLayer:initBottomMenu()
             redDot:setVisible(false)
             self._artifactRedDot = redDot
             self.__functionButtons[19] = menuBtn
-            -- shenqi
+            self.shenqiBtn = menuBtn
             -- menuBtn:setPosition(cc.p(self:getContentSize().width-380,10))
         elseif i == 8 then
             ------回收按钮
@@ -1249,6 +1250,7 @@ function ZhuChengMenuLayer:initRightUpMenu()
             local result, _data = isTheFunctionAvailable(15)
             -----功能ID种族
             if result then
+                YinDaoMarg:getInstance():guideTouchEnd()
                 requires("src/fsgl/layer/ZhongZu/forTheHost/ZhongZuCastellenMain.lua"):create(1)
             else
                 XTHDTOAST(_data.tip)
@@ -1265,6 +1267,7 @@ function ZhuChengMenuLayer:initRightUpMenu()
                 XTHDTOAST("12级解锁世界Boss")
                 return
             end
+            YinDaoMarg:getInstance():guideTouchEnd()
             LayerManager.createModule("src/fsgl/layer/XiongShouLaiXi/XiongShouLaiXiLayer.lua", { par = self })
         elseif sIndex == 5 then
             -- 首冲
@@ -1317,6 +1320,7 @@ function ZhuChengMenuLayer:initRightUpMenu()
             -- 任务按钮位置
         elseif i == 2 then
             menuBtn:setAnchorPoint(0, 0)
+            self.duoquanBtn = menuBtn
             self:PushBtnToRightNode(menuBtn)
             self._leftupBtns[12] = { x = menuBtn:getPositionX() -5, y = menuBtn:getPositionY(), targ = menuBtn, isActivity = true }
         elseif i == 3 then
@@ -1332,6 +1336,7 @@ function ZhuChengMenuLayer:initRightUpMenu()
         elseif i == 4 then
             menuBtn:setScale(1)
             menuBtn:setName("bosscome")
+            self.bossBtn = menuBtn
             self:PushBtnToCeilNode(menuBtn)
         elseif i == 5 then
             -- 首冲
@@ -1575,7 +1580,7 @@ function ZhuChengMenuLayer:initLeftUpMenu()
             self.__functionButtons[39] = menuBtn
             self.onlinerewardRedDot = redDot
             self.Time = XTHDLabel:create("", 20, "res/fonts/def.ttf")
-            self.Time:setColor(cc.c3b(255, 255, 255))
+            self.Time:setColor(cc.c3b(255, 246, 127))
             menuBtn:addChild(self.Time)
             self.Time:setPosition(menuBtn:getContentSize().width / 2, -10)
             XTHD.addEventListener( {
@@ -2997,7 +3002,28 @@ function ZhuChengMenuLayer:addGuide()
         index = 2,
         needNext = false,
     } , 21)
-    -- YinDaoMarg:getInstance():doNextGuide()
+    YinDaoMarg:getInstance():addGuide( {
+        parent = self,
+        target = self.bossBtn,
+        ----世界boss
+        index = 2,
+        needNext = false,
+    } , 23)
+    YinDaoMarg:getInstance():addGuide( {
+        parent = self,
+        target = self.duoquanBtn,
+        ----夺权
+        index = 2,
+        needNext = false,
+    } , 24)
+    YinDaoMarg:getInstance():addGuide( {
+        parent = self,
+        target = self.shenqiBtn,
+        ----神器
+        index = 2,
+        needNext = false,
+    } , 26)
+--     YinDaoMarg:getInstance():doNextGuide()
 end
 
 function ZhuChengMenuLayer:guide2Fight()

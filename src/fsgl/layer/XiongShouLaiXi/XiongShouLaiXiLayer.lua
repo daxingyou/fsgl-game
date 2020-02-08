@@ -125,6 +125,7 @@ function XiongShouLaiXiLayer:initUI( )
         endCallback = function()
             if self.data.openState and self.data.openState==1 then
                 if self.data.cd ==0 then
+                    YinDaoMarg:getInstance():overCurrentGuide(true)
                     LayerManager.addShieldLayout()
                     local _layer = requires("src/fsgl/layer/ChuZhan/XuanZeYingXiongCopyLayer.lua"):create(BattleType.WORLDBOSS_PVE)
                     fnMyPushScene(_layer)
@@ -159,6 +160,7 @@ function XiongShouLaiXiLayer:initUI( )
         self.cd_label:setString(LANGUAGE_KEY_WORLDBOSS_TIME(self.data.cd))
         self:cdRefresh(self.data.cd)
     end
+    self:addGuide()
 
     --活动倒计时
     local time_bg=cc.Sprite:create("res/image/worldboss/tim_bg.png")
@@ -835,6 +837,15 @@ function XiongShouLaiXiLayer:revival()
     btn_right:setOpacity(255)
     setnameBg:addChild(btn_right)
     return popLayer
+end
+
+function XiongShouLaiXiLayer:addGuide( )
+    YinDaoMarg:getInstance():addGuide({
+        parent = self,
+        target = self.battle_btn, -----点击挑战按钮
+        index = 3,
+    },23)
+    YinDaoMarg:getInstance():doNextGuide()    
 end
 
 return XiongShouLaiXiLayer

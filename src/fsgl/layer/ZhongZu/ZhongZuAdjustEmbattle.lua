@@ -131,6 +131,7 @@ function ZhongZuAdjustEmbattle:createListCell( indx,data)
 	button:setScale(0.6)
 	button:setTag(indx)
 	button:setTouchEndedCallback(function( )
+        YinDaoMarg:getInstance():overCurrentGuide(true)
 		LayerManager.addShieldLayout()
 		local _team_data = self:getTeamData(indx)
 		local _layer = requires("src/fsgl/layer/ChuZhan/XuanZeYingXiongNewLayer.lua"):createWithParams({
@@ -202,6 +203,10 @@ function ZhongZuAdjustEmbattle:createListCell( indx,data)
 		_label:setAnchorPoint(1,0.5)
 		_label:setPosition(x - 50,button:getPositionY())
 	end 
+    if indx == 1 then
+        self.adjustBtn = button
+        self:addGuide()
+    end
 	return node
 end
 --此处把数据组装成PVP防守队伍相同的结构，是为了在选将界面方便做统一处理
@@ -257,6 +262,16 @@ function ZhongZuAdjustEmbattle:updateUI( )
 	titleBg:setPosition(self._backBoard:getContentSize().width / 2,self._backBoard:getContentSize().height - titleBg:getContentSize().height - 18)
 	
 	self:initListView(self._backBoard,titleBg:getPositionY() - titleBg:getContentSize().height)
+end
+
+function ZhongZuAdjustEmbattle:addGuide( )
+    YinDaoMarg:getInstance():addGuide({
+        parent = self,
+        target = self.adjustBtn, -----点击调整按钮
+        index = 6,
+        offset = cc.p(535,415),
+    },25)
+    YinDaoMarg:getInstance():doNextGuide()    
 end
 
 return ZhongZuAdjustEmbattle

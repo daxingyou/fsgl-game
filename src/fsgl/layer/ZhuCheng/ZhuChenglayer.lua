@@ -1370,7 +1370,7 @@ function ZhuChenglayer:addGuide( )
     print("'''''''''''''''''''''''''''''''''''the current group is ,step is",_group,index)
     if ((_group == 7 and index == 2) or (_group == 11 and index == 2) or (_group == 12 and index == 2) or (_group == 13 and index == 2) or (_group == 14 and index == 2)
          or (_group == 15 and index == 2) or (_group == 16 and index == 2) or (_group == 17 and index == 2) or (_group == 18 and index == 2)
-         or (_group == 19 and index == 2) or (_group == 20 and index == 2)) then
+         or (_group == 19 and index == 2) or (_group == 22 and index == 2)) then
         YinDaoMarg:getInstance():getACover(self)
         self:gotoSpecifiedBuild(1,removeCover,true)----演武场
         self:removeChildByName("_worldBossLayer") ----去掉世界boss的结算面板
@@ -1380,7 +1380,7 @@ function ZhuChenglayer:addGuide( )
     elseif _group == 6 and index == 2 then 
         YinDaoMarg:getInstance():getACover(self)
         self:gotoSpecifiedBuild(5,removeCover,true)----铁匠铺
-    elseif _group == 10 and index == 2 then 
+    elseif (_group == 10 and index == 2) or (_group == 25 and index == 2) then 
         YinDaoMarg:getInstance():getACover(self)
         self:gotoSpecifiedBuild(9,removeCover,true)----领地战
     elseif _group == 14 and index == 2 then 
@@ -1407,15 +1407,17 @@ function ZhuChenglayer:addGuide( )
         {15,2},----求签试练之塔
         {16,2},----天命骰子
         {18,2},----神器
-        {19,2},----天兵阁
+        {19,2},----神兵阁
         {22,2},----押运粮草
     })
     YinDaoMarg:getInstance():addGuide({
         parent = self,
         target = self._buildingsTable[9], ----种族旗
-        index = 2,
         needNext = false,
-    },10)
+    },{
+        {10,2}, ---领地战
+        {25,2}, ---多人副本
+    })
     ---
     -- if not self._externalMark or self._externalMark.guide ~= true then
     YinDaoMarg:getInstance():doNextGuide()

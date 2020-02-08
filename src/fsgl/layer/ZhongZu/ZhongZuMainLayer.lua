@@ -215,6 +215,7 @@ function ZhongZuMainLayer:init()
         btn:setTouchEndedCallback(function( )
             local _index = btn:getTag()
             if _index == 1 then -----种族战入口 
+                YinDaoMarg:getInstance():guideTouchEnd()
                 self:changeFunction(4)
             elseif _index == 3 then  --种族商店
                 self:changeFunction(3)
@@ -228,6 +229,10 @@ function ZhongZuMainLayer:init()
         end)
         bg:addChild(btn)
         btn:setPosition(pos[i])
+         if i == 1 then
+            self.zhongzuBtn = btn
+            self:addGuide()
+        end
         -----功能名字框
         local _name = cc.Sprite:create("res/image/camp/".._name[i]..".png")
         btn:addChild(_name)
@@ -1560,6 +1565,15 @@ function ZhongZuMainLayer:collectMemory( )
         end 
     end 
     helper.collectMemory()
+end
+
+function ZhongZuMainLayer:addGuide( )
+    YinDaoMarg:getInstance():addGuide({
+        parent = self,
+        target = self.zhongzuBtn, -----点击夺城战按钮
+        index = 3,
+    },25)
+    YinDaoMarg:getInstance():doNextGuide()    
 end
 
 return ZhongZuMainLayer

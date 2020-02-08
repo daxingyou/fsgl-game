@@ -254,6 +254,8 @@ function ZhongZuMap:init( )
 			_numberBox:addChild(self._selfDefenceNum)
 			self._selfDefenceNum:setScale(0.5)
 			self._selfDefenceNum:setPosition(_numberBox:getContentSize().width / 2,_numberBox:getContentSize().height / 2)
+            self.adjustBtn = _btn
+            self:addGuide()
 		end 
 	end 
     self:createMap()     
@@ -789,6 +791,7 @@ end
 function ZhongZuMap:doSouthEastBtns(btnIndex)
 	if btnIndex then 
 		if btnIndex == 1 then -----调整队伍	
+            YinDaoMarg:getInstance():guideTouchEnd()
 			if ZhongZuDatas:isCampWarStart() == true then 
 				XTHDTOAST(LANGUAGE_CAMP_TIPSWORDS35)
 				return 
@@ -1090,6 +1093,15 @@ function ZhongZuMap:updateEnemyCityDFDSUM(index,data)
 			self._enemyCitys[index]._perCityAllTeam:setString(data.defendSum)
 		end 
 	end 
+end
+
+function ZhongZuMap:addGuide( )
+    YinDaoMarg:getInstance():addGuide({
+        parent = self,
+        target = self.adjustBtn, -----点击队伍调整按钮
+        index = 5,
+    },25)
+    YinDaoMarg:getInstance():doNextGuide()    
 end
 
 return ZhongZuMap
