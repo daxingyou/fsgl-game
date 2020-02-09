@@ -62,7 +62,9 @@ function ItemNode:ctor(params)
 		-- 是否需要置灰
 		isLightAct = false,-- 光效
 		isShowDrop = true,--是否显示道具详细信息和获取途径
+		showDrropType = 1,--显示道具详细信息和获取途径时的父节点类型，1 是layout类型，返回时会直接跳转主城，2 是弹窗类型，返回时会删除父节点
 	}
+	
 	self.posCallback = nil
 	-- 设置tip位置
 	self._itemQuality = 0
@@ -78,6 +80,7 @@ function ItemNode:ctor(params)
 	self.isScrollView = params.isScrollView
 	self.isShowDrop = params.isShowDrop
 	self.count = params.count
+	self._showDrropType = params.showDrropType
 	-- tonumber(params.count)
 	local itemId = params.itemId
 	self.dbId = params.dbId
@@ -516,8 +519,6 @@ function ItemNode:ctor(params)
 
 	self._listener = listener
 
-
-
 end
 
 function ItemNode:setCountNumber(_num)
@@ -596,7 +597,7 @@ function ItemNode:ShowDorp(itemId)
 			cc.Director:getInstance():getRunningScene():addChild(StoredValue, 2) 
 		else
 			local popLayer = requires("src/fsgl/layer/common/ItemDropPopLayer1.lua")	
-			popLayer= popLayer:create( tonumber( itemId ) )
+			popLayer= popLayer:create( tonumber( itemId ) ,nil, self._showDrropType)
 			cc.Director:getInstance():getRunningScene():addChild( popLayer, 3 )
 		end
 	end
@@ -1398,6 +1399,10 @@ function ItemNode:_getSaintTipsLayer()
 	end
 
 	return bg
+end
+
+function ItemNode:refreshItenNodeNum()
+	print("aaaaaaaaaaaaaaaaaaaaaaaa")
 end
 
 function ItemNode:getImg()

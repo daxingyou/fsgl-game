@@ -423,6 +423,7 @@ function QuanfuchongbangActivity:initJLTableView(index)
 				 --dbId = nil,
 				-- itemId = _itemData and _itemData.reward1id or 0,
 				_type_ = 3,
+				showDrropType = 2,
 				 count = list.rewardingot
 			})
 			self._ActivityList[#self._ActivityList + 1] = item
@@ -430,6 +431,7 @@ function QuanfuchongbangActivity:initJLTableView(index)
 		if list.rewardgold > 0 then
 			local item = ItemNode:createWithParams({
 				 _type_ = 2,
+				showDrropType = 2,
 				 count = list.rewardgold
 			})
 			self._ActivityList[#self._ActivityList + 1] = item
@@ -437,6 +439,7 @@ function QuanfuchongbangActivity:initJLTableView(index)
 		if list.rewardjade > 0 then
 			local item = ItemNode:createWithParams({
 			 _type_ = 6,
+			showDrropType = 2,
 			 count = list.rewardjade
 			})
 			self._ActivityList[#self._ActivityList + 1] = item
@@ -444,6 +447,7 @@ function QuanfuchongbangActivity:initJLTableView(index)
 		if list.rewardfaction > 0 then
 			local item = ItemNode:createWithParams({
 			 _type_ = 203,
+			showDrropType = 2,
 			 count = list.rewardfaction
 			})
 			self._ActivityList[#self._ActivityList + 1] = item
@@ -454,7 +458,8 @@ function QuanfuchongbangActivity:initJLTableView(index)
 				local item = ItemNode:createWithParams({
 					 itemId = list["reward"..i.."id"],
 					 _type_ = list["reward"..i.."type"],
-					 count = list["reward"..i.."num"]
+					 count = list["reward"..i.."num"],
+					showDrropType = 2,
 				})
 				self._ActivityList[#self._ActivityList + 1] = item
 			end

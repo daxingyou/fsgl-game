@@ -5,9 +5,10 @@ local VoucherCenterLayer = class("VoucherCenterLayer",function()
 	return XTHD.createBasePageLayer()
 end)
 
-function VoucherCenterLayer:ctor()
-	self._selectedIndex = nil
+function VoucherCenterLayer:ctor(index)
+	self._selectedIndex = index or 1
 	self._voucherNode = nil
+	self._firstInit = true
 	self:init()
 end
 
@@ -33,14 +34,14 @@ function VoucherCenterLayer:init()
 		end)
 	end
 
-	self:SwichVoucherNode(1)
+	self:SwichVoucherNode(self._selectedIndex)
 end
 
 function VoucherCenterLayer:SwichVoucherNode(_index)
-	if self._selectedIndex == _index then
+	if self._selectedIndex == _index and not self._firstInit then
 		return
 	end
-
+	self._firstInit  = false
 	if _index == 2 then
 		HttpRequestWithOutParams("mouthCardState", function(data)
 			if self._voucherNode then
@@ -146,8 +147,8 @@ function VoucherCenterLayer:onCleanup( ... )
     XTHD.setVIPExist(false)
 end
 
-function VoucherCenterLayer:create()
-	return VoucherCenterLayer.new()
+function VoucherCenterLayer:create(index)
+	return VoucherCenterLayer.new(index)
 end
 
 return VoucherCenterLayer

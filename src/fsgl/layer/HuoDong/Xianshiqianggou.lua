@@ -181,12 +181,14 @@ function Xianshiqianggou:initUI()
 			itemNode = ItemNode:createWithParams({
 				_type_ = _tableList[_index].resourcetype,
 				count = _tableList[_index].num,
+				showDrropType = 2,
 			})
 		else
 			itemNode = ItemNode:createWithParams({
 				_type_ = _tableList[_index].resourcetype,
 				itemId = _tableList[_index].resourceid,
 				count = _tableList[_index].num,
+				showDrropType = 2,
 			})
 		end
 		itemNode:setScale(0.6)

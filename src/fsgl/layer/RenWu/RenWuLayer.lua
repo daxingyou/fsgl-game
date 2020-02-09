@@ -484,6 +484,11 @@ function RenWuLayer:initTasks()
 							end 
 						end})
 					cellBg:addChild( fetchButton )
+					local fetchSpine = sp.SkeletonAnimation:create( "res/image/plugin/tasklayer/querenjinjie.json", "res/image/plugin/tasklayer/querenjinjie.atlas", 1.0)   
+					fetchSpine:setScale(0.6)
+					fetchButton:addChild( fetchSpine )
+					fetchSpine:setPosition( fetchButton:getContentSize().width*0.5 + 2, fetchButton:getContentSize().height/2)
+					fetchSpine:setAnimation( 0, "querenjinjie", true )
     			elseif data.gotype ~= 0 then
     				-- 前往
     				local gotoButton = XTHDPushButton:createWithParams({
@@ -911,6 +916,11 @@ function RenWuLayer:refreshTopTask()
 			self._topRewardIcon:setVisible( true )
 			self._topRewardIcon:setEnable( true )
 			self._topFinishAllTasks:setVisible( false )
+		else
+			self._topTaskTip:setVisible( false )
+			self._loadingbarNum:setVisible( false )
+			self._topRewardIcon:setVisible( false )
+			self._topRewardIcon:setEnable( false )
 		end
 		local data = self._tabTopTaskData[self._tabIndex][1]
 		if data.curNum < data.maxNum then

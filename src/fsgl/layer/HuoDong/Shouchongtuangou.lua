@@ -211,7 +211,8 @@ function Shouchongtuangou:initUI()
 					local data = string.split(self._CurdateList[_index]["reward"..tostring(i).."param"],"#")
 					local itemnode = ItemNode:createWithParams({
 						_type_ = self._CurdateList[_index]["reward".. tostring(i) .. "type"],
-						count = data[2]
+						count = data[2],
+						showDrropType = 2,
 					})
 					jiangliList[#jiangliList + 1] = itemnode
 				else
@@ -220,6 +221,7 @@ function Shouchongtuangou:initUI()
 						itemId =  data[1],
 						_type_ = 4,
 						count = data[2],
+						showDrropType = 2,
 					})
 					jiangliList[#jiangliList + 1] = itemnode
 				end

@@ -42,7 +42,7 @@ local function getCurStack( ... )
 	return _rootMgr._tbLayoutStack
 end
 
-local function getCurLay( ... )
+function LayerManager.getCurLay( ... )
 	local _curStack = getCurStack()
 	if not _curStack then
 		return nil
@@ -414,7 +414,6 @@ function LayerManager.removeLayoutToDefult( )
 	end
 	helper.collectMemory()
 end
-
 
 ----------------------------module 创建方法--------------------------------------
 

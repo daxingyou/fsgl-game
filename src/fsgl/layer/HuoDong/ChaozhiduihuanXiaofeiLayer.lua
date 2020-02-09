@@ -60,7 +60,8 @@ function ChaozhiduihuanXiaofeiLayer:initUI()
 			local item = ItemNode:createWithParams({
 				itemId =  itemdate[1],
 				_type_ = data["rewardtype"..tostring(i)],
-				count = itemdate[2]
+				count = itemdate[2],
+				showDrropType = 2,
 			})
 			item:setScale(0.65)
 			bg:addChild(item)

@@ -505,6 +505,7 @@ function RiChangHuoDongLayer:updateCell( cell, index )
             itemId = v.rewardId,
             count = v.rewardSum,
             isLightAct = true,
+			showDrropType = 2,
         })
         rewardIcon:setPosition( posX*( i - 0.5 ), posY )
         rewardIcon:setScale( 0.7 )

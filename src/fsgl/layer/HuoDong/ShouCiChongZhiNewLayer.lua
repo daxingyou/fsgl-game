@@ -203,7 +203,7 @@ function ShouCiChongZhiNewLayer:createUI_one()
 			-- quality = data.rank,
 			_type_ = self._rewardList[self._selectedIndex][i].rewardtype,
 			count = self._rewardList[self._selectedIndex][i].num,
-			-- touchShowTip = false,
+			showDrropType = 2,
 		})
 		item:setScale(0.85)
 		self._uiNode:addChild(item)
@@ -321,6 +321,7 @@ function ShouCiChongZhiNewLayer:createUI_Two()
 			-- quality = data.rank,
 			_type_ = self._rewardList[self._selectedIndex][i].rewardtype,
 			count = self._rewardList[self._selectedIndex][i].num,
+			showDrropType = 2,
 			-- touchShowTip = false,
 		})
 		item:setScale(0.85)
@@ -447,6 +448,7 @@ function ShouCiChongZhiNewLayer:createUI_Three()
 			-- quality = data.rank,
 			_type_ = self._rewardList[self._selectedIndex][i].rewardtype,
 			count = self._rewardList[self._selectedIndex][i].num,
+			showDrropType = 2,
 			-- touchShowTip = false,
 		})
 		item:setScale(0.85)

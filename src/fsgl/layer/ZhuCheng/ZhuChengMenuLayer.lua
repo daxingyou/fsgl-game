@@ -1273,7 +1273,8 @@ function ZhuChengMenuLayer:initRightUpMenu()
             -- 首冲
             local _popLayer = requires("src/fsgl/layer/HuoDong/ShouCiChongZhiNewLayer.lua"):create()
             if _popLayer ~= nil then
-                self:addChild(_popLayer, 1)
+                cc.Director:getInstance():getRunningScene():addChild(_popLayer)
+				_popLayer:setName("Poplayer")
             end
         elseif sIndex == 6 then
             -- 大卖场
@@ -2829,7 +2830,8 @@ end
 function ZhuChengMenuLayer:Bingfenfuli()
     local Bingfenfuli = requires("src/fsgl/layer/HuoDong/Bingfenfuli.lua")
     local layer = Bingfenfuli:create()
-    self:addChild(layer, 10)
+    cc.Director:getInstance():getRunningScene():addChild(layer)
+	layer:setName("Poplayer")
     layer:show()
 end
 
@@ -2844,7 +2846,8 @@ function ZhuChengMenuLayer:openRCHD()
             -- print_r(backData)
             if tonumber(backData.result) == 0 then
                 local layer = activityDailyLayer:create(backData)
-                self:addChild(layer)
+                cc.Director:getInstance():getRunningScene():addChild(layer)
+				layer:setName("Poplayer")
                 layer:show()
             else
                 XTHDTOAST(backData.msg)
@@ -3064,7 +3067,8 @@ function ZhuChengMenuLayer:createHyperShop()
         -- print("大卖场服务器返回的数据为：")
         -- print_r(data)
         local hyper = requires("src/fsgl/layer/HuoDong/DaMaiChangLayer.lua"):create( { data = data })
-        self:addChild(hyper)
+        cc.Director:getInstance():getRunningScene():addChild(layer)
+		layer:setName("Poplayer")
         hyper:show()
     end )
 end
@@ -3097,7 +3101,8 @@ function ZhuChengMenuLayer:QuanfuchongbangActivityLayer()
             if data.result == 0 then
                 local biyedianliLayer = requires("src/fsgl/layer/HuoDong/QuanfuchongbangActivity.lua")
                 local layer = biyedianliLayer:create(data)
-                self:addChild(layer)
+                cc.Director:getInstance():getRunningScene():addChild(layer)
+				layer:setName("Poplayer")
                 layer:show()
             end
         end,
@@ -3122,7 +3127,8 @@ function ZhuChengMenuLayer:ZhanlijingsaiActivityLayer()
             if data.result == 0 then
                 local biyedianliLayer = requires("src/fsgl/layer/HuoDong/ZhanlijingsaiActivityLayer.lua")
                 local layer = biyedianliLayer:create(data)
-                self:addChild(layer)
+                cc.Director:getInstance():getRunningScene():addChild(layer)
+				layer:setName("Poplayer")
                 layer:show()
             else
                 XTHDTOAST(data.msg)
@@ -3148,7 +3154,8 @@ function ZhuChengMenuLayer:QuanmingjingjiActivityLayer()
             if data.result == 0 then
                 local biyedianliLayer = requires("src/fsgl/layer/HuoDong/QuanmingjingjiActivityLayer.lua")
                 local layer = biyedianliLayer:create(data)
-                self:addChild(layer)
+                cc.Director:getInstance():getRunningScene():addChild(layer)
+				layer:setName("Poplayer")
                 layer:show()
             else
                 XTHDTOAST(data.msg)
@@ -3170,7 +3177,8 @@ function ZhuChengMenuLayer:openNewLoginReward()
         -- print("新日常活动服务器返回的数据为：")
         -- print_r(data)
         local layer = requires("src/fsgl/layer/HuoDong/NewLDengLuYouLiLayer.lua"):create(data)
-        self:addChild(layer)
+        cc.Director:getInstance():getRunningScene():addChild(layer)
+		layer:setName("Poplayer")
         layer:show()
     end )
 end
@@ -3180,7 +3188,8 @@ function ZhuChengMenuLayer:openMonthCard()
         -- print("月卡至尊卡服务器返回的数据为：")
         -- print_r(data)
         local layer = requires("src/fsgl/layer/HuoDong/YueKaAndZhiZunKa.lua"):create(data)
-        self:addChild(layer)
+        cc.Director:getInstance():getRunningScene():addChild(layer)
+		layer:setName("Poplayer")
         layer:show()
     end )
 end
@@ -3189,7 +3198,8 @@ end
 function ZhuChengMenuLayer:ChaozhiduihuanActivityLayer()
     local biyedianliLayer = requires("src/fsgl/layer/HuoDong/ChaozhiduihuanActivityLayer.lua")
     local layer = biyedianliLayer:create(data)
-    self:addChild(layer)
+    cc.Director:getInstance():getRunningScene():addChild(layer)
+	layer:setName("Poplayer")
     layer:show()
 end
 
@@ -3202,7 +3212,8 @@ function ZhuChengMenuLayer:TouzijihuaActivityLayer()
             if data.result == 0 then
                 local biyedianliLayer = requires("src/fsgl/layer/HuoDong/NewTouzijihuaActivityLayer.lua")
                 local layer = biyedianliLayer:create(data)
-                self:addChild(layer)
+                cc.Director:getInstance():getRunningScene():addChild(layer)
+				layer:setName("Poplayer")
                 layer:show()
             end
         end,
@@ -3226,7 +3237,8 @@ function ZhuChengMenuLayer:HuoyueyouliActivityLayer()
             if data.result == 0 then
                 local biyedianliLayer = requires("src/fsgl/layer/HuoDong/HuoyueyouliActivityLayer.lua")
                 local layer = biyedianliLayer:create(data)
-                self:addChild(layer)
+                cc.Director:getInstance():getRunningScene():addChild(layer)
+				layer:setName("Poplayer")
                 layer:show()
             end
         end,
@@ -3255,7 +3267,8 @@ function ZhuChengMenuLayer:Qirikuanghuan()
                 XTHD.dispatchEvent( { name = CUSTOM_EVENT.REFRESH_RECHARGE_HUOYUEJIANGLI })
                 local QIRiKuangHuang = requires("src/fsgl/layer/HuoDong/QIRiKuangHuang.lua")
                 local layer = QIRiKuangHuang:create(data)
-                self:addChild(layer)
+				layer:setName("Poplayer")
+                cc.Director:getInstance():getRunningScene():addChild(layer)
                 layer:show()
             else
                 XTHDTOAST(data.msg or LANGUAGE_TIPS_WEBERROR)
@@ -3282,7 +3295,8 @@ end
 
 function ZhuChengMenuLayer:TimelimitAnctivityLayer()
     local layer = requires("src/fsgl/layer/HuoDong/timelimitActivity/TimelimitAnctivityLayer.lua"):create()
-    self:addChild(layer)
+    cc.Director:getInstance():getRunningScene():addChild(layer)
+	layer:setName("Poplayer")
     layer:show()
 end
 

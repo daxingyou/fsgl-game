@@ -88,7 +88,8 @@ function YueKaAndZhiZunKa:initUI()
             local item = ItemNode:createWithParams({
                 _type_ = self.localData[1]["rewardType" .. tostring(i)],
                 itemId = self.localData[1]["id" .. tostring(i)],
-                count = self.localData[1]["num"..tostring(i)]
+                count = self.localData[1]["num"..tostring(i)],
+				showDrropType = 2,
             })
             item:setScale(0.6)
             self.monthcardBuy:addChild(item)
@@ -172,7 +173,8 @@ function YueKaAndZhiZunKa:initUI()
             local item = ItemNode:createWithParams({
                 _type_ = self.localData[2]["rewardType" .. tostring(i)],
                 itemId = self.localData[2]["id" .. tostring(i)],
-                count = self.localData[2]["num"..tostring(i)]
+                count = self.localData[2]["num"..tostring(i)],
+				showDrropType = 2,
             })
             item:setScale(0.6)
             self.zhizuncardBuy:addChild(item)

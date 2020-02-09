@@ -179,6 +179,7 @@ function NewLDengLuYouLiLayer:buildCell( cell, index, cellWidth, cellHeight )
             itemId = self._activityData[index + 1].staticData["reword"..i.."id"],
             count = self._activityData[index + 1].staticData["reword"..i.."num"],
             isLightAct = true,
+			showDrropType = 2,
         })
         rewardIcon:setPosition( posX*( i - 0.5 ), posY )
         rewardIcon:setScale( 0.6 )

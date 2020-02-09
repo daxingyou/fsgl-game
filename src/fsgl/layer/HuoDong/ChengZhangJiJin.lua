@@ -97,7 +97,8 @@ function ChengZhangJiJin:initCell(cell,index)
 			local item = ItemNode:createWithParams({
 				_type_ = self._localData[index]["type" .. tostring(i)],
 				itemId = self._localData[index]["id" .. tostring(i)],
-				count = self._localData[index]["num"..tostring(i)]
+				count = self._localData[index]["num"..tostring(i)],
+				showDrropType = 2,
 			})
 			item:setScale(0.6)
 			cellbg:addChild(item)

@@ -240,6 +240,7 @@ function DaMaiChangLayer:createShopCell(cell)
             _type_ = self._localData[self._openData[self.selectedIndex].sell[i].sellID].buytype,
             itemId = self._localData[self._openData[self.selectedIndex].sell[i].sellID].buyid,
             count = self._localData[self._openData[self.selectedIndex].sell[i].sellID].buynum,
+			showDrropType = 2,
         } )
 		item:setScale(0.82)
         itemBg:addChild(item)

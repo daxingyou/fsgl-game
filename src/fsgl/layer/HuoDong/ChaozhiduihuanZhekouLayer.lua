@@ -66,7 +66,8 @@ function ChaozhiduihuanZhekouLayer:initUI()
 				local item = ItemNode:createWithParams({
 					itemId =  data.resourceid,
 					_type_ = data.resourcetype,
-					count = data.num
+					count = data.num,
+					showDrropType = 2,
 				})
 				bg:addChild(item)
 				item:setScale(0.6)

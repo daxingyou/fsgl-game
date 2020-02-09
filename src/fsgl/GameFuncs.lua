@@ -1000,50 +1000,8 @@ end
 
 -- vip充值界面
 function XTHD.createRechargeVipLayer(node, node1, zorder)
-
-    print(XTHD.getVIPExist(), "getVIPExistgetVIPExist")
-    if XTHD.getVIPExist() == true then
-        -- if XTHD.getVIPRewardExist() == true then
-        --     LayerManager.removeLayout()
-        -- end
-        return
-    end
-
-    ClientHttp:requestAsyncInGameWithParams( {
-        modules = "payWindows?",
-        successCallback = function(data)
-            if not data or next(data) == nil then
-                XTHDTOAST(LANGUAGE_KEY_ERROR_NETWORK)
-                return
-            end
-            if data["result"] == 0 then
-                -- 先移除后添加，否则会销毁吊topbar中刷新数据的通知
-                if node1 ~= nil then
-                    LayerManager.removeLayout(node1)
-                end
-
-                local recharge_vip = requires("src/fsgl/layer/Vip/VipRechargeLayer1.lua"):create(data)
-                LayerManager.addLayout(recharge_vip, { par = node, zz = zorder })
-                --  if zorder then
-                --     node:addChild(recharge_vip,zorder)
-                -- else
-                --     node:addChild(recharge_vip)
-                -- end
-            else
-                XTHDTOAST(data["msg"])
-            end
-
-        end,
-        -- 成功回调
-        failedCallback = function()
-            XTHDTOAST(LANGUAGE_KEY_ERROR_NETWORK)
-        end,
-        -- 失败回调
-        targetNeedsToRetain = node,
-        -- 需要保存引用的目标
-        loadingParent = node,
-        loadingType = HTTP_LOADING_TYPE.CIRCLE,-- 加载图显示 circle 光圈加载 head 头像加载
-    } )
+	local voucherLayer = requires("src/fsgl/layer/VoucherCenter/VoucherCenterLayer.lua"):create(3)
+	LayerManager.addLayout(voucherLayer)
 end
 
 function XTHD.getUnlockStatus(id, isToast)

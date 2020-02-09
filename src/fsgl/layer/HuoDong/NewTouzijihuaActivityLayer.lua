@@ -193,7 +193,8 @@ function NewTouzijihuaActivityLayer:selecetdJiangliTableView(cell,index)
 			local item = ItemNode:createWithParams({
 				_type_ = self._listData[_index]["type" .. tostring(i)],
 				itemId = self._listData[_index]["id" .. tostring(i)],
-				count = self._listData[_index]["num"..tostring(i)]
+				count = self._listData[_index]["num"..tostring(i)],
+				showDrropType = 2,
 			})
 			item:setScale(0.6)
 			cellbg:addChild(item)

@@ -395,6 +395,7 @@ function QIRiKuangHuang:createIcons( data )
                 _type_ = data["reward"..i.."type"],
                 itemId = itemid,
                 count = count,
+				showDrropType = 2,
             })
             rewardIcon:setScale(0.7)
             rewardIcon:setAnchorPoint(0.5, 0.5 )

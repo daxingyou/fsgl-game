@@ -2,14 +2,14 @@ local ItemDropPopLayer1 = class("ItemDropPopLayer1",function()
 	return XTHDPopLayer:create()
 	end)
 
-function ItemDropPopLayer1:ctor(_itemid,_layerid)
+function ItemDropPopLayer1:ctor(_itemid,_layerid,dropType)
 	self._itemDropData = {}
 	self._itemId = tonumber(_itemid)
     self.systemNameTable = nil  --跳转地名称
     self.itemdynamicData = {}
     self.stageData = {}         --副本静态数据
     self._layerid = _layerid or nil
-
+	self._dropType = dropType
 	self:setItemDropData()
     self:setStaticSystemName()
     self:setItemDynamicData()
@@ -445,6 +445,20 @@ function ItemDropPopLayer1:otherDropWayItem(_analySizeTable)
             normalNode = _btnNode[1]
             ,selectedNode = _btnNode[2]
             ,endCallback = function()
+				if self._dropType == 1 then
+					LayerManager.removeLayoutToDefult( )
+				else
+					if LayerManager.getCurLay() then
+						print("获取到当前图层")
+						if LayerManager.getCurLay():getChildByName("Poplayer") then
+							LayerManager.getCurLay():getChildByName("Poplayer"):removeFromParent()
+						end
+					end
+					if cc.Director:getInstance():getRunningScene():getChildByName("Poplayer") then
+						cc.Director:getInstance():getRunningScene():getChildByName("Poplayer"):hide()
+					end
+					LayerManager.removeLayoutToDefult( )
+				end
                 toDropWay(_turnData)
             end,
             needEnableWhenMoving = false
@@ -690,8 +704,8 @@ end
 
 --传入itemid
 --_layerid是当前的界面的id，这个id根据界面跳转的id设定。目前是为了避免，从合成再次跳到合成
-function ItemDropPopLayer1:create(_itemid,_layerid)
-	local _layer = self.new(_itemid,_layerid)
+function ItemDropPopLayer1:create(_itemid,_layerid,dropType)
+	local _layer = self.new(_itemid,_layerid,dropType)
 
 	return _layer
 end

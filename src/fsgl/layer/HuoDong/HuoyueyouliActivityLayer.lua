@@ -172,7 +172,8 @@ function HuoyueyouliActivityLayer:buildCell(cell,idx)
 			local item = ItemNode:createWithParams({
 				_type_ = data["reward" ..tostring(i).."type"],
 				itemId = _data[1],
-				count = _data[2]
+				count = _data[2],
+				showDrropType = 2,
 			})
 			cellbg:addChild(item)
 			item:setScale(0.6)
