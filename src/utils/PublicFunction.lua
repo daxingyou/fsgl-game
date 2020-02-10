@@ -505,7 +505,7 @@ function replaceLayer(params)
         [11] = "",                 
         [12] = "src/fsgl/layer/LiLian/SaintBeastChangeLayer.lua",                 
         [13] = "src/fsgl/layer/common/SourceLackPop1.lua",
-        [14] = "src/fsgl/layer/ZhuCheng/ExchangeByIngotPopLayer1.lua",                 
+        [14] = "src/fsgl/layer/KaiShanCaiKuang/KaiShanCaiKuang.lua",             
         [15] = "src/fsgl/layer/ZhuCheng/ExchangeByIngotPopLayer1.lua",                 
         [16] = "src/fsgl/layer/QiXingTan/QiXingTanchangeLayer.lua",                 
         [17] = "src/fsgl/layer/ZhuangBei/ZhuangBeiSmeltLayer.lua",                 
@@ -603,10 +603,10 @@ function replaceLayer(params)
         gotoMaincity()
         XTHD.dispatchEvent({name = CUSTOM_EVENT.GOTO_SPECIFIEDBUILDING,data = {id = 4,isOpen = false} })
     elseif id == 8 then    --8ăĺĺ čĺŽéĺťşç­ 
-        local _store = requires("src/fsgl/layer/ShangCheng.lua"):create({which = 'yuanbao'})
+        local _store = requires("src/fsgl/layer/ShangCheng/ShangCheng.lua"):create({which = 'yuanbao'})
         LayerManager.addLayout(_store)
     elseif id == 9 then    --9ăéľčĽĺĺşĺ
-        local _store = requires("src/fsgl/layer/ShangCheng.lua"):create({which = 'camp'})
+        local _store = requires("src/fsgl/layer/ShangCheng/ShangCheng.lua"):create({which = 'camp'})
         LayerManager.addLayout(_store)
     elseif id == 10 then    --10ăçŤćĺşĺ
         XTHD.createCompetitiveChange(node,zorder,chapterId)
@@ -618,15 +618,7 @@ function replaceLayer(params)
         local StoredValue = requires(layerArr[id]):create({id=2,Callback=callback})--byhuangjunjian čˇĺžčľćşĺ
         cc.Director:getInstance():getRunningScene():addChild(StoredValue)
     elseif id == 14 then    --14ăĺ
-        local _exchangeLayer = requires(layerArr[id]):create("silver")
-        if _exchangeLayer == nil then
-            return
-        end
-        if zorder then 
-            node:addChild(_exchangeLayer,zorder)
-        else 
-            node:addChild(_exchangeLayer)
-        end 
+      XTHD.createStoneGambling()
     elseif id == 15 then    --15ăĺ
         local _exchangeLayer = requires(layerArr[id]):create("feicui")
         if _exchangeLayer == nil then
@@ -714,7 +706,7 @@ function replaceLayer(params)
         BangPaiFengZhuangShuJu.createGuildLayer({parNode = node})
     elseif id == 53 or id == 54 or id == 55 then -----ĺ˘č´­ăćŹčľ
         local _tb = {"groupBuy","offer","XiuLuo","yuanbao"}
-        local SaintBeastChangeLayer = requires("src/fsgl/layer/ShangCheng.lua"):create({which = _tb[id-52],callback = callback}) -----Ă§Ä˝ÂÄşÂÂ¨ÄşÂÂÄşĹÂ
+        local SaintBeastChangeLayer = requires("src/fsgl/layer/ShangCheng/ShangCheng.lua"):create({which = _tb[id-52],callback = callback}) -----Ă§Ä˝ÂÄşÂÂ¨ÄşÂÂÄşĹÂ
         LayerManager.addLayout(SaintBeastChangeLayer, {par = fNode, zz = zorder})
     elseif id == 56 then -----é˛čąĺĺş
         local layer = requires("src/fsgl/layer/PopShop/PopShopLayer"):create("flower")
@@ -733,21 +725,23 @@ function replaceLayer(params)
 	elseif id == 63 then
 		XTHD.createHangUpLayer(node)
 	elseif id == 64 then
-		local storelayer = requires("src/fsgl/layer/ShangCheng.lua"):create({which = 'yuanbao'}) 
+		local storelayer = requires("src/fsgl/layer/ShangCheng/ShangCheng.lua"):create({which = 'yuanbao'}) 
 		LayerManager.addLayout(storelayer)
 	elseif id == 65 then
-		local storelayer = requires("src/fsgl/layer/ShangCheng.lua"):create({which = 'groupBuy'})
+		local storelayer = requires("src/fsgl/layer/ShangCheng/ShangCheng.lua"):create({which = 'groupBuy'})
 		LayerManager.addLayout(storelayer)
 	elseif id == 66 then
 		requires("src/fsgl/layer/DuoRenFuBen/DuoRenFuBenLayer.lua"):create()
 	elseif id == 67 then
-		local storelayer = requires("src/fsgl/layer/ShangCheng.lua"):create({which = 'Guild'})
-		LayerManager.addLayout(storelayer)
+		local layer = requires("src/fsgl/layer/PopShop/PopShopLayer"):create("guild")
+		cc.Director:getInstance():getRunningScene():addChild(layer)
+		layer:show()
+		layer:setName("Poplayer")
 	elseif id == 68 then
-		local storelayer = requires("src/fsgl/layer/ShangCheng.lua"):create({which = 'camp'})
+		local storelayer = requires("src/fsgl/layer/ShangCheng/ShangCheng.lua"):create({which = 'camp'})
 		LayerManager.addLayout(storelayer)
 	elseif id == 69 then
-		local storelayer = requires("src/fsgl/layer/ShangCheng.lua"):create({which = 'strength'})
+		local storelayer = requires("src/fsgl/layer/ShangCheng/ShangCheng.lua"):create({which = 'strength'})
 		LayerManager.addLayout(storelayer)
 	elseif id == 70 then
 		ClientHttp:requestAsyncInGameWithParams({
@@ -784,7 +778,7 @@ function replaceLayer(params)
 	elseif id == 73 then
 		requires("src/fsgl/layer/WanBaoGe/WanBaoGe.lua"):createWithType(3, {par = node})   
 	elseif id == 74 then
-		local storelayer = requires("src/fsgl/layer/ShangCheng.lua"):create({which = 'XiuLuo'})
+		local storelayer = requires("src/fsgl/layer/ShangCheng/ShangCheng.lua"):create({which = 'XiuLuo'})
 		LayerManager.addLayout(storelayer)
 	elseif id == 75 then
 		XTHD.gotoDiffcultyCopy(node,nil, chapterId)
