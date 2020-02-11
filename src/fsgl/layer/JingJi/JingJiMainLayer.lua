@@ -553,18 +553,17 @@ function JingJiMainLayer:addHandToRobberBtn( )
 end
 
 function JingJiMainLayer:addGuide( )
-	YinDaoMarg:getInstance():addGuide({index = 3,parent = self},11)
     YinDaoMarg:getInstance():addGuide({index = 3,parent = self},9)
     YinDaoMarg:getInstance():addGuide({
         parent = self,
         target = self.ladderDefBtn,-----排位赛设置防守队伍
-        index = 4,
+        index = 6,
         needNext = false
     },11)
     YinDaoMarg:getInstance():addGuide({
         parent = self,
         target = self._ladderBtn,-----点击排位
-        index = 7,
+        index = 9,
         needNext = false
     },11)
     YinDaoMarg:getInstance():addGuide({

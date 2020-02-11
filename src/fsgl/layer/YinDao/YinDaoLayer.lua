@@ -63,7 +63,7 @@ function YinDao:ctor( params )
         self._isButton = params.isButton == nil and true or params.isButton
         self._needHandlerMove = params.needHandleMove == nil and true or params.needHandleMove
         self._isLinerGuide = params.LinerGuide == nil and true or params.LinerGuide
-        if self._isButton then 
+        if self._isButton and params.target.getMusicFile then 
             self._musicFile = params.target:getMusicFile()            
         end  
     else 

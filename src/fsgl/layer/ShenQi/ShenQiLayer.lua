@@ -815,6 +815,7 @@ function ShenQiLayer:refreshDataById(godid,data, isShowAni)
         end)
 
         self.ownHero:setTouchEndedCallback(function()
+            YinDaoMarg:getInstance():guideTouchEnd()
             local YingXiongSelectPop = requires("src/fsgl/layer/YingXiong/YingXiongSelectPop.lua"):create(function (heroId)
                 -- print("the hero id is,at artifactlayer ----------------------------------LITAO 566",heroId)
                 self:putOnArtifact(heroId)
@@ -822,6 +823,7 @@ function ShenQiLayer:refreshDataById(godid,data, isShowAni)
             self:addChild(YingXiongSelectPop)
             YingXiongSelectPop:show()
         end)
+        self.addBtn = self.ownHero
     else
         self.ownerLabel:initWithFile("res/image/plugin/saint_beast/select_hero_label.png")
         self.ownHero = cc.Sprite:create("res/image/common/no_hero.png")
@@ -835,6 +837,7 @@ function ShenQiLayer:refreshDataById(godid,data, isShowAni)
             touchSize = cc.size(60,60),
         })
         plus:setTouchEndedCallback(function ()
+            YinDaoMarg:getInstance():guideTouchEnd()
             local YingXiongSelectPop = requires("src/fsgl/layer/YingXiong/YingXiongSelectPop.lua"):create(function (heroId)
                 -- print("the hero id is,at artifactlayer ----------------------------------LITAO 566",heroId)
                 self:putOnArtifact(heroId)
@@ -844,6 +847,7 @@ function ShenQiLayer:refreshDataById(godid,data, isShowAni)
         end)
         plus:setPosition(self.ownHero:getContentSize().width/2,self.ownHero:getContentSize().height/2)
         self.ownHero:addChild(plus)
+        self.addBtn = plus
 
         self._changeBtn:setTouchEndedCallback(function ()
             XTHDTOAST(LANGUAGE_TIPS_WORDS7)-----("先要装备在英雄身上")
@@ -856,7 +860,7 @@ function ShenQiLayer:refreshDataById(godid,data, isShowAni)
     self.ownHero:setPosition(self._leftBg:getBoundingBox().width/2,100)
     self._leftBg:addChild(self.ownHero)
     self:createConsume(nowCSV)
-    self:addGuide()
+    
 end
 
 function ShenQiLayer:createConsume(nowCSV)
@@ -1029,6 +1033,9 @@ function ShenQiLayer:createGemWithData(data) --Data为动态库中的一条数�
             gemBg:addChild(gemBgUnlock)
 
             gemBgUnlock:setTouchEndedCallback(function ()
+                if i == 1 then
+                    YinDaoMarg:getInstance():guideTouchEnd()
+                end
                 if self._artifactData[data.templateId].rank - 1 < nowParam - 1 then
                     XTHDTOAST(LANGUAGE_KEY_ADVANCE_TOUNLOCK(tostring(nowParam)))-----("进阶到"..tostring(nowParam+1).."阶解锁")
                     return
@@ -1040,7 +1047,7 @@ function ShenQiLayer:createGemWithData(data) --Data为动态库中的一条数�
             --如果这个槽里有宝石
             if data["items"..i] ~= -1 then
                 gemBgUnlock:setTouchEndedCallback(function ()
-                    
+
                 end)
                 local gemBtn = ItemNode:createWithParams({
                     _type_ = 4,
@@ -1220,6 +1227,7 @@ function ShenQiLayer:onEnter( )
     --     },21)
     -- end 
     -- YinDaoMarg:getInstance():doNextGuide()   
+    self:addGuide()
 end
 
 function ShenQiLayer:dropOutArtifact(heroId)
@@ -1344,6 +1352,7 @@ function ShenQiLayer:refreshWearer( heroid)
             ShenQiSelectPop:show()
         end)
         self.ownHero:setTouchEndedCallback(function()
+            YinDaoMarg:getInstance():guideTouchEnd()
             local YingXiongSelectPop = requires("src/fsgl/layer/YingXiong/YingXiongSelectPop.lua"):create(function (heroId)
                 -- print("the hero id is,at artifactlayer ----------------------------------LITAO 566",heroId)
                 self:putOnArtifact(heroId)
@@ -1354,18 +1363,17 @@ function ShenQiLayer:refreshWearer( heroid)
 
         self:refreshDataById(self._godid)
     end 
-    self:addGuide()
 end
 
 function ShenQiLayer:addGuide()
     YinDaoMarg:getInstance():addGuide({
         parent = self,
-        target = self.ownHero, -----点击人物装备
+        target = self.addBtn, -----点击人物装备
         index = 3,
     },26)
     YinDaoMarg:getInstance():addGuide({
         parent = self,
-        target = self.jiaBtn, -----点击人物装备
+        target = self.jiaBtn, -----点击玄符装备
         index = 6,
     },26)
     YinDaoMarg:getInstance():doNextGuide()    

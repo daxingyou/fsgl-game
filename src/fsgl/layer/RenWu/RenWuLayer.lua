@@ -40,6 +40,19 @@ function RenWuLayer:onEnter()
 		self:refreshData()
 	end
 	self._first = false
+    self:addGuide()
+end
+
+function RenWuLayer:addGuide()
+    YinDaoMarg:getInstance():addGuide( { index = 3, parent = self }, 11)
+    YinDaoMarg:getInstance():addGuide( {
+        parent = self,
+        target = self._tabsTable[4],
+        -----点击成就
+        index = 4,
+        needNext = false
+    } , 11)
+    YinDaoMarg:getInstance():doNextGuide()
 end
 
 function RenWuLayer:onExit( )
@@ -138,7 +151,7 @@ function RenWuLayer:initTabs()
 	-- tab点击处理
 	local function tabCallback( index )
 		-- 引导
-		-- YinDaoMarg:getInstance():guideTouchEnd()
+		 YinDaoMarg:getInstance():guideTouchEnd()
 		if self._tabIndex ~= index then
 			-- 更改tabs状态
 			self._tabsTable[self._tabIndex]:setSelected( false )
@@ -155,6 +168,7 @@ function RenWuLayer:initTabs()
 			end
 			-- 刷新界面
 			self:refreshUI( false, false )
+            YinDaoMarg:getInstance():doNextGuide()
 		end
 	end
 	-- tabs路径
@@ -521,16 +535,40 @@ function RenWuLayer:initTasks()
 					})
 	    			cellBg:addChild( yilingqu )
     			else
-    				-- 未完成
-	    			local taskNotFinishText = XTHD.createLabel({
-	    				text      = LANGUAGE_TASK_TASKNOTFINISH,
-						fontSize  = 18,
-						anchor    = cc.p( 0.5, 0.5 ),
-						pos       = cc.p( cellBg:getContentSize().width - 60, 30 ),
-						color     = cc.c3b( 54, 55, 112 ),
-						clickable = false,
-					})
-	    			cellBg:addChild( taskNotFinishText )
+                    if self._tabIndex == 4 then
+                        -- 前往
+    				    local gotoButton = XTHDPushButton:createWithParams({
+						    normalFile = "res/image/plugin/tasklayer/btn_qianwang_1.png",
+						    selectedFile = "res/image/plugin/tasklayer/btn_qianwang_2.png",
+						    isScrollView = true,
+						    pos = cc.p( cellBg:getContentSize().width - 55, 30 ),
+						    endCallback = function()
+                                YinDaoMarg:getInstance():guideTouchEnd()
+							    XTHD.createCompetitiveLayer()
+						    end,
+					    })
+					    cellBg:addChild( gotoButton )
+                        if _index == 1 then
+                            YinDaoMarg:getInstance():addGuide( {
+                                parent = self,
+                                target = gotoButton,
+                                -----点击前往
+                                index = 5,
+                                needNext = false
+                            } , 11)
+                        end
+                    else
+                        -- 未完成
+	    			    local taskNotFinishText = XTHD.createLabel({
+	    				    text      = LANGUAGE_TASK_TASKNOTFINISH,
+						    fontSize  = 18,
+						    anchor    = cc.p( 0.5, 0.5 ),
+						    pos       = cc.p( cellBg:getContentSize().width - 60, 30 ),
+						    color     = cc.c3b( 54, 55, 112 ),
+						    clickable = false,
+					    })
+	    			    cellBg:addChild( taskNotFinishText )
+                    end
     			end
 			end
 		end

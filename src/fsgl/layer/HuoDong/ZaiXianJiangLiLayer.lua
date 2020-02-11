@@ -671,7 +671,7 @@ function ZaiXianJiangLiLayer:setTurnCardPrompt()
             _turnCardPromptSp:setName("turnPrompt")
             _turnCardPromptSp:setPosition(cc.p(_midPosX,_promptPosY))
             self:addChild(_turnCardPromptSp)
-            XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_ONLINEREWARD})
+--            XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_ONLINEREWARD})
         else
             self.isTurnning = false
             _turnCardPromptSp = XTHDLabel:create(LANGUAGE_KEY_ACTIVITIES.turnCardTimesOverTextXc,30)
@@ -680,7 +680,7 @@ function ZaiXianJiangLiLayer:setTurnCardPrompt()
             _turnCardPromptSp:setName("turnPrompt")
             _turnCardPromptSp:setPosition(cc.p(_midPosX,_promptPosY))
             self:addChild(_turnCardPromptSp)
-            XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_ONLINEREWARD})
+--            XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_ONLINEREWARD})
         end
     --已翻牌
     elseif self.cardItemData.surplusTime and tonumber(self.cardItemData.surplusTime)>0 then
@@ -699,7 +699,7 @@ function ZaiXianJiangLiLayer:setTurnCardPrompt()
         _lastTimeLabel:setPosition(cc.p(_turnCardPromptSp:getBoundingBox().x,_promptPosY))
         self:addChild(_lastTimeLabel)
         self:setWaitTime()
-        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_ONLINEREWARD})
+--        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_ONLINEREWARD})
     --不可翻牌
     else
         --todo
@@ -710,7 +710,7 @@ function ZaiXianJiangLiLayer:setTurnCardPrompt()
         _turnCardPromptSp:setName("turnPrompt")
         _turnCardPromptSp:setPosition(cc.p(_midPosX,_promptPosY))
         self:addChild(_turnCardPromptSp)
-        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_ONLINEREWARD})
+--        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_ONLINEREWARD})
     end
 
 end

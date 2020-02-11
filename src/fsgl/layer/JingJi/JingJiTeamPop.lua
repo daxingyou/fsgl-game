@@ -180,7 +180,7 @@ function JingJiTeamPop:onEnter( )
 	YinDaoMarg:getInstance():addGuide({
         parent = self,
         target = self.changeBtn,-----排位赛设置防守队伍
-        index = 5,
+        index = 7,
         needNext = false
     },11)
     YinDaoMarg:getInstance():doNextGuide()

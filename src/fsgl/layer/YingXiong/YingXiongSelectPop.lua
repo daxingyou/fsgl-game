@@ -40,6 +40,7 @@ function YingXiongSelectPop:initUI(callFunc)
         anchor = cc.p(0.5,0),
         pos = cc.p(Bg:getContentSize().width/2, Bg:getContentSize().height/2 - 201),
         endCallback = function()
+            YinDaoMarg:getInstance():guideTouchEnd()
             if callFunc and self._selectedHero then
                 callFunc(self._selectedHero)
             end
@@ -147,7 +148,10 @@ function YingXiongSelectPop:initUI(callFunc)
         			now = i
         		}),50)
         		heroIcon:setTouchEndedCallback(function ()
-
+                    print("更换英雄神器")
+                    if idx == 1 and i == 2 then
+                        YinDaoMarg:getInstance():guideTouchEnd()
+                    end          
                     if self._selectedIcon and self._selectedIcon == heroIcon then
                         return
                     end
@@ -158,7 +162,7 @@ function YingXiongSelectPop:initUI(callFunc)
                     end
                     self:createMask(heroIcon)
         		end)
-                if idx == 1 and i == 1 then
+                if idx == 1 and i == 2 then
                     self.iconBtn = heroIcon
                 end
         		cell:addChild(heroIcon)

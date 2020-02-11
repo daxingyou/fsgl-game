@@ -189,7 +189,7 @@ function RiChangRenWuLayer:initUI()
     		funcList[i].callFunc()
         end)
         taskIcon:setScale(0.8)
-        if i == 1 then
+        if i == 4 then
             local redDot = XTHDImage:create("res/image/common/heroList_redPoint.png")
             taskIcon:addChild(redDot)
             redDot:setPosition(50,taskIcon:getContentSize().height - 30)

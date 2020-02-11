@@ -2541,7 +2541,7 @@ function XuanZeYingXiongNewLayer:addGuide( )
     YinDaoMarg:getInstance():addGuide({ -----开战        
         parent = self,
         target = self._start_battle_btn,
-        index = 6,
+        index = 8,
 		needNext = false,
     },11)	
     YinDaoMarg:getInstance():addGuide({index = 7,parent = self},20) ---- 

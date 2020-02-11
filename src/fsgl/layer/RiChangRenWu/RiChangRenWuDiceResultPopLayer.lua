@@ -55,6 +55,7 @@ function RiChangRenWuDiceResultPopLayer:initLayer()
             isScrollView = false,
             text = LANGUAGE_BTN_KEY.atonceGetReward,
             endCallback = function()
+                YinDaoMarg:getInstance():overCurrentGuide(true)
                 self:httpToGetReward()
             end
         })

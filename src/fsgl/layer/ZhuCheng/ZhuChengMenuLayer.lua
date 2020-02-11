@@ -696,6 +696,7 @@ function ZhuChengMenuLayer:initHeadBar(...)
         vipNode:addChild(vipg)
         vipNode:setContentSize(vipBg:getBoundingBox().width * 0.4 + vipg:getBoundingBox().width, vipBg:getBoundingBox().height)
         vipg:setPosition(vipBg:getBoundingBox().width - 23, vipBg:getBoundingBox().height / 2 - 22)
+        self.vipG = vipg
     else
         local vipg = cc.Sprite:create("res/image/vip/vip_" .. tostring((math.floor(mGameUser.getVip() / 10))) .. ".png")
         vipg:setScale(0.5)
@@ -706,6 +707,8 @@ function ZhuChengMenuLayer:initHeadBar(...)
         vipNode:setContentSize(vipBg:getBoundingBox().width * 0.4 + vipg:getBoundingBox().width * 0.5 + vips:getBoundingBox().width * 0.5, vipBg:getBoundingBox().height * 0.5)
         vipg:setPosition(vipBg:getBoundingBox().width - 23, vipBg:getBoundingBox().height / 2 - 22)
         vips:setPosition(vipBg:getBoundingBox().width + vipg:getBoundingBox().width - 26, vipBg:getBoundingBox().height / 2 - 22)
+        self.vipG = vipg
+        self.vipS = vips
     end
 
     local vipBtn = XTHDPushButton:createWithParams( {
@@ -738,15 +741,15 @@ function ZhuChengMenuLayer:initHeadBar(...)
     self:addChild(vipBox)
     vipBox:setAnchorPoint(0, 1)
     vipBox:setPosition(nameBox:getPositionX() + 30, nameBox:getPositionY() - nameBox:getBoundingBox().height - 26)
-    self._vip_num_sp = XTHDLabel:create("0", 32, "res/fonts/def.ttf")
-    -- self._vip_num_sp:enableOutline(cc.c4b(100,100,255,255),2)
+--    self._vip_num_sp = XTHDLabel:create("0", 32, "res/fonts/def.ttf")
+--    -- self._vip_num_sp:enableOutline(cc.c4b(100,100,255,255),2)
 
-    vipBox:addChild(self._vip_num_sp)
-    self._vip_num_sp:setAnchorPoint(0.5, 0.5)
-    -- self._vip_num_sp:setAdditionalKerning(-1)
-    -- self._vip_num_sp:setScale(0.7)
-    self._vip_num_sp:setColor(cc.c3b(255, 255, 255))
-    self._vip_num_sp:setPosition(vipBox:getContentSize().width / 2 + 17, vipBox:getContentSize().height / 2 - 5)
+--    vipBox:addChild(self._vip_num_sp)
+--    self._vip_num_sp:setAnchorPoint(0.5, 0.5)
+--    -- self._vip_num_sp:setAdditionalKerning(-1)
+--    -- self._vip_num_sp:setScale(0.7)
+--    self._vip_num_sp:setColor(cc.c3b(255, 255, 255))
+--    self._vip_num_sp:setPosition(vipBox:getContentSize().width / 2 + 17, vipBox:getContentSize().height / 2 - 5)
 
     vipBox:setTouchEndedCallback( function()
         --        LayerManager.addShieldLayout()
@@ -1179,12 +1182,28 @@ function ZhuChengMenuLayer:initBottomMenu()
             -- menuBtn:setPosition(cc.p(self:getContentSize().width-320,10))
         elseif i == 5 then
             self:PushBtnTorightfloorNode(menuBtn)
-            local redDot = XTHDImage:create("res/image/common/heroList_redPoint.png")
-            menuBtn:addChild(redDot)
-            redDot:setPosition(menuBtn:getContentSize().width - redDot:getContentSize().width, menuBtn:getContentSize().height - 15)
-            -- redDot:setVisible(gameUser.getPackageRedPoint()== 1 and true or false)
-            redDot:setVisible(false)
-            self._packageRedDot = redDot
+--            local redDot = XTHDImage:create("res/image/common/heroList_redPoint.png")
+--            menuBtn:addChild(redDot)
+--            redDot:setPosition(menuBtn:getContentSize().width - redDot:getContentSize().width, menuBtn:getContentSize().height - 15)
+--            redDot:setVisible(gameUser.getPackageRedPoint()== 1 and true or false)
+--            redDot:setVisible(false)
+--            self._packageRedDot = redDot
+            local havedis = XTHD.createSprite("res/image/homecity/havedis.png")
+            menuBtn:addChild(havedis)
+            havedis:setAnchorPoint(0, 0)
+            havedis:setPosition(0, menuBtn:getBoundingBox().height - 10)
+            havedis:runAction(
+            cc.RepeatForever:create(
+            cc.Sequence:create(
+            cc.MoveBy:create(
+            0.6, cc.p(0, 3)
+            ),
+            cc.MoveBy:create(
+            0.6, cc.p(0, -3)
+            )
+            )
+            )
+            )
             self.__functionButtons[15] = menuBtn
             -- shangdian
             -- menuBtn:setPosition(cc.p(self:getContentSize().width-340,10))
@@ -1401,7 +1420,7 @@ end
 function ZhuChengMenuLayer:initLeftUpMenu()
     -- 活动，七天，开服礼包,排行榜,顶部的菜单栏按钮
     local menuInfo = { }
-    menuInfo.fileName = { "menu_dailyWelfare", "menu_sevenDay", "menu_activityNew", "menu_activityNewYear", "menu_nian", "menu_timehero", "menu_activityDaily", "menu_biye", "luckylunpan", "supermaket", "QuanMingChongBang", "Zhanlijingsai", "quanmingjingji", "newlogin", "monthcard", "online" }
+    menuInfo.fileName = { "menu_dailyWelfare", "menu_sevenDay", "menu_activityNew", "menu_activityNewYear", "menu_nian", "menu_timehero", "menu_activityDaily", "menu_biye", "luckylunpan", "supermaket_no", "QuanMingChongBang", "Zhanlijingsai", "quanmingjingji", "newlogin", "monthcard", "online" }
     menuInfo.menuFunction = function(sIndex)
         LayerManager.addShieldLayout()
         if (sIndex == 1) then
@@ -1526,13 +1545,13 @@ function ZhuChengMenuLayer:initLeftUpMenu()
             self:PushBtnToCeilNode(menuBtn)
             self.__functionButtons[28] = menuBtn
         elseif i == 10 then
-            self:PushBtnToCeilNode(menuBtn)
-            local redDot = XTHDImage:create("res/image/common/heroList_redPoint.png")
-            menuBtn:addChild(redDot)
-            redDot:setPosition(menuBtn:getBoundingBox().width + 15, menuBtn:getBoundingBox().height + 10)
-            redDot:setVisible(false)
-            self.limittimeshopRedDot = redDot
-            self.__functionButtons[30] = menuBtn
+--            self:PushBtnToCeilNode(menuBtn)
+--            local redDot = XTHDImage:create("res/image/common/heroList_redPoint.png")
+--            menuBtn:addChild(redDot)
+--            redDot:setPosition(menuBtn:getBoundingBox().width + 15, menuBtn:getBoundingBox().height + 10)
+--            redDot:setVisible(false)
+--            self.limittimeshopRedDot = redDot
+--            self.__functionButtons[30] = menuBtn
         elseif i == 11 then
             self:PushBtnToCeilNode(menuBtn)
             local redDot = XTHDImage:create("res/image/common/heroList_redPoint.png")
@@ -1573,29 +1592,29 @@ function ZhuChengMenuLayer:initLeftUpMenu()
             self.__functionButtons[38] = menuBtn
             self.monthcardRedDot = redDot
         elseif i == 16 then
-            self:PushBtnToCeilNode(menuBtn)
-            local redDot = XTHDImage:create("res/image/common/heroList_redPoint.png")
-            menuBtn:addChild(redDot)
-            redDot:setPosition(menuBtn:getBoundingBox().width + 15, menuBtn:getBoundingBox().height + 10)
-            redDot:setVisible(false)
-            self.__functionButtons[39] = menuBtn
-            self.onlinerewardRedDot = redDot
-            self.Time = XTHDLabel:create("", 20, "res/fonts/def.ttf")
-            self.Time:setColor(cc.c3b(255, 246, 127))
-            menuBtn:addChild(self.Time)
-            self.Time:setPosition(menuBtn:getContentSize().width / 2, -10)
-            XTHD.addEventListener( {
-                name = CUSTOM_EVENT.REFRESH_ONLINEREWARD,
-                callback = function(event)
-                    HttpRequestWithOutParams("timeRewardRecord", function(data)
-                        -- print("在线奖励服务器返回的数据为：")
-                        -- print_r(data)
-                        self.closeTime = data.surplusTime
-                        self:updateOnlineTime()
-                    end )
-                end
-            } )
-            XTHD.dispatchEvent( { name = CUSTOM_EVENT.REFRESH_ONLINEREWARD })
+--            self:PushBtnToCeilNode(menuBtn)
+--            local redDot = XTHDImage:create("res/image/common/heroList_redPoint.png")
+--            menuBtn:addChild(redDot)
+--            redDot:setPosition(menuBtn:getBoundingBox().width + 15, menuBtn:getBoundingBox().height + 10)
+--            redDot:setVisible(false)
+--            self.__functionButtons[39] = menuBtn
+--            self.onlinerewardRedDot = redDot
+--            self.Time = XTHDLabel:create("", 20, "res/fonts/def.ttf")
+--            self.Time:setColor(cc.c3b(255, 246, 127))
+--            menuBtn:addChild(self.Time)
+--            self.Time:setPosition(menuBtn:getContentSize().width / 2, -10)
+--            XTHD.addEventListener( {
+--                name = CUSTOM_EVENT.REFRESH_ONLINEREWARD,
+--                callback = function(event)
+--                    HttpRequestWithOutParams("timeRewardRecord", function(data)
+--                        -- print("在线奖励服务器返回的数据为：")
+--                        -- print_r(data)
+--                        self.closeTime = data.surplusTime
+--                        self:updateOnlineTime()
+--                    end )
+--                end
+--            } )
+--            XTHD.dispatchEvent( { name = CUSTOM_EVENT.REFRESH_ONLINEREWARD })
         end
         self._leftupBtns[i] = { x = menuBtn:getPositionX(), y = menuBtn:getPositionY(), targ = menuBtn, isActivity = true }
     end
@@ -1679,7 +1698,7 @@ end
 
 function ZhuChengMenuLayer:onCleanup()
     XTHD.removeEventListener(CUSTOM_EVENT.REFRESH_NEWFUNCTIONOPEN_TIP)
-    XTHD.removeEventListener(CUSTOM_EVENT.REFRESH_ONLINEREWARD)
+--    XTHD.removeEventListener(CUSTOM_EVENT.REFRESH_ONLINEREWARD)
     XTHD.removeEventListener(CUSTOM_EVENT.REFRESH_PLAYERPOWER)
 end
 ------自适应底部的功能按钮们的位置 
@@ -1724,6 +1743,12 @@ function ZhuChengMenuLayer:refreshTopInfo()
     self._nick_name_label:setString(mGameUser.getNickname())
     self.campIcon:initWithFile("res/image/homecity/camp_icon" .. mGameUser.getCampID() .. ".png")
     self._level_label:setString(mGameUser.getLevel())
+    if mGameUser.getVip() < 10 then
+        self.vipG:initWithFile("res/image/vip/vip_" .. tostring(mGameUser.getVip()) .. ".png")
+    else
+        self.vipG:initWithFile("res/image/vip/vip_" .. tostring((math.floor(mGameUser.getVip() / 10))) .. ".png")
+        self.vipS:initWithFile("res/image/vip/vip_" .. tostring((mGameUser.getVip() % 10)) .. ".png")
+    end
 
     if self._propertyLable and #self._propertyLable > 3 then
         local base = 1000000
@@ -1765,10 +1790,10 @@ function ZhuChengMenuLayer:refreshTopInfo()
         -- 元宝
     end
     -- vip
-    if self._vip_num_sp then
-        -- 在这里加个判断，然后将数字换成文字
-        self._vip_num_sp:setString(VIPLABEL[tonumber(mGameUser.getVip()) + 1])
-    end
+--    if self._vip_num_sp then
+--        -- 在这里加个判断，然后将数字换成文字
+--        self._vip_num_sp:setString(VIPLABEL[tonumber(mGameUser.getVip()) + 1])
+--    end
 end
 
 --用来刷新主城按钮的状态
@@ -1890,11 +1915,11 @@ function ZhuChengMenuLayer:refreshBaseInfo()
             self.__functionButtons[28]:setVisible(activityOpenStatus["20"] == 1)
         end
 
-        if self._leftupBtns[10] then
-            -- 限时商城
-            self._leftupBtns[10].isActivity = gameUser.getLimitTimeShopState() == 1
-            self.__functionButtons[30]:setVisible(gameUser.getLimitTimeShopState() == 1)
-        end
+--        if self._leftupBtns[10] then
+--            -- 限时商城
+--            self._leftupBtns[10].isActivity = gameUser.getLimitTimeShopState() == 1
+--            self.__functionButtons[30]:setVisible(gameUser.getLimitTimeShopState() == 1)
+--        end
 
         -- 新投资计划
         if self._leftupBtns[17] then
@@ -2978,11 +3003,18 @@ function ZhuChengMenuLayer:addGuide()
     } )
     YinDaoMarg:getInstance():addGuide( {
         parent = self,
+        target = _task,
+        -----任务
+        needNext = false,
+    } , {
+        { 11, 2 }
+    } )
+    YinDaoMarg:getInstance():addGuide( {
+        parent = self,
         target = self.__functionButtons[8],
         -----竞技场
         needNext = false,
     } , {
-        { 11, 2 },
         { 9, 2 },
         { 20, 2 },
     } )

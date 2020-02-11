@@ -139,7 +139,9 @@ function ShenQiGemSelectPop:initUI(allGem,callFunc)
 		         	cell_bg:setScale(0.95)
 		    	end)
 			    cell_bg:setTouchEndedCallback(function()
-                    YinDaoMarg:getInstance():overCurrentGuide(true)
+                    if idx == 0 and i == 1 then
+                        YinDaoMarg:getInstance():overCurrentGuide(true)
+                    end
 		         	callFunc(nowData.dbid)
 		         	self:hide()
 			    end)
