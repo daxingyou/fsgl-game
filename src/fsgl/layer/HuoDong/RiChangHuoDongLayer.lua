@@ -3,10 +3,14 @@
     2019.06.03
 ]]
 local RiChangHuoDongLayer = class("RiChangHuoDongLayer", function()
-    return XTHD.createPopLayer()
+   	local node = cc.Node:create()
+	node:setAnchorPoint(0.5,0.5)
+	node:setContentSize(830,342)
+	return node
 end)
 
-function RiChangHuoDongLayer:ctor( data )
+function RiChangHuoDongLayer:ctor( data,parent )
+	self._parent = parent
     self.redDotTable = {}
     self._exist = true
     -- 默认选中
@@ -102,8 +106,7 @@ function RiChangHuoDongLayer:buildData()
     -- 筛选开启的活动
     self._activityOpen = {}
     local _openState = gameUser.getActivityOpenStatus() or {}
-    -- print("*****CTX_log:获取的活动表为：*****")
-    -- print_r(_openState)
+
     for i, v in ipairs( activityStatic ) do
         if tonumber( v.isOpen ) == 1  then
             -- 长期开启
@@ -127,24 +130,71 @@ end
 -- 初始化界面
 function RiChangHuoDongLayer:initUI( data )
     -- 背景
-    local contentBg = XTHD.createSprite( "res/image/activities/daily/background.png" )
+    local contentBg = XTHD.createSprite()
+	contentBg:setContentSize(self:getContentSize())
     contentBg:setPosition( self:getContentSize().width/2, self:getContentSize().height/2)
-    self:addContent( contentBg )
+    self:addChild( contentBg )
     self._contentBg = contentBg
-    self._contentBg:setScale(0.9)
-    --日常活动文字 
-    -- local title = XTHD.createSprite("res/image/activities/daily/richanghuodong.png")
-    -- title:setPosition(self._contentBg:getContentSize().width/2,self._contentBg:getContentSize().height-17)
-    -- self._contentBg:addChild(title)
-    -- 活动列表
-    local tabTableView = cc.TableView:create( cc.size( 150, 460 ) )
+	
+	local listviewbg = cc.Sprite:create("res/image/activities/newhuoyueyouli/listviewbg.png")
+	self._contentBg:addChild(listviewbg)
+	listviewbg:setContentSize(listviewbg:getContentSize().width,self._contentBg:getContentSize().height)
+	listviewbg:setPosition(listviewbg:getContentSize().width *0.5,listviewbg:getContentSize().height *0.5)
+	self._listviewbg = listviewbg
+	
+    local tabTableView = cc.TableView:create(listviewbg:getContentSize())
     tabTableView:setBounceable(true)
-    tabTableView:setPosition(65,45)
+    tabTableView:setPosition(0,0)
     tabTableView:setDirection(cc.SCROLLVIEW_DIRECTION_VERTICAL) 
     tabTableView:setVerticalFillOrder(cc.TABLEVIEW_FILL_TOPDOWN)
     tabTableView:setDelegate()
-    self._contentBg:addChild(tabTableView)
+    self._listviewbg:addChild(tabTableView)
     self._tabTableView = tabTableView
+
+	-- 顶部背景
+    local topBg = cc.Sprite:create( "res/image/activities/daily/top_"..self._activityOpen[self._tabIndex].pictureid..".png" )
+	topBg:setAnchorPoint(0,1)
+	topBg:setScale(0.978)
+    topBg:setPosition(listviewbg:getContentSize().width,self._contentBg:getContentSize().height)
+    self._contentBg:addChild( topBg )
+    self._topBg = topBg
+
+	    -- 活动日期
+    local activityDate = XTHD.createLabel({
+        text = LANGUAGE_PRAYER_DAYS( data.beginMonth, data.beginDay, data.endMonth, data.endDay ),
+        fontSize  = 18,
+        anchor    = cc.p( 0, 0.5 ),
+        pos       = cc.p( 16, 8 ),
+		color	  = cc.c3b(255,255,159),
+        clickable = false,
+    })
+    topBg:addChild( activityDate )
+    self._activityDate = activityDate
+    -- 活动时间
+    local activityTime = XTHD.createLabel({
+        fontSize  = 18,
+        anchor    = cc.p( 1, 0.5 ),
+        pos       = cc.p( topBg:getContentSize().width - 16, 8 ),
+		color	  = cc.c3b(255,255,159),
+        clickable = false,
+    })
+    topBg:addChild( activityTime )
+    self._activityTime = activityTime
+    schedule( self, function()
+        self:timer()
+    end, 1.0, 233 )
+    self:timer( data.surplusTime )
+
+	local bg3 = cc.Sprite:create("res/image/activities/newhuoyueyouli/renwu.png")
+	bg3:setScale(0.7)
+	self._contentBg:addChild(bg3)
+	bg3:setPosition(self._contentBg:getContentSize().width - bg3:getContentSize().width *0.4 + 30,self._contentBg:getContentSize().height - bg3:getContentSize().height *0.5)
+
+	self._tableViewBg = cc.Sprite:create("res/image/activities/huoyueyouli/bg_2.png")
+	self._tableViewBg:setAnchorPoint(0,1)
+	self._contentBg:addChild(self._tableViewBg)
+	self._tableViewBg:setContentSize(self._tableViewBg:getContentSize().width,self:getContentSize().height - topBg:getContentSize().height *0.978)
+	self._tableViewBg:setPosition(listviewbg:getContentSize().width,self._contentBg:getContentSize().height - topBg:getContentSize().height * 0.978)
 
     local cellSize = cc.size(150, 65)
     local function numberOfCellsInTableView(table)
@@ -163,8 +213,6 @@ function RiChangHuoDongLayer:initUI( data )
         end
         local index = idx + 1
         local _activityData = self._activityOpen[index] or {}
-        -- local btn_normal = getCompositeNodeWithImg( "res/image/activities/newyear/actTab_normal.png", "res/image/activities/daily/tab_" .. (_activityData.pictureid or 1) .. "_normal.png" )
-        -- local btn_selected = getCompositeNodeWithImg( "res/image/activities/newyear/actTab_selected.png", "res/image/activities/daily/tab_" .. (_activityData.pictureid or 1) .. "_selected.png" )
         local _cellBtn = XTHD.createButton({
             normalFile           = "res/image/activities/daily/tab_" .. (_activityData.pictureid or 1) .. "_normal.png",
             selectedFile         = "res/image/activities/daily/tab_" .. (_activityData.pictureid or 1) .. "_selected.png",
@@ -204,7 +252,8 @@ function RiChangHuoDongLayer:initUI( data )
                                 RedPointState[8].state = 1
                             end
                         end
-                        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "rchd"}})
+						self._parent:refreshRedDot()
+                        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "hyyl"}})
                     else
                         XTHDTOAST(backData.msg)
                     end
@@ -276,76 +325,20 @@ function RiChangHuoDongLayer:initActivity( data )
     activityBg:setPosition( 190, 30)
     self._contentBg:addChild( activityBg )
     self._activityBg = activityBg
-    -- 顶部背景
-    local topBg = XTHD.createSprite( "res/image/activities/daily/top_"..self._activityOpen[self._tabIndex].pictureid..".png" )
-    -- topBg:setContentSize( 696, 102 )
-    topBg:setPosition( activitySize.width/2+30, activitySize.height - 40 )
-    activityBg:addChild( topBg )
-    self._topBg = topBg
-    -- 活动日期
-    local activityDate = XTHD.createLabel({
-        text = LANGUAGE_PRAYER_DAYS( data.beginMonth, data.beginDay, data.endMonth, data.endDay ),
-        fontSize  = 18,
-        anchor    = cc.p( 0, 0.5 ),
-        pos       = cc.p( 16, 8 ),
-		color	  = cc.c3b(255,255,159),
-        clickable = false,
-    })
-    topBg:addChild( activityDate )
-    self._activityDate = activityDate
-    -- 活动时间
-    local activityTime = XTHD.createLabel({
-        fontSize  = 18,
-        anchor    = cc.p( 1, 0.5 ),
-        pos       = cc.p( topBg:getContentSize().width - 16, 8 ),
-		color	  = cc.c3b(255,255,159),
-        clickable = false,
-    })
-    topBg:addChild( activityTime )
-    self._activityTime = activityTime
-    schedule( self, function()
-        self:timer()
-    end, 1.0, 233 )
-    self:timer( data.surplusTime )
-
-    --飘带
-    local leftpd = cc.Sprite:create("res/image/activities/daily/left.png")
-    self._contentBg:addChild(leftpd)
-    leftpd:setPosition(50,self._contentBg:getContentSize().height - 272)
-    local rightpd = cc.Sprite:create("res/image/activities/daily/right.png")
-    self._contentBg:addChild(rightpd)
-    rightpd:setPosition(self._contentBg:getContentSize().width - 50,self._contentBg:getContentSize().height - 272)
-
-    local btn_close = XTHDPushButton:createWithFile({
-        normalFile = "res/image/activities/TimelimitActivity/btn_close_up.png",
-        selectedFile = "res/image/activities/TimelimitActivity/btn_close_down.png",
-		musicFile = XTHD.resource.music.effect_btn_commonclose,
-        endCallback  = function()
-           self:hide()
-        end,
-    })
-    self._contentBg:addChild(btn_close)
-    btn_close:setPosition(self._contentBg:getContentSize().width - btn_close:getContentSize().width * 0.5 + 18,self._contentBg:getContentSize().height - btn_close:getContentSize().height * 0.5 - 10)
     
-    -- tableview背景
-    local tableViewBg = ccui.Scale9Sprite:create()
-    tableViewBg:setContentSize( activitySize.width - 8, activitySize.height - 100 )
-    tableViewBg:setAnchorPoint( cc.p( 0.5, 0 ) )
-    tableViewBg:setPosition( activitySize.width*0.5+30, 10 )
-    activityBg:addChild( tableViewBg )
     -- 活动tableView
-    local actTableView = cc.TableView:create( cc.size( tableViewBg:getContentSize().width - 6, tableViewBg:getContentSize().height - 6 ) )
-    actTableView:setPosition( 3, 3 )
+    local actTableView = cc.TableView:create( self._tableViewBg:getContentSize() )
+    actTableView:setPosition( 3, 0 )
     actTableView:setBounceable( true )
     actTableView:setDirection( cc.SCROLLVIEW_DIRECTION_VERTICAL )
     actTableView:setDelegate()
     actTableView:setVerticalFillOrder( cc.TABLEVIEW_FILL_TOPDOWN )
-    tableViewBg:addChild( actTableView )
+    self._tableViewBg:addChild( actTableView )
     self._actTableView = actTableView
 	TableViewPlug.init( self._actTableView)
 
-    local cellWidth = tableViewBg:getContentSize().width - 6
-    local cellHeight = 127
+    local cellWidth = self._tableViewBg:getContentSize().width - 6
+    local cellHeight = 80
 	
 	self._actTableView.getCellNumbers = function( table )
         return #self._activityData
@@ -374,37 +367,29 @@ end
 
 function RiChangHuoDongLayer:buildCell( cell, index, cellWidth, cellHeight )
     -- cell背景
-    local cellBg = ccui.Scale9Sprite:create("res/image/activities/daily/cellBg.png" )
-    cellBg:setContentSize( cellWidth - 6, cellHeight - 8 )
+    local cellBg = ccui.Scale9Sprite:create("res/image/activities/newhuoyueyouli/cellbg.png" )
+    cellBg:setContentSize(cell:getContentSize().width - 5,cell:getContentSize().height - 5)
     cellBg:setPosition( cellWidth/2, cellHeight/2 )
     cell:addChild( cellBg )
     -- 标题
     local title = XTHD.createLabel({
         anchor = cc.p( 0, 0.5 ),
-        pos = cc.p( 12, cellBg:getContentSize().height - 17 ),
+        pos = cc.p( 20, cellBg:getContentSize().height - 13 ),
         color = cc.c3b( 168, 23, 43 ),
-        fontSize = 20,
+        fontSize = 16,
     })
     cellBg:addChild( title )
     cell._title = title
     -- 进度
     local progress = XTHD.createLabel({
-        fontSize = 18,
+        fontSize = 16,
         color    = cc.c3b( 48, 40, 101 ),
         anchor   = cc.p( 0.5, 0.5 ),
-        pos      = cc.p( cellBg:getContentSize().width - 75, title:getPositionY() - 3 ),
+        pos      = cc.p( cellBg:getContentSize().width - 65, title:getPositionY()),
     })
     cellBg:addChild( progress )
     cell._progress = progress
-    -- 分界线
-    -- local split1 = XTHD.createSprite( "res/image/activities/daily/split1.png" )
-    -- split1:setPosition( cellBg:getContentSize().width*0.5, cellBg:getContentSize().height - 34 )
-    -- cellBg:addChild( split1 )
-    -- 奖励图片
-    local taskReward = XTHD.createSprite( "res/image/plugin/tasklayer/taskrewardtext.png" )
-    taskReward:setPosition( 30, 46 )
-    taskReward:setScale(0.9)
-    cellBg:addChild( taskReward )
+
     -- 奖励容器
     local iconContainer = XTHD.createSprite()
     iconContainer:setContentSize( 400, 85 )
@@ -420,10 +405,10 @@ function RiChangHuoDongLayer:buildCell( cell, index, cellWidth, cellHeight )
         text = LANGUAGE_BTN_KEY.getReward,
         fontSize = 26,
         anchor = cc.p( 0.5, 0.5 ),
-        pos = cc.p( cellBg:getContentSize().width - 80, taskReward:getPositionY() ),
+        pos = cc.p( cellBg:getContentSize().width - 65, cellBg:getContentSize().height *0.5 - 15 ),
 		isScrollView = true,
     })
-    fetchBtn:setScale(0.7)
+    fetchBtn:setScale(0.6)
     cellBg:addChild( fetchBtn )
     local fetchSpine = sp.SkeletonAnimation:create( "res/image/plugin/tasklayer/querenjinjie.json", "res/image/plugin/tasklayer/querenjinjie.atlas", 1.0)   
     fetchBtn:addChild( fetchSpine )
@@ -443,7 +428,7 @@ function RiChangHuoDongLayer:buildCell( cell, index, cellWidth, cellHeight )
         pos = cc.p( fetchBtn:getPosition() ),
 		isScrollView = true,
     })
-    notFinishBtn:setScale(0.7)
+    notFinishBtn:setScale(0.6)
     cellBg:addChild( notFinishBtn )
     cell._notFinishBtn = notFinishBtn
     -- 前往按钮
@@ -457,7 +442,7 @@ function RiChangHuoDongLayer:buildCell( cell, index, cellWidth, cellHeight )
         pos = cc.p( fetchBtn:getPosition() ),
 		isScrollView = true,
     })
-    gotoBtn:setScale(0.7)
+    gotoBtn:setScale(0.6)
     cellBg:addChild( gotoBtn )
     cell._gotoBtn = gotoBtn
     -- 已领取
@@ -490,7 +475,7 @@ function RiChangHuoDongLayer:updateCell( cell, index )
     -- 奖励
     cell._iconContainer:removeAllChildren()
     local iconNum = #cellData.rewardList
-    local posX = 100--cell._iconContainer:getContentSize().width/(iconNum + 0.5)
+    local posX = 60--cell._iconContainer:getContentSize().width/(iconNum + 0.5)
     local posY = cell._iconContainer:getContentSize().height/2
     local showRewardData = {}
     for i, v in ipairs( cellData.rewardList ) do
@@ -507,8 +492,8 @@ function RiChangHuoDongLayer:updateCell( cell, index )
             isLightAct = true,
 			showDrropType = 2,
         })
-        rewardIcon:setPosition( posX*( i - 0.5 ), posY )
-        rewardIcon:setScale( 0.7 )
+        rewardIcon:setPosition( posX*( i - 0.5 ) - 45, posY - 15 )
+        rewardIcon:setScale( 0.5 )
         cell._iconContainer:addChild( rewardIcon )
     end
     -- 按钮
@@ -690,7 +675,8 @@ function RiChangHuoDongLayer:refreshData()
                         RedPointState[8].state = 1
                     end
                 end
-                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "rchd"}})
+				self._parent:refreshRedDot()
+                XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "hyyl"}})
             else
                 XTHDTOAST(backData.msg)
             end
@@ -763,8 +749,8 @@ function RiChangHuoDongLayer:firstActivityId()
     return self:buildData()
 end
 
-function RiChangHuoDongLayer:create(data)
-    return RiChangHuoDongLayer.new(data)
+function RiChangHuoDongLayer:create(data,parent)
+    return RiChangHuoDongLayer.new(data,parent)
 end
 
 return RiChangHuoDongLayer

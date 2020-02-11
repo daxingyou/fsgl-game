@@ -1,7 +1,7 @@
 --Created By Liuluyang 2015年06月13日
 local ChaozhiduihuanDuihuanLayer = class("ChaozhiduihuanDuihuanLayer",function ()
 	local layer = XTHD.createSprite()
-	layer:setContentSize( 685, 339 )
+	layer:setContentSize( 431, 254 )
 	return layer
 end)
 
@@ -12,8 +12,8 @@ function ChaozhiduihuanDuihuanLayer:ctor(parent)
 end
 
 function ChaozhiduihuanDuihuanLayer:initUI()	
-	self._talbeView = CCTableView:create(cc.size(685, 340))
-	self._talbeView:setPosition(75,0)
+	self._talbeView = CCTableView:create(self:getContentSize())
+	self._talbeView:setPosition(-50,10)
     self._talbeView:setBounceable(true)
     self._talbeView:setDirection(cc.SCROLLVIEW_DIRECTION_VERTICAL) --设置横向纵向
     self._talbeView:setDelegate()
@@ -24,7 +24,7 @@ function ChaozhiduihuanDuihuanLayer:initUI()
         return self._talbeView:getContentSize().width,170
     end
     local function numberOfCellsInTableView(table)
-        return math.ceil(#self._listData/4)
+        return math.ceil(#self._listData/3)
     end
     local function tableCellTouched(table,cell)
     end
@@ -36,11 +36,11 @@ function ChaozhiduihuanDuihuanLayer:initUI()
         else
             cell:removeAllChildren()
         end
-        for i=1,4 do
-        	if idx*4+i <= #self._listData then
-				local _index = idx*4+i
+        for i=1,3 do
+        	if idx*3+i <= #self._listData then
+				local _index = idx*3+i
         		local bg = cc.Sprite:create("res/image/activities/chaozhiduihuan/cellbg.png")
-				local x = bg:getContentSize().width *0.8+ (i -1)*bg:getContentSize().width * 1.1 + 5
+				local x = bg:getContentSize().width *0.5+ (i -1)*bg:getContentSize().width * 1.05 + 3
 				bg:setPosition(x,cell:getContentSize().height * 0.5)
 				cell:addChild(bg)
 				

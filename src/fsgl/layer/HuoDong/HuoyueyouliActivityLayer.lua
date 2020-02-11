@@ -1,6 +1,9 @@
 --Created By Liuluyang 2015年06月13日
 local HuoyueyouliActivityLayer = class("HuoyueyouliActivityLayer",function ()
-	return XTHD.createPopLayer()
+	local node = cc.Node:create()
+	node:setAnchorPoint(0.5,0.5)
+	node:setContentSize(830,342)
+	return node
 end)
 
 function HuoyueyouliActivityLayer:ctor(data,parent)
@@ -28,27 +31,29 @@ function HuoyueyouliActivityLayer:onCleanup()
 end
 
 function HuoyueyouliActivityLayer:initUI()	
-	local bg = cc.Sprite:create("res/image/activities/huoyueyouli/bg_1.png")
-	bg:setPosition(self:getContentSize().width*0.5,self:getContentSize().height*0.5)
-	self:addContent(bg)
+	local bg = cc.Sprite:create()
+	bg:setContentSize(self:getContentSize())
+	self:addChild(bg)
+	bg:setPosition(self:getContentSize().width *0.5,self:getContentSize().height *0.5)
 	self._bg = bg
-	
-	local curtain = cc.Sprite:create("res/image/activities/huoyueyouli/curtain.png")
-	self._bg:addChild(curtain,11)
-	curtain:setPosition(curtain:getContentSize().width *0.5 + 22, self._bg:getContentSize().height *0.5 - 13)
-	
-	local bg2 = cc.Sprite:create("res/image/activities/huoyueyouli/bg_4.png")
-	self._bg:addChild(bg2)
-	bg2:setPosition(bg2:getContentSize().width *0.5 + 230,self._bg:getContentSize().height - bg2:getContentSize().height - 32)
 
-	local bg3 = cc.Sprite:create("res/image/activities/huoyueyouli/bg3.png")
-	self._bg:addChild(bg3)
-	bg3:setPosition(self._bg:getContentSize().width - bg3:getContentSize().width *0.5,self._bg:getContentSize().height - bg3:getContentSize().height *0.5)
-
-	local listviewbg = cc.Sprite:create("res/image/activities/huoyueyouli/btnbg.png")
+	local listviewbg = cc.Sprite:create("res/image/activities/newhuoyueyouli/listviewbg.png")
 	self._bg:addChild(listviewbg)
-	listviewbg:setPosition(listviewbg:getContentSize().width *0.5 + 74,listviewbg:getContentSize().height *0.5 + 29)
+	listviewbg:setContentSize(listviewbg:getContentSize().width,self:getContentSize().height)
+	listviewbg:setPosition(listviewbg:getContentSize().width *0.5,listviewbg:getContentSize().height *0.5)
 	
+	local bg2 = cc.Sprite:create("res/image/activities/newhuoyueyouli/title_huoyueyouli.png")
+	bg2:setScale(1.187)
+	bg2:setAnchorPoint(0,1)
+	self._bg:addChild(bg2)
+	bg2:setPosition(listviewbg:getContentSize().width,self._bg:getContentSize().height)
+
+	local bg3 = cc.Sprite:create("res/image/activities/newhuoyueyouli/renwu.png")
+	bg3:setScale(0.7)
+	self._bg:addChild(bg3)
+	bg3:setPosition(self._bg:getContentSize().width - bg3:getContentSize().width *0.4 + 30,self._bg:getContentSize().height - bg3:getContentSize().height *0.5)
+
+
 	--左边按钮
 	local btn_listView = ccui.ListView:create()
     btn_listView:setContentSize(listviewbg:getContentSize())
@@ -97,20 +102,12 @@ function HuoyueyouliActivityLayer:initUI()
 	end
 	
 	self._tableViewBg = cc.Sprite:create("res/image/activities/huoyueyouli/bg_2.png")
+	self._tableViewBg:setAnchorPoint(0,1)
 	self._bg:addChild(self._tableViewBg)
-	self._tableViewBg:setPosition(445,self._bg:getContentSize().height *0.5 - 58)
+	self._tableViewBg:setContentSize(self._tableViewBg:getContentSize().width,self:getContentSize().height - bg2:getContentSize().height *1.18)
+	self._tableViewBg:setPosition(listviewbg:getContentSize().width,self._bg:getContentSize().height - bg2:getContentSize().height * 1.187)
 
-	local btn_close = XTHDPushButton:createWithFile({
-		normalFile = "res/image/activities/chaozhiduihuan/btn_close_up.png",
-		selectedFile = "res/image/activities/chaozhiduihuan/btn_close_down.png",
-		musicFile = XTHD.resource.music.effect_btn_commonclose,
-		endCallback  = function()
-           self:hide()
-		end,
-	})
-	self._bg:addChild(btn_close)
-	btn_close:setPosition(self._bg:getContentSize().width - btn_close:getContentSize().width * 0.5 + 12,self._bg:getContentSize().height - btn_close:getContentSize().height * 0.5 - 12)
-
+	
 	self:initTableView()
 	self:selecteTableView(1)
 
@@ -118,7 +115,7 @@ end
 
 function HuoyueyouliActivityLayer:initTableView()
 	self._talbeView = CCTableView:create(self._tableViewBg:getContentSize())
-	self._talbeView:setPosition(230,28)
+	self._talbeView:setPosition(151,0)
     self._talbeView:setBounceable(true)
     self._talbeView:setDirection(cc.SCROLLVIEW_DIRECTION_VERTICAL) --设置横向纵向
     self._talbeView:setDelegate()
@@ -157,7 +154,7 @@ end
 
 function HuoyueyouliActivityLayer:buildCell(cell,idx)
 	local index = idx + 1
-	local cellbg = cc.Sprite:create("res/image/activities/huoyueyouli/cellbg.png")
+	local cellbg = cc.Sprite:create("res/image/activities/newhuoyueyouli/cellbg.png")
 	cell:addChild(cellbg)
 	cellbg:setContentSize(cell:getContentSize().width - 5,cell:getContentSize().height - 5)
 	cellbg:setPosition(cell:getContentSize().width *0.5, cell:getContentSize().height *0.5)
@@ -402,6 +399,7 @@ function HuoyueyouliActivityLayer:updateRedPoint()
 			end
 		end
 	end
+	self._parent:refreshRedDot()
 	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {["name"] = "hyyl"}})
 end
 

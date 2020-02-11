@@ -1,9 +1,13 @@
 --Created By Liuluyang 2015年06月13日
 local ChaozhiduihuanActivityLayer = class("ChaozhiduihuanActivityLayer",function ()
-	return XTHD.createPopLayer()
+	local node = cc.Node:create()
+	node:setAnchorPoint(0.5,0.5)
+	node:setContentSize(830,342)
+	return node
 end)
 
-function ChaozhiduihuanActivityLayer:ctor(data)
+function ChaozhiduihuanActivityLayer:ctor(data,parent)
+	self._parent = parent
 	self._data = data
 	self._btnList = {}
 	self._selectedIndex = 1
@@ -66,20 +70,54 @@ function ChaozhiduihuanActivityLayer:ctor(data)
 end
 
 function ChaozhiduihuanActivityLayer:initUI()	
-	local _bg = cc.Sprite:create("res/image/activities/chaozhiduihuan/bg.png")
-	_bg:setPosition(self:getContentSize().width *0.5,self:getContentSize().height *0.5)
-	--_bg:setScale(0.9)
-	self._bg = _bg
-	self:addContent(self._bg)
+	local bg = cc.Sprite:create()
+	self:addChild(bg)
+	bg:setContentSize(self:getContentSize())
+	bg:setPosition(self:getContentSize().width*0.5,self:getContentSize().height *0.5)
+	self._bg = bg
+
+	local listviewbg = cc.Sprite:create("res/image/activities/newhuoyueyouli/listviewbg.png")
+	self._bg:addChild(listviewbg)
+	listviewbg:setContentSize(listviewbg:getContentSize().width,self._bg:getContentSize().height)
+	listviewbg:setPosition(listviewbg:getContentSize().width *0.5,listviewbg:getContentSize().height *0.5)
+	self._listviewbg = listviewbg
+
+	local titlebg = cc.Sprite:create("res/image/activities/newhuoyueyouli/title_chaozhiduihuan.png")
+	titlebg:setScale(1.043)
+	titlebg:setAnchorPoint(0,1)
+	self._bg:addChild(titlebg)
+	titlebg:setPosition(listviewbg:getContentSize().width,self._bg:getContentSize().height)
 
 	--剩余兑换券
 	local juan = cc.Sprite:create("res/image/activities/chaozhiduihuan/duihuan.png")
-	self._bg:addChild(juan)
-	juan:setPosition(self._bg:getContentSize().width/2 + 230,self._bg:getContentSize().height - 92)
+	titlebg:addChild(juan)
+	juan:setPosition(titlebg:getContentSize().width - juan:getContentSize().width *0.5,titlebg:getContentSize().height - juan:getContentSize().height *0.5 - 10)
 	self._juan = juan
 	self._juanCount = XTHDLabel:create(XTHD.resource.getItemNum(2324),16,"res/fonts/def.ttf")  
 	juan:addChild(self._juanCount)
 	self._juanCount:setPosition(juan:getContentSize().width/2 + 10,juan:getContentSize().height/2)
+	
+
+	self._timeLable = XTHDLabel:create("",14,"res/fonts/def.ttf")
+	self._timeLable:setAnchorPoint(0,0.5)
+	self._timeLable:setPosition(titlebg:getContentSize().width - 125,self._timeLable:getContentSize().height *0.5 + 8)
+	titlebg:addChild(self._timeLable)
+
+--	self._title = cc.Sprite:create("res/image/activities/chaozhiduihuan/title_".. self._selectedIndex ..".png")
+--	self._bg:addChild(self._title)
+--	self._title:setPosition(self._title:getContentSize().width *0.5 + 230,self._bg:getContentSize().height - self._title:getContentSize().height*0.5 - 95)
+
+	local bg3 = cc.Sprite:create("res/image/activities/newhuoyueyouli/renwu.png")
+	bg3:setScale(0.7)
+	self._bg:addChild(bg3)
+	bg3:setPosition(self._bg:getContentSize().width - bg3:getContentSize().width *0.4 + 30,self._bg:getContentSize().height - bg3:getContentSize().height *0.5)
+
+
+	self._tableViewBg = cc.Sprite:create("res/image/activities/huoyueyouli/bg_2.png")
+	self._tableViewBg:setAnchorPoint(0,1)
+	self._bg:addChild(self._tableViewBg)
+	self._tableViewBg:setContentSize(self._tableViewBg:getContentSize().width,self:getContentSize().height - titlebg:getContentSize().height *1.043)
+	self._tableViewBg:setPosition(listviewbg:getContentSize().width,self._bg:getContentSize().height - titlebg:getContentSize().height * 1.043)
 
 	--排行榜按钮
 	local rankbtn = XTHDPushButton:createWithParams({
@@ -93,38 +131,20 @@ function ChaozhiduihuanActivityLayer:initUI()
 	})
 	--rankbtn:setScale(0.7)
 	rankbtn:setSwallowTouches(false)
-	self._bg:addChild(rankbtn,5)
-	rankbtn:setPosition(rankbtn:getContentSize().width + 50,rankbtn:getContentSize().height - 20)
+	listviewbg:addChild(rankbtn,5)
+	rankbtn:setPosition(listviewbg:getContentSize().width *0.5,rankbtn:getContentSize().height - 45)
 	self._rankbtn = rankbtn
-
-	local shijianbg = cc.Sprite:create("res/image/activities/chaozhiduihuan/daojishibg.png")
-	self._bg:addChild(shijianbg)
-	shijianbg:setPosition(self._bg:getContentSize().width*0.5 + 180 + shijianbg:getContentSize().width * 0.5, self._bg:getContentSize().height - 125)
-	
-	self._timeLable = XTHDLabel:create("",14,"res/fonts/def.ttf")
-	self._timeLable:setAnchorPoint(0,0.5)
-	--self._timeLable:setColor(XTHD.resource.textColor.green_text)
-	self._timeLable:setPosition(shijianbg:getPositionX() -15,shijianbg:getPositionY())
-	self._bg:addChild(self._timeLable)
-
-	self._title = cc.Sprite:create("res/image/activities/chaozhiduihuan/title_".. self._selectedIndex ..".png")
-	self._bg:addChild(self._title)
-	self._title:setPosition(self._title:getContentSize().width *0.5 + 230,self._bg:getContentSize().height - self._title:getContentSize().height*0.5 - 95)
-
-	self._ceilTitle = cc.Sprite:create("res/image/activities/chaozhiduihuan/ceilTitle_".. self._selectedIndex ..".png")
-	self._bg:addChild(self._ceilTitle)
-	self._ceilTitle:setPosition(self._bg:getContentSize().width *0.5,self._bg:getContentSize().height - 38)
 	
 	--左边按钮
 	local btn_listView = ccui.ListView:create()
-    btn_listView:setContentSize(cc.size(151, 402))
+    btn_listView:setContentSize(listviewbg:getContentSize())
     btn_listView:setDirection(ccui.ScrollViewDir.vertical)
     btn_listView:setBounceEnabled(true)
 	btn_listView:setScrollBarEnabled(false)
 	btn_listView:setSwallowTouches(true)
-    self._bg:addChild(btn_listView,2)
-    btn_listView:setPosition(cc.p(65,31))
-    self._btn_listView = btn_listView
+    listviewbg:addChild(btn_listView)
+    btn_listView:setPosition(cc.p(0,0))
+    self._btn_listView = btn_listView	
 	local isOpen = gameUser.getActivityOpenStatusById(44)
 
 	for i = 1, self._tabNumber do
@@ -164,24 +184,9 @@ function ChaozhiduihuanActivityLayer:initUI()
 		self._btn_listView:pushBackCustomItem(layout)
 	end
 
-	local liusu = cc.Sprite:create("res/image/activities/chaozhiduihuan/liusu.png")
-	self._bg:addChild(liusu,11)
-	liusu:setPosition(liusu:getContentSize().width *0.5 + 20,liusu:getContentSize().height *0.5 + 25)
-
-	local btn_close = XTHDPushButton:createWithFile({
-		normalFile = "res/image/activities/chaozhiduihuan/btn_close_up.png",
-		selectedFile = "res/image/activities/chaozhiduihuan/btn_close_down.png",
-		musicFile = XTHD.resource.music.effect_btn_commonclose,
-		endCallback  = function()
-           self:hide()
-		end,
-	})
-	self._bg:addChild(btn_close)
-	btn_close:setPosition(self._bg:getContentSize().width - btn_close:getContentSize().width * 0.5 + 18,self._bg:getContentSize().height - btn_close:getContentSize().height * 0.5 - 16)
 	performWithDelay(self, function()
         self:SelectedActivityLayer(self._selectedIndex)
     end, 0.2)
-	--self:initTableView()
 end
 
 function ChaozhiduihuanActivityLayer:SelectedActivityLayer(index)
@@ -201,8 +206,7 @@ function ChaozhiduihuanActivityLayer:SelectedActivityLayer(index)
 		end
 	end
 
-	self._title:setTexture("res/image/activities/chaozhiduihuan/title_".. self._selectedIndex ..".png")
-	self._ceilTitle:setTexture("res/image/activities/chaozhiduihuan/ceilTitle_".. self._selectedIndex ..".png")
+	--self._title:setTexture("res/image/activities/chaozhiduihuan/title_".. self._selectedIndex ..".png")
 	if self._activityOpen[index].url ~= nil then
 		self:newHttpActivity(index)
 	else
@@ -230,13 +234,14 @@ function ChaozhiduihuanActivityLayer:updateRedDot()
 					if data.list[i].state == 1 then
 						self._redDot:setVisible(true)
 						RedPointState[7].state = 1
-						XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {["name"] = "czdh"}})
+						self._parent:refreshRedDot()
+						XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {["name"] = "hyyl"}})
 						return
 					else
 						self._redDot:setVisible(false)
 					end
 				end
-				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {["name"] = "czdh"}})
+				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {["name"] = "hyyl"}})
 			end
         end,
         failedCallback = function()
@@ -281,8 +286,8 @@ function ChaozhiduihuanActivityLayer:RankJiangliPopLayer()
 end
 
 
-function ChaozhiduihuanActivityLayer:create(data)
-	return ChaozhiduihuanActivityLayer.new(data)
+function ChaozhiduihuanActivityLayer:create(data,parent)
+	return ChaozhiduihuanActivityLayer.new(data,parent)
 end
 
 return ChaozhiduihuanActivityLayer

@@ -1828,7 +1828,7 @@ function ZhuChengMenuLayer:refreshBaseInfo()
         self.__functionButtons[25]:setVisible(false)
         for i, v in ipairs(dailyActivityId) do
             if activityOpenStatus[tostring(v)] == 1 then
-                self.__functionButtons[25]:setVisible(true)
+                self.__functionButtons[25]:setVisible(false)
                 self._leftupBtns[7].isActivity = true
                 break
             end
@@ -1899,7 +1899,8 @@ function ZhuChengMenuLayer:refreshBaseInfo()
         -- 新投资计划
         if self._leftupBtns[17] then
             self._leftupBtns[17].isActivity = activityOpenStatus["40"] == 1
-            self.__functionButtons[35]:setVisible(activityOpenStatus["40"] == 1)
+			self.__functionButtons[35]:setVisible(false)
+            --self.__functionButtons[35]:setVisible(activityOpenStatus["40"] == 1)
         end
 
         -- 活跃有礼
@@ -1911,7 +1912,8 @@ function ZhuChengMenuLayer:refreshBaseInfo()
         -- 超值兑换
         if self._leftupBtns[16] then
             self._leftupBtns[16].isActivity =(activityOpenStatus["44"] == 1 or activityOpenStatus["43"] == 1)
-            self.__functionButtons[34]:setVisible(activityOpenStatus["44"] == 1 or activityOpenStatus["43"] == 1)
+			self.__functionButtons[34]:setVisible(false)
+            --self.__functionButtons[34]:setVisible(activityOpenStatus["44"] == 1 or activityOpenStatus["43"] == 1)
         end
 
         -- 大卖场
@@ -3230,27 +3232,29 @@ end
 
 -- 活跃有礼
 function ZhuChengMenuLayer:HuoyueyouliActivityLayer()
-    ClientHttp:requestAsyncInGameWithParams( {
-        modules = "activeActivityList?",
-        params = { type = 1 },
-        successCallback = function(data)
-            if data.result == 0 then
-                local biyedianliLayer = requires("src/fsgl/layer/HuoDong/HuoyueyouliActivityLayer.lua")
-                local layer = biyedianliLayer:create(data)
-                cc.Director:getInstance():getRunningScene():addChild(layer)
-				layer:setName("Poplayer")
-                layer:show()
-            end
-        end,
-        failedCallback = function()
-            XTHDTOAST(LANGUAGE_TIPS_WEBERROR)
-            ------"网络请求失败")
-        end,
-        -- 失败回调
-        loadingType = HTTP_LOADING_TYPE.CIRCLE,
-        -- 加载图显示 circle 光圈加载 head 头像加载
-        loadingParent = node,
-    } )
+	local newHuoyueyouli = requires("src/fsgl/layer/HuoDong/NewHuoyueyouli.lua"):create(1)
+	LayerManager.addLayout(newHuoyueyouli)
+--    ClientHttp:requestAsyncInGameWithParams( {
+--        modules = "activeActivityList?",
+--        params = { type = 1 },
+--        successCallback = function(data)
+--            if data.result == 0 then
+--                local biyedianliLayer = requires("src/fsgl/layer/HuoDong/HuoyueyouliActivityLayer.lua")
+--                local layer = biyedianliLayer:create(data)
+--                cc.Director:getInstance():getRunningScene():addChild(layer)
+--				layer:setName("Poplayer")
+--                layer:show()
+--            end
+--        end,
+--        failedCallback = function()
+--            XTHDTOAST(LANGUAGE_TIPS_WEBERROR)
+--            ------"网络请求失败")
+--        end,
+--        -- 失败回调
+--        loadingType = HTTP_LOADING_TYPE.CIRCLE,
+--        -- 加载图显示 circle 光圈加载 head 头像加载
+--        loadingParent = node,
+--    } )
 end
 
 

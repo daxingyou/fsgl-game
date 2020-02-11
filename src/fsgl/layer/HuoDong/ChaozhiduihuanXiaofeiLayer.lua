@@ -1,7 +1,7 @@
 --Created By Liuluyang 2015年06月13日
 local ChaozhiduihuanXiaofeiLayer = class("ChaozhiduihuanXiaofeiLayer",function ()
 	local layer = XTHD.createSprite()
-	layer:setContentSize( 685, 339 )
+	layer:setContentSize( 431, 254 )
 	return layer
 end)
 
@@ -24,16 +24,16 @@ function ChaozhiduihuanXiaofeiLayer:ctor(parent,data)
 end
 
 function ChaozhiduihuanXiaofeiLayer:initUI()	
-	self._talbeView = CCTableView:create(cc.size(685, 340))
-	self._talbeView:setPosition(75,0)
+	self._talbeView = CCTableView:create(self:getContentSize())
+	self._talbeView:setPosition(-50,10)
     self._talbeView:setBounceable(true)
     self._talbeView:setDirection(cc.SCROLLVIEW_DIRECTION_VERTICAL) --设置横向纵向
     self._talbeView:setDelegate()
     self._talbeView:setVerticalFillOrder(cc.TABLEVIEW_FILL_TOPDOWN)
     self:addChild(self._talbeView)
-
+	
     local function cellSizeForTable(table,idx)
-        return self._talbeView:getContentSize().width,110
+        return self._talbeView:getContentSize().width,80
     end
     local function numberOfCellsInTableView(table)
         return #self._listData
@@ -44,15 +44,15 @@ function ChaozhiduihuanXiaofeiLayer:initUI()
     	local cell = table1:dequeueCell()
         if cell == nil then
             cell = cc.TableViewCell:new()
-			cell:setContentSize(self._talbeView:getContentSize().width,110)
+			cell:setContentSize(self._talbeView:getContentSize().width,80)
         else
             cell:removeAllChildren()
         end
        
-        local bg = cc.Sprite:create("res/image/activities/newyear/redpacket/cellbg_2.png" )
-		bg:setContentSize(cell:getContentSize().width - 35,105)
+        local bg = cc.Sprite:create("res/image/activities/newhuoyueyouli/cellbg.png" )
 		cell:addChild(bg)
-		bg:setPosition(cell:getContentSize().width *0.5 - 3,cell:getContentSize().height *0.5)
+		bg:setPosition(cell:getContentSize().width *0.5,cell:getContentSize().height *0.5)
+		bg:setContentSize(cell:getContentSize().width - 5,cell:getContentSize().height - 5)
 
 		local data = self._listData[idx + 1]
 		for i = 1,4 do
@@ -63,9 +63,9 @@ function ChaozhiduihuanXiaofeiLayer:initUI()
 				count = itemdate[2],
 				showDrropType = 2,
 			})
-			item:setScale(0.65)
+			item:setScale(0.5)
 			bg:addChild(item)
-			item:setPosition( 5 + (item:getContentSize().width * 0.8) *(i - 1) + item:getContentSize().width*0.5, bg:getContentSize().height * 0.5 - 10)
+			item:setPosition( 5 + (item:getContentSize().width * 0.6) *(i - 1) + item:getContentSize().width*0.4, bg:getContentSize().height * 0.5 - 10)
 		end
 
 		if self._listData[idx + 1].state == 1 then
@@ -85,8 +85,9 @@ function ChaozhiduihuanXiaofeiLayer:initUI()
 						self:receiveCostReward(idx + 1)
 					end
 				})
+			btn_duihuan:setScale(0.8)
 			bg:addChild(btn_duihuan)
-			btn_duihuan:setPosition(bg:getContentSize().width - btn_duihuan:getContentSize().width * 0.5 - 40,bg:getContentSize().height *0.5 - 20)
+			btn_duihuan:setPosition(bg:getContentSize().width - btn_duihuan:getContentSize().width * 0.5 - 10,bg:getContentSize().height *0.5 - 10)
 			local fetchSpine = sp.SkeletonAnimation:create("res/image/plugin/tasklayer/querenjinjie.json", "res/image/plugin/tasklayer/querenjinjie.atlas", 1.0)   
 			btn_duihuan:addChild(fetchSpine)
 			fetchSpine:setScaleX(0.8)
@@ -96,8 +97,8 @@ function ChaozhiduihuanXiaofeiLayer:initUI()
 		elseif self._listData[idx + 1].state == 2 then
 			local yilingqu = cc.Sprite:create("res/image/camp/camp_reward_getted.png")
 			bg:addChild(yilingqu)
-			yilingqu:setPosition(bg:getContentSize().width - yilingqu:getContentSize().width * 0.5 - 27,bg:getContentSize().height *0.5 - 20)
-			yilingqu:setScale(0.8)
+			yilingqu:setPosition(bg:getContentSize().width - yilingqu:getContentSize().width * 0.5,bg:getContentSize().height *0.5 - 10)
+			yilingqu:setScale(0.6)
 		else
 			local normalnode = cc.Sprite:create("res/image/common/btn/btn_write_up.png")
 			normalnode:setContentSize(cc.size(120,60))
@@ -119,23 +120,24 @@ function ChaozhiduihuanXiaofeiLayer:initUI()
 						LayerManager.addLayout(_store)
 					end
 				})
+			btn_duihuan:setScale(0.8)
 			bg:addChild(btn_duihuan)
-			btn_duihuan:setPosition(bg:getContentSize().width - btn_duihuan:getContentSize().width * 0.5 - 40,bg:getContentSize().height *0.5 - 20)
+			btn_duihuan:setPosition(bg:getContentSize().width - btn_duihuan:getContentSize().width * 0.5 - 10,bg:getContentSize().height *0.5 - 10)
 		end
 
 		--消费进度
-		local lable = XTHDLabel:create( tostring(self._activityData.sum) .. " / " .. data.canshu,18,"res/fonts/def.ttf" ) --self._activityData
+		local lable = XTHDLabel:create( tostring(self._activityData.sum) .. " / " .. data.canshu,15,"res/fonts/def.ttf" ) --self._activityData
 		lable:setColor(cc.c3b(60,6,6))
 		bg:addChild(lable)
 		lable:setAnchorPoint(0.5,0.5)
-		lable:setPosition(bg:getContentSize().width  - 100,bg:getContentSize().height *0.5 + 20)
+		lable:setPosition(bg:getContentSize().width  - 70,bg:getContentSize().height *0.5 + 22)
 
 		--标题描述
-		local lable = XTHDLabel:create(data.describe,16,"res/fonts/def.ttf")
+		local lable = XTHDLabel:create(data.describe,14,"res/fonts/def.ttf")
 		lable:setColor(cc.c3b(60,6,6))
 		bg:addChild(lable)
 		lable:setAnchorPoint(0,0.5)
-		lable:setPosition(20,bg:getContentSize().height - lable:getContentSize().height)
+		lable:setPosition(20,bg:getContentSize().height - lable:getContentSize().height + 5)
 	
         return cell
     end

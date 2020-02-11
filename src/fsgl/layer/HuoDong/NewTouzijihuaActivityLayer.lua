@@ -1,9 +1,13 @@
 --Created By Liuluyang 2015年06月13日
 local NewTouzijihuaActivityLayer = class("NewTouzijihuaActivityLayer",function ()
-	return XTHD.createPopLayer()
+	local node = cc.Node:create()
+	node:setAnchorPoint(0.5,0.5)
+	node:setContentSize(830,342)
+	return node
 end)
 
-function NewTouzijihuaActivityLayer:ctor(data)
+function NewTouzijihuaActivityLayer:ctor(data,parent)
+	self._parent = parent
 	self._staticData = data
 	self._investReward = self._staticData.investReward
 	self._selectedIndex = 1
@@ -16,21 +20,45 @@ function NewTouzijihuaActivityLayer:ctor(data)
 end
 
 function NewTouzijihuaActivityLayer:initUI()	
-	local bg = cc.Sprite:create("res/image/activities/newTouzijihua/touzijihuabg.png")
+	local bg = cc.Sprite:create()
+	self:addChild(bg)
+	bg:setContentSize(self:getContentSize())
 	bg:setPosition(self:getContentSize().width*0.5,self:getContentSize().height *0.5)
 	self._bg = bg
-	self:addContent(bg)
 
-		--左边按钮
+	local listviewbg = cc.Sprite:create("res/image/activities/newhuoyueyouli/listviewbg.png")
+	self._bg:addChild(listviewbg)
+	listviewbg:setContentSize(listviewbg:getContentSize().width,self._bg:getContentSize().height)
+	listviewbg:setPosition(listviewbg:getContentSize().width *0.5,listviewbg:getContentSize().height *0.5)
+	self._listviewbg = listviewbg
+	
+	local title = cc.Sprite:create("res/image/activities/newhuoyueyouli/title_huoyueyouli.png")
+	title:setScale(1.187)
+	title:setAnchorPoint(0,1)
+	self._bg:addChild(title)
+	title:setPosition(listviewbg:getContentSize().width,self._bg:getContentSize().height)
+	
+	local bg3 = cc.Sprite:create("res/image/activities/newhuoyueyouli/renwu.png")
+	bg3:setScale(0.7)
+	self._bg:addChild(bg3)
+	bg3:setPosition(self._bg:getContentSize().width - bg3:getContentSize().width *0.4 + 30,self._bg:getContentSize().height - bg3:getContentSize().height *0.5)
+
+	self._tableViewBg = cc.Sprite:create("res/image/activities/huoyueyouli/bg_2.png")
+	self._tableViewBg:setAnchorPoint(0,1)
+	self._bg:addChild(self._tableViewBg)
+	self._tableViewBg:setContentSize(self._tableViewBg:getContentSize().width,self:getContentSize().height - title:getContentSize().height *1.18)
+	self._tableViewBg:setPosition(listviewbg:getContentSize().width,self._bg:getContentSize().height - title:getContentSize().height * 1.187)
+
+	--左边按钮
 	local btn_listView = ccui.ListView:create()
-    btn_listView:setContentSize(cc.size(151, 401))
+    btn_listView:setContentSize(listviewbg:getContentSize())
     btn_listView:setDirection(ccui.ScrollViewDir.vertical)
     btn_listView:setBounceEnabled(true)
 	btn_listView:setScrollBarEnabled(false)
 	btn_listView:setSwallowTouches(true)
-    self._bg:addChild(btn_listView,10)
-    btn_listView:setPosition(cc.p(65,32))
-    self._btn_listView = btn_listView
+    listviewbg:addChild(btn_listView,10)
+    btn_listView:setPosition(cc.p(0,0))
+    self._btn_listView = btn_listView	
 	local list = gameData.getDataFromCSV("InvestmentPrice")
 	
 	for i = 1, #list do
@@ -82,28 +110,15 @@ function NewTouzijihuaActivityLayer:initUI()
 			self:InvestPlanBuy()
 		end
 	}) 
-	self._bg:addChild(goumai)
+	title:addChild(goumai)
 	goumai:setScale(0.6)
-	goumai:setPosition(self._bg:getContentSize().width *0.5 + goumai:getContentSize().width *0.5 + 19,self._bg:getContentSize().height - 75 - goumai:getContentSize().height*0.5)
+	goumai:setPosition(title:getContentSize().width - goumai:getContentSize().width *0.5 + 20, goumai:getContentSize().height*0.25)
 	self.goumai = goumai
 
-	self._tishiLable = XTHDLabel:create("aaaaaaaaaaaaaaaaa",16,"res/fonts/def.ttf")
-	self._bg:addChild(self._tishiLable)
-	self._tishiLable:setAnchorPoint(0,0.5)
-	self._tishiLable:setPosition(230,goumai:getPositionY())
-
-
-	local btn_close = XTHDPushButton:createWithFile({
-		normalFile = "res/image/activities/newTouzijihua/btn_close_up.png",
-		selectedFile = "res/image/activities/newTouzijihua/btn_close_down.png",
-		musicFile = XTHD.resource.music.effect_btn_commonclose,
-		endCallback = function ()
-			self:hide()
-		end
-	})
-	self._bg:addChild(btn_close)
-	btn_close:setPosition(self._bg:getContentSize().width - 17,self._bg:getContentSize().height - btn_close:getContentSize().height *0.5 - 8)
-	
+	self._tishiLable = XTHDLabel:create("aaaaaaaaaaaaaaaaa",14,"res/fonts/def.ttf")
+	title:addChild(self._tishiLable)
+	self._tishiLable:setAnchorPoint(1,0.5)
+	self._tishiLable:setPosition(goumai:getPositionX() - goumai:getContentSize().width*0.5,self._tishiLable:getContentSize().height *0.5 + 3)
 	
 	self:inittableView()
 	self:selecteTableView(1)
@@ -135,8 +150,8 @@ function NewTouzijihuaActivityLayer:selecteTableView(index)
 end
 
 function NewTouzijihuaActivityLayer:inittableView()
-	self._talbeView = CCTableView:create(cc.size(430, 340))
-	self._talbeView:setPosition(224,28)
+	self._talbeView = CCTableView:create(self._tableViewBg:getContentSize())
+	self._talbeView:setPosition(151,0)
     self._talbeView:setBounceable(true)
     self._talbeView:setDirection(cc.SCROLLVIEW_DIRECTION_VERTICAL) --设置横向纵向
     self._talbeView:setDelegate()
@@ -175,8 +190,8 @@ end
 
 function NewTouzijihuaActivityLayer:selecetdJiangliTableView(cell,index)
 	index = index + 1 
-	local cellbg = cc.Sprite:create("res/image/activities/newTouzijihua/cellbg.png")
-	cellbg:setContentSize(cell:getContentSize().width - 5,cell:getContentSize().height - 10)
+	local cellbg = cc.Sprite:create("res/image/activities/newhuoyueyouli/cellbg.png")
+	cellbg:setContentSize(cell:getContentSize().width - 5,cell:getContentSize().height - 5)
 	cellbg:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height *0.5)
 	cell:addChild(cellbg)
 	
@@ -406,12 +421,13 @@ function NewTouzijihuaActivityLayer:updataMainCityRedPoint(data)
 		for j = 1,#data[i] do
 			if data[i][j].state == 1 then
 				RedPointState[6].state = 1
-				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {["name"] = "tzjh"}})
+				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {["name"] = "hyyl"}})
 				return
 			end
 		end
 	end
-	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {["name"] = "tzjh"}})
+	self._parent:refreshRedDot()
+	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {["name"] = "hyyl"}})
 end
 
 function NewTouzijihuaActivityLayer:SortList( _table )
@@ -442,8 +458,8 @@ function NewTouzijihuaActivityLayer:SortList( _table )
 	return _table
 end
 
-function NewTouzijihuaActivityLayer:create(data)
-	return NewTouzijihuaActivityLayer.new(data)
+function NewTouzijihuaActivityLayer:create(data,parent)
+	return NewTouzijihuaActivityLayer.new(data,parent)
 end
 
 return NewTouzijihuaActivityLayer
