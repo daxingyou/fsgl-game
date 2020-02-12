@@ -88,7 +88,7 @@ function NewHuoyueyouli:getOpenActivity()
          [1] = {
             url = "activeActivityList?",
             file = "HuoyueyouliActivityLayer.lua",
-			text = "活越有礼",
+			text = "活跃有礼",
             isOpen = 0,                             -- 0：根据isOpenid控制活动是否开启，1：长期开启，不判断isOpenid
             isOpenid = 42,                           -- 活动开启id，后端控制
             redPointid = 5,

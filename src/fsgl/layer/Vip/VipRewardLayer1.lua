@@ -187,7 +187,12 @@ function VipRewardLayer1:initUI(data)
     recharge_btn:setPosition(self._centerBg:getContentSize().width *0.8, self._centerBg:getContentSize().height *0.15 + 5)
     self._centerBg:addChild(recharge_btn)
     recharge_btn:setTouchEndedCallback( function()
-		self._parent:SwichVoucherNode(1)
+        if self._parent then
+            self._parent:SwichVoucherNode(1)
+        else
+            local voucherLayer = requires("src/fsgl/layer/VoucherCenter/VoucherCenterLayer.lua"):create(1)
+	        LayerManager.addLayout(voucherLayer)    
+        end
 		self:removeFromParent()
     end )
 
