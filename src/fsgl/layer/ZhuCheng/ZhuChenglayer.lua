@@ -85,7 +85,8 @@ function ZhuChenglayer:ctor(mark)
     musicManager.setBackMusic(XTHD.resource.music.music_bgm_main)
     musicManager.switchBackMusic()
 
-
+	self:setCurTitleList()
+	 
     -- YinDaoMarg:getInstance():updateServer({group = 10,index = 1,isGuideOver = false})
 end
 
@@ -1448,6 +1449,26 @@ function ZhuChenglayer:test( ) -----测试种族
             print("the time is",time)
         end,1.0,false)
     end 
+end
+
+--设置初始的称号数据，先放在这处理，登录的时候请求回出现uuid冲突
+function ZhuChenglayer:setCurTitleList()
+	ClientHttp:requestAsyncInGameWithParams( {
+        modules = "titleList?",
+        successCallback = function(data)
+            if data.result == 0 then
+               gameUser.setCurTitleList(data.titles)
+            end
+        end,
+        failedCallback = function()
+            XTHDTOAST(LANGUAGE_TIPS_WEBERROR)
+            ------"网络请求失败")
+        end,
+        -- 失败回调
+        loadingType = HTTP_LOADING_TYPE.CIRCLE,
+        -- 加载图显示 circle 光圈加载 head 头像加载
+        loadingParent = node,
+    } )
 end
 ----------authored by LITAO---end---------------
 

@@ -175,6 +175,27 @@ function SheZhiLayer:initPlayerLeft()
     self.avator:addChild(id)
     self.avator:addChild(idNumber)
 
+	local btn_chenghao = XTHD.createCommonButton({
+		btnColor = "write_1",
+        btnSize = cc.size(105,46),
+        isScrollView = false,
+        needSwallow = true,
+        enable = true,
+        musicFile = XTHD.resource.music.effect_btn_common,
+        text = "称号",
+        fontSize = 26,
+        fontColor = cc.c3b(255,255,255),
+        endCallback = function ()
+           self:Chenghao()
+        end
+	})
+	self.avator:addChild(btn_chenghao)
+	btn_chenghao:setScale(0.6)
+    btn_chenghao:setTouchSize(cc.size(100,50))
+    btn_chenghao:setAnchorPoint(0.5, 1)
+    btn_chenghao:setPosition(changeAvatorBtn:getPositionX(), idNumber:getPositionY() - idNumber:getContentSize().height *0.5  -10)
+	
+
     local serverTitle = XTHDLabel:createWithParams({
         text = LANGUAGE_KEY_NOWSERVER .. ":",
         size = 19,
@@ -706,6 +727,13 @@ function SheZhiLayer:initSetting()
         end)
 
     end
+end
+
+function SheZhiLayer:Chenghao()
+	local layer =  requires("src/fsgl/layer/ZhuCheng/ChenghaoLayer.lua"):create()
+	cc.Director:getInstance():getRunningScene():addChild(layer)
+	layer:setName("Poplayer")
+	layer:show()
 end
 
 function SheZhiLayer:changAcator(id)--回调函数改变主城头像by.hungjunjian

@@ -122,6 +122,7 @@ local MSGID = {
 	SC_ACTIVITY_SCTG_MSG = 5083,	--缤纷有礼 首冲团购（红点）
 	SC_ACTIVITY_YKZZK_MSG = 5084,	--月卡至尊卡（红点）
     SC_BAG_CAN_OPEN_REMIND_MSG = 5085, --背包可开启提醒
+	SC_TITLE_ACTIVITE_REMIND_MSG = 5086, --获得新称号提示
 
 }
 MsgCenter.MSGID = MSGID
@@ -203,9 +204,10 @@ local function onMsgRecive(event)
 				chat.multiTeamID = event.data.msg:readInt() -----队伍 （>0 是多人副本世界邀请，<= 0 都不是）
 				chat.multiConfigID = event.data.msg:readShort() -------多人副本静态表第一列ID
 				chat.multiBlackPos = event.data.msg:readChar() -----多人副本里当前组还有多少个空位
-
+				
 				len = event.data.msg:readShort()
 				chat.item = event.data.msg:readStringBytes(len)
+				chat.titleId = event.data.msg:readInt()
 				if chat.chatType == LiaoTianDatas.__chatType.TYPE_PRIVATE_CHAT then
 					HaoYouPublic.addTalkMsg(chat)
 				elseif chat.chatType == LiaoTianDatas.__chatType.TYPE_PAOMADENG then
@@ -318,6 +320,31 @@ local function onMsgRecive(event)
                 RedPointState[29].state = flag
                 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "bag"}})
                 break
+			elseif msgID == MSGID.SC_TITLE_ACTIVITE_REMIND_MSG then
+				local len = event.data.msg:readShort()
+				local data =  event.data.msg:readStringBytes(len)
+				local data = json.decode(data)
+				local titlename = nil
+				local index = nil
+			
+				if #gameUser.getCurTitleList() > 0 then
+					for i = 1,#data do
+						local _istrue = false
+						for k,v in pairs(gameUser.getCurTitleList()) do
+							if data[i] == v then
+								_istrue = true
+							end
+						end
+						if not _istrue then
+							index = i
+						end
+					end
+					titlename = gameData.getDataFromCSV("TitleInfo",{id = data[index]}).name
+				else
+					titlename = gameData.getDataFromCSV("TitleInfo",{id = data[1]}).name
+				end
+				gameUser.setCurTitleList(data)
+				XTHDTOAST("恭喜获得称号《"..titlename.."》")
 			elseif msgID == MSGID.SERVER_RESPONSE_ACTIVITYCANGET then ----有活动可领取
 				local statu = event.data.msg:readChar() ----1 有东西可领，0 没东西可领
 				local innerStatu = {}

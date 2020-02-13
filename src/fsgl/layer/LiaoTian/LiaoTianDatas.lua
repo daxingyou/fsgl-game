@@ -251,6 +251,7 @@ function LiaoTianDatas.analysisServerMsg(msg)
         data.multiConfigID = msg.multiConfigID
         -------表ID
         data.multiTeamID = msg.multiTeamID
+		data.titleId = msg.titleId
         --------
         if msg.shareItem then
             data.shareItem = msg.shareItem
@@ -481,6 +482,7 @@ function LiaoTianDatas.getChatRecord()
                             multiBlackPos = v.moreEctypeSurplusSum,
                             -----多人副本里当前组还有多少个空位
                             shareItem = v.item,-- 服务器返回的json
+							titleId = v.titleId
                         }
                         LiaoTianDatas.insertMsg(chat.chatType, false, chat)
                     end

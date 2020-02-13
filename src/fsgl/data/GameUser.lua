@@ -147,6 +147,8 @@ gameUser._finishThreePayRewardList = {} --单签已领取的奖励列表
 gameUser._growthFund = 0	--成长基金是否开启状态
 gameUser._monthState = 0	--至尊卡月卡打脸页状态
 gameUser._meiRiQianDaoState = 0  --每日签到打脸页状态
+gameUser._curTitleId = 0	--当前佩戴的称号
+gameUser._Titlelist = {}	--当前已拥有称号
 
 gameUser._rchdStateTabel = {        --日常活动红点状态表
     -- 登录有礼
@@ -565,6 +567,22 @@ end
 
 function gameUser.getMeiRiQianDaoState()
 	return gameUser._meiRiQianDaoState
+end
+
+function gameUser.setCurTitle(id)
+	gameUser._curTitleId = id
+end
+
+function gameUser.getCurTitle()
+	return gameUser._curTitleId
+end
+
+function gameUser.setCurTitleList(list)
+	gameUser._Titlelist = list or {}
+end
+
+function gameUser.getCurTitleList()
+	return gameUser._Titlelist
 end
 
 --刷新毕业典礼小红点

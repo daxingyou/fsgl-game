@@ -622,12 +622,32 @@ function LiaoTianRoomLayer:createVeiwCell(data)
             content:addChild(name)
             name:setAnchorPoint(0, 0.5)
             name:setPosition(x - 5, content:getBoundingBox().height - name:getContentSize().height / 2 - 5)
-            x, y = name:getPosition()
-            timeLabel:setPosition(content:getContentSize().width - 20, name:getPositionY())
-            -- 徽章
-            local i = 1
-            x = x + name:getBoundingBox().width + 15
-            y = y - name:getBoundingBox().height / 2 - 2
+
+			timeLabel:setPosition(content:getContentSize().width - 20, name:getPositionY())
+			local i = 1
+			if data.titleId ~= nil and data.titleId > 0 then
+				local _titleInfo = gameData.getDataFromCSV("TitleInfo",{id = data.titleId})
+				local _color = string.split(_titleInfo.rgb,"，")
+				local tilteName = XTHDLabel:create("《".._titleInfo.name.."》",18)
+				tilteName:setAnchorPoint(0,0.5)
+				tilteName:setColor(cc.c3b(tonumber(_color[1]),tonumber(_color[2]),tonumber(_color[3])))
+				content:addChild(tilteName)
+				tilteName:setPosition(name:getPositionX() + name:getContentSize().width,name:getPositionY())
+
+				x, y = tilteName:getPosition()
+				-- 徽章
+
+				x = x + tilteName:getBoundingBox().width + 15
+				y = y - tilteName:getBoundingBox().height / 2 - 2
+			else
+				x, y = name:getPosition()
+				-- 徽章
+           
+				x = x + name:getBoundingBox().width + 15
+				y = y - name:getBoundingBox().height / 2 - 2
+			end
+		
+			
             if data.badge[2] > 0 then
                 local icon = cc.Sprite:create("res/image/vip/vipl_0" .. tonumber(data.badge[2]) .. ".png")
                 icon:setScale(0.3)
