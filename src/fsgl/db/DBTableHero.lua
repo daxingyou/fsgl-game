@@ -14,6 +14,7 @@ function DBTableHero.resetData()
 end
 
 function DBTableHero.insertData(userid , param )
+	dump(param)
 	local Params = {};
 	Params["heroid"]				= tonumber(param["heroid"])
 	Params["level"] 				= tonumber(param["level"])

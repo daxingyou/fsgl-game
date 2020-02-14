@@ -323,28 +323,16 @@ local function onMsgRecive(event)
 			elseif msgID == MSGID.SC_TITLE_ACTIVITE_REMIND_MSG then
 				local len = event.data.msg:readShort()
 				local data =  event.data.msg:readStringBytes(len)
-				local data = json.decode(data)
-				local titlename = nil
-				local index = nil
-			
-				if #gameUser.getCurTitleList() > 0 then
-					for i = 1,#data do
-						local _istrue = false
-						for k,v in pairs(gameUser.getCurTitleList()) do
-							if data[i] == v then
-								_istrue = true
-							end
-						end
-						if not _istrue then
-							index = i
-						end
-					end
-					titlename = gameData.getDataFromCSV("TitleInfo",{id = data[index]}).name
-				else
-					titlename = gameData.getDataFromCSV("TitleInfo",{id = data[1]}).name
-				end
-				gameUser.setCurTitleList(data)
-				XTHDTOAST("恭喜获得称号《"..titlename.."》")
+				local heroData = json.decode(data)
+				RefreshHeroInfo(heroData)
+				
+
+				len = event.data.msg:readShort()
+				local data = event.data.msg:readStringBytes(len)
+				dump(data)
+				local Titledata = json.decode(data)
+				RefreshTitlList(Titledata)
+				
 			elseif msgID == MSGID.SERVER_RESPONSE_ACTIVITYCANGET then ----有活动可领取
 				local statu = event.data.msg:readChar() ----1 有东西可领，0 没东西可领
 				local innerStatu = {}
