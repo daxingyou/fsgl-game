@@ -273,5 +273,7 @@ SmithyMakingList =
     { id = 271, itemtype = 5, needlv = 20, name = "中级强化石", itemid = 2281, need1 = 2280, num1 = 5, need2 = nil, num2 = nil, need3 = nil, num3 = nil, need4 = nil, num4 = nil, needgold = 1000, needfc = 0, probability = 100, returncailiao = 0, tips = "装备强化等级41-80级需要使用该道具进行强化", },
     { id = 272, itemtype = 5, needlv = 20, name = "高级强化石", itemid = 2282, need1 = 2281, num1 = 5, need2 = nil, num2 = nil, need3 = nil, num3 = nil, need4 = nil, num4 = nil, needgold = 2000, needfc = 0, probability = 100, returncailiao = 0, tips = "装备强化等级81-120级需要使用该道具进行强化", },
     { id = 273, itemtype = 5, needlv = 20, name = "超级强化石", itemid = 2283, need1 = 2282, num1 = 5, need2 = nil, num2 = nil, need3 = nil, num3 = nil, need4 = nil, num4 = nil, needgold = 3000, needfc = 0, probability = 100, returncailiao = 0, tips = "装备强化等级大于120级需要使用该道具进行强化", },
+    { id = 274, itemtype = 5, needlv = 10, name = "封神榜", itemid = 2509, need1 = 2508, num1 = 500, need2 = nil, num2 = nil, need3 = nil, num3 = nil, need4 = nil, num4 = nil, needgold = 100000, needfc = 0, probability = 100, returncailiao = 0, tips = "可以用于打开橙色英雄宝箱", },
+    { id = 275, itemtype = 5, needlv = 10, name = "真·封神榜", itemid = 2510, need1 = 2508, num1 = 1500, need2 = nil, num2 = nil, need3 = nil, num3 = nil, need4 = nil, num4 = nil, needgold = 500, needfc = 0, probability = 100, returncailiao = 0, tips = "开启后可获得封神归来称号", },
 }
 

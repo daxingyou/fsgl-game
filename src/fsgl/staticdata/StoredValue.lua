@@ -11,5 +11,15 @@ StoredValue =
     { id = 9, typeA = 4, yuanbao1 = 0, rmb = 0, yuanbao2 = 0, miaoshu = "限时礼包", miaoshu2 = nil, orderID = nil, },
     { id = 10, typeA = 3, yuanbao1 = 15980, rmb = 1598, yuanbao2 = 15980, miaoshu = "额外赠送15980元宝！限购一次", miaoshu2 = "购买立得15980元宝", orderID = 9, },
     { id = 11, typeA = 5, yuanbao1 = 680, rmb = 68, yuanbao2 = 0, miaoshu = "成长基金", miaoshu2 = nil, orderID = nil, },
+    { id = 12, typeA = 6, yuanbao1 = 0, rmb = 1, yuanbao2 = 0, miaoshu = "限时1元礼包", miaoshu2 = nil, orderID = nil, },
+    { id = 13, typeA = 6, yuanbao1 = 0, rmb = 6, yuanbao2 = 0, miaoshu = "新人限定礼包", miaoshu2 = nil, orderID = nil, },
+    { id = 14, typeA = 6, yuanbao1 = 0, rmb = 12, yuanbao2 = 0, miaoshu = "超值肝帝礼包", miaoshu2 = nil, orderID = nil, },
+    { id = 15, typeA = 6, yuanbao1 = 0, rmb = 30, yuanbao2 = 0, miaoshu = "每日特惠礼包", miaoshu2 = nil, orderID = nil, },
+    { id = 16, typeA = 6, yuanbao1 = 0, rmb = 68, yuanbao2 = 0, miaoshu = "每周特惠礼包", miaoshu2 = nil, orderID = nil, },
+    { id = 17, typeA = 6, yuanbao1 = 0, rmb = 98, yuanbao2 = 0, miaoshu = "特惠招募礼包", miaoshu2 = nil, orderID = nil, },
+    { id = 18, typeA = 6, yuanbao1 = 0, rmb = 328, yuanbao2 = 0, miaoshu = "高级招募礼包", miaoshu2 = nil, orderID = nil, },
+    { id = 19, typeA = 6, yuanbao1 = 0, rmb = 648, yuanbao2 = 0, miaoshu = "特级招募礼包", miaoshu2 = nil, orderID = nil, },
+    { id = 20, typeA = 6, yuanbao1 = 0, rmb = 30, yuanbao2 = 0, miaoshu = "橙将养成礼包", miaoshu2 = nil, orderID = nil, },
+    { id = 21, typeA = 6, yuanbao1 = 0, rmb = 68, yuanbao2 = 0, miaoshu = "红将养成礼包", miaoshu2 = nil, orderID = nil, },
 }
 
