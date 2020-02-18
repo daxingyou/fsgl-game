@@ -587,17 +587,33 @@ function ShangCheng:loadShenMiStores(index)
 		elseif tonumber(__data[1]) == XTHD.resource.type.feicui then
 			item_img = IMAGE_KEY_HEADER_FEICUI
 		end
-		local xiaohao_icon = cc.Sprite:create(item_img)
-		_bg:addChild(xiaohao_icon)
-		xiaohao_icon:setAnchorPoint(0,0.5)
-		xiaohao_icon:setPosition(25,xiaohao_icon:getContentSize().height *0.5 + 20)
+		local xiaohao_icon = nil
+		if tonumber(__data[1]) ~= 4 then 
+			xiaohao_icon = cc.Sprite:create(item_img)
+			_bg:addChild(xiaohao_icon)
+			xiaohao_icon:setAnchorPoint(0,0.5)
+			xiaohao_icon:setPosition(25,xiaohao_icon:getContentSize().height *0.5 + 20)
+		else
+			xiaohao_icon = ItemNode:createWithParams({
+				_type_ = tonumber(__data[1]),
+				itemId = tonumber(__data[2]),
+			})
+			_bg:addChild(xiaohao_icon)
+			xiaohao_icon:setScale(0.3)
+			xiaohao_icon:setAnchorPoint(0,0.5)
+			xiaohao_icon:setPosition(25,xiaohao_icon:getContentSize().height* 0.3 *0.5 + 20)
+		end
 
 		local xiaohao_numLable = XTHDLabel:create(__data[3],16,"res/fonts/def.ttf")
 		_bg:addChild(xiaohao_numLable)
 		xiaohao_numLable:setColor(cc.c3b(255,255,200))
 		xiaohao_numLable:enableOutline(cc.c4b(30,0,0,255),1)
 		xiaohao_numLable:setAnchorPoint(0,0.5)
-		xiaohao_numLable:setPosition(xiaohao_icon:getContentSize().width + xiaohao_icon:getPositionX() + 5,xiaohao_icon:getPositionY() - 3)
+		if tonumber(__data[1]) ~= 4 then
+			xiaohao_numLable:setPosition(xiaohao_icon:getContentSize().width + xiaohao_icon:getPositionX() + 5,xiaohao_icon:getPositionY() - 3)
+		else
+			xiaohao_numLable:setPosition(xiaohao_icon:getContentSize().width*0.3 + xiaohao_icon:getPositionX() + 5,xiaohao_icon:getPositionY() - 3)
+		end
 		
 		local btn = XTHDPushButton:createWithParams({
 			touchSize =cc.size(_bg:getContentSize().width,_bg:getContentSize().height - 30),

@@ -3153,30 +3153,32 @@ end
 
 -- 战力竞技
 function ZhuChengMenuLayer:ZhanlijingsaiActivityLayer()
-    local list = { "heroStar", "heroPhase", "heroPower", "equipStar", "godPhase" }
-    ClientHttp:requestAsyncInGameWithParams( {
-        modules = "leaderBoardRank?",
-        params = { type = list[1] },
-        successCallback = function(data)
-            if data.result == 0 then
-                local biyedianliLayer = requires("src/fsgl/layer/HuoDong/ZhanlijingsaiActivityLayer.lua")
-                local layer = biyedianliLayer:create(data)
-                cc.Director:getInstance():getRunningScene():addChild(layer)
-				layer:setName("Poplayer")
-                layer:show()
-            else
-                XTHDTOAST(data.msg)
-            end
-        end,
-        failedCallback = function()
-            XTHDTOAST(LANGUAGE_TIPS_WEBERROR)
-            ------"网络请求失败")
-        end,
-        -- 失败回调
-        loadingType = HTTP_LOADING_TYPE.CIRCLE,
-        -- 加载图显示 circle 光圈加载 head 头像加载
-        loadingParent = node,
-    } )
+	local biwuzhaoqin = requires("src/fsgl/layer/Biwuzhaoqin/Biwuzhaoqin.lua"):create()
+	LayerManager.addLayout(biwuzhaoqin)
+--    local list = { "heroStar", "heroPhase", "heroPower", "equipStar", "godPhase" }
+--    ClientHttp:requestAsyncInGameWithParams( {
+--        modules = "leaderBoardRank?",
+--        params = { type = list[1] },
+--        successCallback = function(data)
+--            if data.result == 0 then
+--                local biyedianliLayer = requires("src/fsgl/layer/HuoDong/ZhanlijingsaiActivityLayer.lua")
+--                local layer = biyedianliLayer:create(data)
+--                cc.Director:getInstance():getRunningScene():addChild(layer)
+--				layer:setName("Poplayer")
+--                layer:show()
+--            else
+--                XTHDTOAST(data.msg)
+--            end
+--        end,
+--        failedCallback = function()
+--            XTHDTOAST(LANGUAGE_TIPS_WEBERROR)
+--            ------"网络请求失败")
+--        end,
+--        -- 失败回调
+--        loadingType = HTTP_LOADING_TYPE.CIRCLE,
+--        -- 加载图显示 circle 光圈加载 head 头像加载
+--        loadingParent = node,
+--    } )
 end
 -- 全民竞技
 function ZhuChengMenuLayer:QuanmingjingjiActivityLayer()

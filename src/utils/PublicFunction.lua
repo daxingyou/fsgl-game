@@ -1972,3 +1972,35 @@ function GetScreenOffsetX()
     local offsetX = math.max((screenRadio - 1024/615)*ScreenOffsetX,0)
     return offsetX
 end
+
+--获得称号时的刷新称号列表处理
+function RefreshTitlList(data)
+	local titlename = nil
+	local index = nil	
+	if #gameUser.getCurTitleList() > 0 then
+		for i = 1,#data do
+			local _istrue = false
+			for k,v in pairs(gameUser.getCurTitleList()) do
+				if data[i] == v then
+					_istrue = true
+				end
+			end
+			if not _istrue then
+				index = i
+			end
+		end
+		titlename = gameData.getDataFromCSV("TitleInfo",{id = data[index]}).name
+	else
+		titlename = gameData.getDataFromCSV("TitleInfo",{id = data[1]}).name
+	end
+	gameUser.setCurTitleList(data)
+	XTHDTOAST("恭喜获得称号《"..titlename.."》")
+end
+
+--获得称号时英雄属性刷新
+function RefreshHeroInfo(data)
+	dump(data)
+	for i = 1,#data do
+		DBTableHero.multiUpdate( gameUser.getUserId(), data[i].baseId, data[i].property )
+	end
+end
