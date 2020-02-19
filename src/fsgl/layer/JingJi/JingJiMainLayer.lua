@@ -159,6 +159,20 @@ function JingJiMainLayer:initUI()
 			XTHD.setGray(btn:getStateSelected(),true)
 			XTHD.setGray(btn2:getStateNormal(),true)
 			XTHD.setGray(btn2:getStateSelected(),true)
+		elseif i == 3 then
+			if gameUser.getLevel() < 27 then
+				XTHD.setGray(btn:getStateNormal(),true)
+				XTHD.setGray(btn:getStateSelected(),true)
+				XTHD.setGray(btn2:getStateNormal(),true)
+				XTHD.setGray(btn2:getStateSelected(),true)
+			end
+		elseif i == 2 then
+			if gameUser.getLevel() < 10 then
+				XTHD.setGray(btn:getStateNormal(),true)
+				XTHD.setGray(btn:getStateSelected(),true)
+				XTHD.setGray(btn2:getStateNormal(),true)
+				XTHD.setGray(btn2:getStateSelected(),true)
+			end
 		end
 	end
 	

@@ -321,7 +321,7 @@ function TuJianLayer:initTableView( index )
     self._talbeView:registerScriptHandler(tableCellAtIndex,cc.TABLECELL_SIZE_AT_INDEX)
 
 
-    self._talbeView:reloadData()
+    --self._talbeView:reloadData()
 
 end
 
@@ -335,6 +335,7 @@ function TuJianLayer:createCell(cell, posIndex ,index)
 	end
 
 	local picStr = "res/image/illustration/herobg".. self._heroList[index].rank .. ".png"
+	print("heroRank ===",self._heroList[index].rank,index)
 	local cellbg = ccui.Scale9Sprite:create(picStr)
 	cellbg:setContentSize(cc.size(cellbg:getContentSize().width *0.6,cellbg:getContentSize().height *0.6))
 	cell:addChild(cellbg)
@@ -514,7 +515,12 @@ function TuJianLayer:refreshUI()
 	end
 
 	for i = 1, #self._allHerolist do
-		self._allHerolist[i].mode3class = self._allHerolist[i].mode3class + 10 *self._allHerolist[i]._isHave
+		if self._allHerolist[i]._isHave == 1 then
+			self._allHerolist[i].sortIndex = 1000 * self._allHerolist[i].rank
+		else
+			self._allHerolist[i].sortIndex = 100 * self._allHerolist[i].rank
+		end
+		--self._allHerolist[i].mode3class = self._allHerolist[i].mode3class + 10 *self._allHerolist[i]._isHave
 	end
 	
 	print("------------------------>>>",self._sortType)
@@ -534,7 +540,7 @@ function TuJianLayer:refreshUI()
 		for i = 1,#list do
 			if #list[i] then
 				table.sort(list[i],function(a,b)
-					return a.mode3class < b.mode3class
+					return a.sortIndex > b.sortIndex
 				end)
 			end
 		end
@@ -553,7 +559,7 @@ function TuJianLayer:refreshUI()
 		for i = 1,#list do
 			if #list[i] then
 				table.sort(list[i],function(a,b)
-					return a.mode3class < b.mode3class
+					return a.sortIndex > b.sortIndex
 				end)
 			end
 		end

@@ -52,6 +52,15 @@ function JingJiLadderLayer:onEnter( )
 end
 
 function JingJiLadderLayer:refreshList(data)
+	local list ={}
+	for k,v in pairs(data.rivals) do
+		if v.charId ~= gameUser.getUserId() then
+			list[#list + 1] = v
+		end
+	end
+
+	data.rivals = list
+
     table.sort(data.rivals,function(a,b)
         return tonumber(a.rank) < tonumber(b.rank)
     end)

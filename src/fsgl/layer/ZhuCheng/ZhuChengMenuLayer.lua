@@ -1590,6 +1590,7 @@ function ZhuChengMenuLayer:initLeftUpMenu()
             redDot:setPosition(menuBtn:getBoundingBox().width + 15, menuBtn:getBoundingBox().height + 10)
             redDot:setVisible(false)
             self.__functionButtons[38] = menuBtn
+			menuBtn:setVisible(false)
             self.monthcardRedDot = redDot
         elseif i == 16 then
 --            self:PushBtnToCeilNode(menuBtn)
@@ -2227,7 +2228,7 @@ function ZhuChengMenuLayer:freshRedPoints(event)
             self._equipRedDot:setVisible(_visible)
         end
         if self._composeRedDot then
-            local _visible = composeFlag and gameUser:getLevel() <= 30
+            local _visible = composeFlag and gameUser:getLevel() <= 12
             self._composeRedDot:setVisible(_visible)
         end
     elseif event.data.name == "bag" then

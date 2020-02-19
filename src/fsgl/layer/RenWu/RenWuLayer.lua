@@ -428,11 +428,12 @@ function RenWuLayer:initTasks()
     				text      = data.description,
 					fontSize  = 14,
 					anchor    = cc.p( 0, 0.5 ),
-					pos       = cc.p(taskIconBg:getContentSize().width + 20, cellBg:getContentSize().height - 30 ),
+					pos       = cc.p(taskIconBg:getContentSize().width + 20, cellBg:getContentSize().height - 35 ),
 					color     = cc.c3b( 82, 47, 16 ),
 					clickable = false,
 					ttf = "res/fonts/def.ttf"
 				})
+				taskDesc:setDimensions(280,50)
     			cellBg:addChild( taskDesc )
 
     			-- 任务奖励icons

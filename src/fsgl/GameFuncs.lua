@@ -3621,7 +3621,7 @@ function XTHD.playSkillEffectAndPlaySound(picName, soundName, isPlayer)
     end
     if soundName ~= nil then
         --播放音效
-		cc.SimpleAudioEngine:getInstance():playEffect("res/sound/hero/"..soundName..".mp3", false)
+		musicManager.playEffect("res/sound/hero/"..soundName..".mp3", false)
     end
 end
 
