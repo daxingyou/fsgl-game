@@ -90,7 +90,7 @@ function VoucherChongzhi:createTableViewCell(index,cell)
 
 		local itemName = XTHDLabel:create("VIP".._data.viplevel.."礼包",18,"res/fonts/hkys.ttf")
 		itemName:setColor(cc.c3b(55,44,33))
-		itemName:enableOutline(cc.c4b(255,230,180,255),1)
+		--itemName:enableOutline(cc.c4b(255,230,180,255),1)
 		cellbg:addChild(itemName)
 		itemName:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height - itemName:getContentSize().height *0.5 - 10)
 
@@ -111,7 +111,7 @@ function VoucherChongzhi:createTableViewCell(index,cell)
 		
 		local money = XTHDLabel:create(_buySum[2].."元宝",18,"res/fonts/hkys.ttf")
 		money:setColor(cc.c3b(55,44,33))
-		money:enableOutline(cc.c4b(255,230,180,255),1)
+		--money:enableOutline(cc.c4b(255,230,180,255),1)
 		cellbg:addChild(money)
 		money:setPosition(cellbg:getContentSize().width *0.5,money:getContentSize().height *0.5 + 27)
 		

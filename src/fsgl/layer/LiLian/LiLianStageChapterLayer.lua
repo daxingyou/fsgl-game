@@ -902,7 +902,7 @@ function LiLianStageChapterLayer:loadCellById(sBgSprite, sID)
 					else
 						avator_sp = XTHD.createSprite("res/image/plugin/stageChapter/dipan.png")
 						avator_sp:setScale(1.3)
-						avator_sp:setPosition(stage_icon:getContentSize().width * 0.5,-5)
+						avator_sp:setPosition(stage_icon:getContentSize().width * 0.5,-25)
 						local heroherd = cc.Sprite:create("res/image/plugin/stageChapter/heroHead/heroHead_" .. var.heroid .. ".png")
 						heroherd:setAnchorPoint(0.5,0)
 						heroherd:setScale(0.5)

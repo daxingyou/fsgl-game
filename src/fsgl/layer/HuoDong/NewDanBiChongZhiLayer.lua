@@ -128,7 +128,7 @@ function NewDanBiChongZhiLayer:initCell(cell,index)
 		
 		local miaoshu = XTHDLabel:create(self._localData[index].charge.."元礼包",20,"res/fonts/hkys.ttf")
 		miaoshu:setColor(cc.c3b(55,44,33))
-		miaoshu:enableOutline(cc.c4b(255,230,180,255),1)
+		--miaoshu:enableOutline(cc.c4b(255,230,180,255),1)
 		cellbg:addChild(miaoshu)
 		miaoshu:setPosition(cellbg:getContentSize().width *0.5,miaoshu:getContentSize().height *0.5 + 26)
 

@@ -1531,6 +1531,7 @@ function ShangCheng:switchTitleContainer(index)
 				color = XTHD.resource.color.gray_desc,
 			})
 			self._titleContainer:addChild(_countDown)
+			_countDown:setColor(cc.c3b(255,246,127))
 			_countDown:setAnchorPoint(0,0.5)
 			_countDown:setPosition(_label:getPositionX() + _label:getContentSize().width *0.5,_label:getPositionY())
 			self._groupCountDownT = _countDown

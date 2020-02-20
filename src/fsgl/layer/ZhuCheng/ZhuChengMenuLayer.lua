@@ -1855,7 +1855,7 @@ function ZhuChengMenuLayer:refreshBaseInfo()
         for i, v in ipairs(dailyActivityId) do
             if activityOpenStatus[tostring(v)] == 1 then
                 self.__functionButtons[25]:setVisible(false)
-                self._leftupBtns[7].isActivity = true
+                self._leftupBtns[7].isActivity = false
                 break
             end
         end

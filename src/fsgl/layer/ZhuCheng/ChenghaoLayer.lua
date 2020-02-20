@@ -84,7 +84,7 @@ function ChenghaoLayer:BuildCell(index,cell)
 	cellbg:addChild(titlename)
 	titlename:setPosition(10,cellbg:getContentSize().height - titlename:getContentSize().height *0.5 - 4)
 
-	local shuxing = XTHDLabel:create("属性：",16)
+	local shuxing = XTHDLabel:create("属性：",12)
 	shuxing:setAnchorPoint(0,0.5)
 	shuxing:setColor(cc.c3b(0,0,0))
 	cellbg:addChild(shuxing)
@@ -121,19 +121,19 @@ function ChenghaoLayer:BuildCell(index,cell)
 		end
 	end
 	
-	local lable = XTHDLabel:create(text,16)
+	local lable = XTHDLabel:create(text,12)
 	lable:setAnchorPoint(0,0.5)
 	lable:setColor(cc.c3b(0,0,0))
 	cellbg:addChild(lable)
 	lable:setPosition(shuxing:getPositionX() + shuxing:getContentSize().width,shuxing:getPositionY())
 
-	local Drop = XTHDLabel:create("获取途径：",16)
+	local Drop = XTHDLabel:create("获取途径：",12)
 	Drop:setAnchorPoint(0,0.5)
 	Drop:setColor(cc.c3b(0,0,0))
 	cellbg:addChild(Drop)
 	Drop:setPosition(shuxing:getPositionX(),cellbg:getContentSize().height *0.5 - 20)
 
-	local Droplable = XTHDLabel:create(data.description,16)
+	local Droplable = XTHDLabel:create(data.description,12)
 	Droplable:setAnchorPoint(0,0.5)
 	Droplable:setColor(cc.c3b(0,0,0))
 	cellbg:addChild(Droplable)
