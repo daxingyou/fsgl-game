@@ -65,6 +65,7 @@ function DengLuUtils.doNewLogin( node,relogin,isCreateRole)
                         gameUser.setMeiRiQianDaoState(data["dayCheckinWindow"])
 						gameUser.setSex(data["sex"])
 						gameUser.setCurTitle(data["curTitle"])
+                        gameUser.setRedHeroOpen(data["redHeroActivity"])
                         resetDBDatas()
                         ----------------------------------------------------------------------------------------------------------------
                         --[[初始化用户数据]]

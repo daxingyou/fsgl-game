@@ -228,6 +228,17 @@ gameUser._roleCreateTime = 0
 gameUser._syLoginData = {}
 
 gameUser._syUserID = ""
+gameUser._redheroOpen = 0
+
+function gameUser.getRedHeroOpen()
+    return gameUser._redheroOpen
+end
+
+function gameUser.setRedHeroOpen(val)
+    if val then
+        gameUser._redheroOpen = val
+    end
+end
 
 function gameUser.getBattleSpeed()
 	if gameUser._battleSpeed == 1 then

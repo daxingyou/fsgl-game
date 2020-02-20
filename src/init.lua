@@ -232,7 +232,7 @@ BattleType.CAMP_TEAMCOMPARE = 18 ------种族队伍切磋
 BattleType.ZHENQI_FIGHT_ROB = 19 --真气世界抢夺
 BattleType.ZHENQI_FIGHT_OCCUPY = 20 --真气世界占领
 BattleType.DIFFCULTY_COPY = 21 --恶运副本
-
+BattleType.CAMP_SHOUWEI = 22 --领地守卫
 BattleType.SINGLECHALLENGE = 23 --单挑之王
 BattleType.SERVANT_PVE = 24  --登界游方
 

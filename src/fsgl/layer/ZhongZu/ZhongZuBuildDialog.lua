@@ -28,10 +28,10 @@ end
 
 function ZhongZuBuildDialog:init( )	
 	-- self:setContentSize(cc.size(110,100))
-	self:setContentSize(cc.size(140,220))
+	self:setContentSize(cc.size(140,255))
 	----按钮
 	local y = self:getBoundingBox().height - 15
-	for i = 1,4 do 
+	for i = 1,5 do 
 	-- for i = 1,2 do 
 		local button = XTHD.createPushButtonWithSound({
 			normalFile = "res/image/camp/map/btn_gray_up.png",
@@ -81,6 +81,15 @@ function ZhongZuBuildDialog:doButtonClicked( _tag )
 		requires("src/fsgl/layer/ZhongZu/forTheHost/ZhongZuCastellenInfo.lua"):create(self.__cityID,self.__parent)
 	elseif _tag == 4 then  ----捐献
 		requires("src/fsgl/layer/ZhongZu/forTheHost/ZhongZuCityDonate.lua"):create(self.__cityID,self.__parent)
+    elseif _tag == 5 then  ----守卫
+--        HttpRequestWithOutParams("redHeroActivityList", function(data)
+--             print("服务器返回的数据为：")
+--             print_r(data)
+--        end )
+        local cityid = self.__cityID
+        HttpRequestWithParams("campBossInfo",{cityId = self.__cityID,campId = gameUser.getCampID()}, function(data)
+             LayerManager.createModule("src/fsgl/layer/ZhongZu/ZhongZuShouWei.lua", { par = self ,serverData = data,cityID = cityid})
+        end )
 	end 
 	self:removeFromParent()
 end

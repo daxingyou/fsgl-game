@@ -80,10 +80,10 @@ function SwitchSceneLayer1:ctor(params)
     self._progressTitle = progressTitle
     
     if showLogo == true then
-        local game_name = XTHD.createSprite("res/image/login/game_name.png")
-        game_name:setPosition(width/2 , 460)
-        bg:addChild(game_name)
-        game_name:setVisible(false)
+--        local game_name = XTHD.createSprite("res/image/login/game_name.png")
+--        game_name:setPosition(width/2 , 460)
+--        bg:addChild(game_name)
+--        game_name:setVisible(false)
     end
 
 end

@@ -30,6 +30,7 @@ RedPointState =
 	{id = 27,state = 0,des = "英雄兑换"},--节日狂欢（英雄兑换）
 	{id = 28,state = 0,des = "稀有兑换"},--节日狂欢（稀有兑换）
     {id = 29,state = 0,des = "行囊可开启提醒"},
+    {id = 30,state = 0,des = "红色英雄领取"},
 }
 
 function RedPointState.SetStateByID(data)

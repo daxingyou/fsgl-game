@@ -123,6 +123,7 @@ local MSGID = {
 	SC_ACTIVITY_YKZZK_MSG = 5084,	--月卡至尊卡（红点）
     SC_BAG_CAN_OPEN_REMIND_MSG = 5085, --背包可开启提醒
 	SC_TITLE_ACTIVITE_REMIND_MSG = 5086, --获得新称号提示
+    SC_RED_HERO_ACTIVITY_REMIND_MSG = 5088, --红色英雄活动红点
 
 }
 MsgCenter.MSGID = MSGID
@@ -321,15 +322,15 @@ local function onMsgRecive(event)
                 XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "bag"}})
                 break
 			elseif msgID == MSGID.SC_TITLE_ACTIVITE_REMIND_MSG then
+                print("获得新称号推送")
 				local len = event.data.msg:readShort()
 				local data =  event.data.msg:readStringBytes(len)
 				local heroData = json.decode(data)
 				RefreshHeroInfo(heroData)
-				
 
 				len = event.data.msg:readShort()
 				local data = event.data.msg:readStringBytes(len)
-				dump(data)
+--				dump(data)
 				local Titledata = json.decode(data)
 				RefreshTitlList(Titledata)
 				
@@ -800,6 +801,10 @@ local function onMsgRecive(event)
 				print("月卡至尊卡红点推送")
 				RedPointState[18].state = 1
 				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "monthandzcard"}})
+            elseif msgID == MSGID.SC_RED_HERO_ACTIVITY_REMIND_MSG then
+				print("红色英雄活动红点推送")
+				RedPointState[30].state = 1
+				XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_FUNCIONS_REDDOT,data = {['name'] = "redhero"}})
 			end
 		until true
 	end 

@@ -91,10 +91,10 @@ function DengLuLayer:InitUI()
     width = bg:getContentSize().width
     height = bg:getContentSize().height
     
-    local game_name = XTHD.createSprite("res/image/login/game_name.png")
-    game_name:setPosition(width/2 , 400)
-    bg:addChild(game_name)
-    game_name:setVisible(false)
+--    local game_name = XTHD.createSprite("res/image/login/game_name.png")
+--    game_name:setPosition(width/2 , 400)
+--    bg:addChild(game_name)
+--    game_name:setVisible(false)
 
     local _btnSize = cc.size(200, 80)
     local btn_account = XTHDPushButton:createWithParams ({

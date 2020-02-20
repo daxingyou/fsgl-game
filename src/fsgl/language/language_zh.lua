@@ -349,6 +349,7 @@ LANGUAGE_CAMP_BUILDBTNWORDS = {
 	"驻守",
 	"城主",
 	"捐献",
+    "守卫",
 }
 LANGUAGE_CAMP_CASTELLENREWARDTIPS = {
 	"2倍城市增益效果",

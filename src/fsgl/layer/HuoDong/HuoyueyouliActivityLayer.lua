@@ -204,7 +204,12 @@ function HuoyueyouliActivityLayer:buildCell(cell,idx)
 			isScrollView = true,
 			endCallback = function ()
 --				dump(self._tableListdata,"刷新")
-				replaceLayer({id = self._tableListdata[1].gotype ,parent = self._parent})
+                if self._tableListdata[1].gotype == 33 then
+                    local equipLayer = requires("src/fsgl/layer/ZhuangBei/ZhuangBeiLayer.lua"):create(nil, nil, 1, nil)
+		            LayerManager.addLayout(equipLayer)
+                else
+                    replaceLayer({id = self._tableListdata[1].gotype ,parent = self._parent})
+                end
 			end
 		})
 		cellbg:addChild(btn)

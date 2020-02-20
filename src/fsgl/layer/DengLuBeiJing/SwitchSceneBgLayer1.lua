@@ -69,6 +69,7 @@ function SwitchSceneBgLayer1:ctor()
     game_name:setAnchorPoint(0.5,0.5)
     game_name:setPosition(self:getContentSize().width *0.5 - 15 , self:getContentSize().height *0.5 + game_name:getContentSize().height *0.25)
     self:addChild(game_name)
+--    game_name:setVisible(false)
 
     local FloatingAds = "国新出审[2019]70号 出版单位：北京伯通电子出版社 出版物号：ISBN 978-498-05666-5 著作权人：深圳市乐友网络科技有限公司"
     --健康公告
@@ -79,6 +80,7 @@ function SwitchSceneBgLayer1:ctor()
     -- jiangkuang:setPosition(20, height-160)
     jiangkuang:setPosition(width/2, 20)
     self:addChild(jiangkuang)
+--    jiangkuang:setVisible(false)
 
     local gonggao2 = "本网络游戏仅适合于年满18周岁以上的用户。如果您未满18周岁，不建议您注册并使用本网络游戏服务。"
     --健康公告
