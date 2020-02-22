@@ -16,14 +16,16 @@ function JingJiRobberyLayer:initUI()
 	local bg = cc.Sprite:create("res/image/plugin/competitive_layer/player_rival_bg.png")
 	bg:setAnchorPoint(0.5,0.5)
     bg:setPosition(self:getBoundingBox().width/2,self:getBoundingBox().height*0.5)
-    bg:setScale(0.7)
+	bg:setContentSize(self:getContentSize().width,self:getContentSize().height - self.topBarHeight)
+	
+   -- bg:setScale(0.7)
     self._bg = bg
 	self:addChild(bg)
 
 	local playerBg = cc.Sprite:create("res/image/plugin/competitive_layer/player_bg.png")
-	playerBg:setAnchorPoint(0.5,0.5)
-    playerBg:setPosition(playerBg:getContentSize().width*0.5, bg:getContentSize().height - playerBg:getContentSize().height)
-    playerBg:setScale(1)
+	playerBg:setAnchorPoint(0,0.5)
+    playerBg:setPosition(0, bg:getContentSize().height - playerBg:getContentSize().height)
+    playerBg:setScale(0.7)
 	bg:addChild(playerBg)
     self.playerBg = playerBg
 
@@ -126,7 +128,8 @@ function JingJiRobberyLayer:initUI()
         text = "更换对手",
         fontSize = 22,
     })
-    changeBtn:setPosition(self._bg:getContentSize().width -changeBtn:getContentSize().width ,self._bg:getContentSize().height*0.5 - 110)
+	changeBtn:setScale(0.8)
+    changeBtn:setPosition(self._bg:getContentSize().width *0.7 ,changeBtn:getContentSize().height * 0.5 - 20)
     self._bg:addChild(changeBtn)
     changeBtn:setTouchEndedCallback(function ()
         XTHDHttp:requestAsyncInGameWithParams({
@@ -282,7 +285,7 @@ function JingJiRobberyLayer:refreshRivals(data)
     end
     self.rivalBg = cc.Sprite:create("res/image/plugin/competitive_layer/rival_bg.png")
     self.rivalBg:setAnchorPoint(0.5,0.5)
-    self.rivalBg:setScale(1)
+    self.rivalBg:setScale(0.7)
     self.rivalBg:setPosition(self._bg:getContentSize().width,self.rivalPos.y)
     self._bg:addChild(self.rivalBg)
 
@@ -417,9 +420,9 @@ function JingJiRobberyLayer:refreshRivals(data)
             fontSize = 22,
         })
         enemyTeamBtn:setScale(0.8)
-        enemyTeamBtn:setAnchorPoint(1,0)
-        enemyTeamBtn:setPosition(self.rivalBg:getPositionX()+self.rivalBg:getBoundingBox().width-15,self.rivalBg:getPositionY()+self.rivalBg:getBoundingBox().height+5)
-        self:addChild(enemyTeamBtn)
+        enemyTeamBtn:setAnchorPoint(0.5,0.5)
+		enemyTeamBtn:setPosition(self._bg:getContentSize().width *0.85,enemyTeamBtn:getContentSize().height * 0.5 - 20)
+        self._bg:addChild(enemyTeamBtn)
         self.enemyTeamBtn = enemyTeamBtn
 
         enemyTeamBtn:setTouchEndedCallback(function ()

@@ -59,8 +59,9 @@ function QIRiKuangHuang:ctor( sData )
 	--活动倒计时
 	local _timeTTF = XTHDLabel:createWithParams({
 		text = "",
-		size = 20,
-		color = cc.c3b(18,31,31),
+		ttf = "res/fonts/hkys.ttf",
+		size = 16,
+		color = cc.c3b(200,0,20),
 		pos = cc.p(bg_2:getContentSize().width *0.5, bg_2:getContentSize().height - 25)
 	})
 	bg_2:addChild(_timeTTF)

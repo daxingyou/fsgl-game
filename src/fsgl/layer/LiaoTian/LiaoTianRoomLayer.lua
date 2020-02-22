@@ -617,7 +617,7 @@ function LiaoTianRoomLayer:createVeiwCell(data)
             local fontSize = LiaoTianRoomLayer.msgFont.playerNameSize
             local color = LiaoTianRoomLayer.msgColor.playerNameColor
             -- 名字
-            local name = XTHDLabel:createWithSystemFont(tostring(data.name), "Helvetica", 18)
+            local name = XTHDLabel:createWithSystemFont(tostring(data.name), "Helvetica", 14)
             name:setColor(XTHD.resource.color.gray_desc)
             content:addChild(name)
             name:setAnchorPoint(0, 0.5)
@@ -628,7 +628,7 @@ function LiaoTianRoomLayer:createVeiwCell(data)
 			if data.titleId ~= nil and data.titleId > 0 then
 				local _titleInfo = gameData.getDataFromCSV("TitleInfo",{id = data.titleId})
 				local _color = string.split(_titleInfo.rgb,"，")
-				local tilteName = XTHDLabel:create("《".._titleInfo.name.."》",18)
+				local tilteName = XTHDLabel:create("《".._titleInfo.name.."》",14)
 				tilteName:setAnchorPoint(0,0.5)
 				tilteName:setColor(cc.c3b(tonumber(_color[1]),tonumber(_color[2]),tonumber(_color[3])))
 				content:addChild(tilteName)
@@ -637,13 +637,13 @@ function LiaoTianRoomLayer:createVeiwCell(data)
 				x, y = tilteName:getPosition()
 				-- 徽章
 
-				x = x + tilteName:getBoundingBox().width + 15
+				x = x + tilteName:getBoundingBox().width + 5
 				y = y - tilteName:getBoundingBox().height / 2 - 2
 			else
 				x, y = name:getPosition()
 				-- 徽章
            
-				x = x + name:getBoundingBox().width + 15
+				x = x + name:getBoundingBox().width + 5
 				y = y - name:getBoundingBox().height / 2 - 2
 			end
 		

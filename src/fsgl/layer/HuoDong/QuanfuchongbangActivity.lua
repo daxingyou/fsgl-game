@@ -105,6 +105,66 @@ function QuanfuchongbangActivity:ctor()
             redPointid = 33,
 			_type		= 13,
         },
+		--神器进阶
+		[10] = {
+            urlId      = 30,
+            priority   = 100,
+            isOpen     = 0,                     -- 0：根据isOpenid控制活动是否开启，1：长期开启，不判断isOpenid
+            isOpenid   = 30,                     -- 活动开启id，后端控制
+            pictureid  = 30,
+            redPointid = 30,
+			_type		= 10,
+        },
+		  -- 英雄升星
+        [11] = {
+            urlId      = 27,
+            priority   = 70,
+            isOpen     = 0,                     -- 0：根据isOpenid控制活动是否开启，1：长期开启，不判断isOpenid
+            isOpenid   = 27,                     -- 活动开启id，后端控制
+            pictureid  = 27,
+            redPointid = 27,
+			_type		= 7,
+        },
+		--英雄
+		[12] = {
+            urlId      = 45,
+            priority   = 130,
+            isOpen     = 0,                     -- 0：根据isOpenid控制活动是否开启，1：长期开启，不判断isOpenid
+            isOpenid   = 45,                     -- 活动开启id，后端控制
+            pictureid  = 45,
+            redPointid = 45,
+			_type 		= 14,
+        },
+		-- 装备升星
+		[13] = {
+            urlId      = 28,
+            priority   = 80,
+            isOpen     = 0,                     -- 0：根据isOpenid控制活动是否开启，1：长期开启，不判断isOpenid
+            isOpenid   = 28,                     -- 活动开启id，后端控制
+            pictureid  = 28,
+            redPointid = 28,
+			_type		= 8,
+        },
+		-- 英雄进阶
+		[14] = {
+            urlId      = 29,
+            priority   = 90,
+            isOpen     = 0,                     -- 0：根据isOpenid控制活动是否开启，1：长期开启，不判断isOpenid
+            isOpenid   = 29,                     -- 活动开启id，后端控制
+            pictureid  = 29,
+            redPointid = 29,
+			_type		= 9,
+        },
+		--竞技
+		[15] = {
+            urlId      = 32,
+            priority   = 120,
+            isOpen     = 0,                     -- 0：根据isOpenid控制活动是否开启，1：长期开启，不判断isOpenid
+            isOpenid   = 32,                     -- 活动开启id，后端控制
+            pictureid  = 32,
+            redPointid = 32,
+			_type		= 12,
+        },
     }
 	self._activityOpen = {}
 	local _openState = gameUser.getActivityOpenStatus() or {}
@@ -484,7 +544,10 @@ end
 
 function QuanfuchongbangActivity:ChongBangRank(index)
 	self._nowSelected = index
-	local list = {"level","power","recharge","cost","flower","sendFlower","guild","xiulian","vines"}
+	--1.等级	，2.战力，3.充值，4.消费，5.鲜花，6.送花，7.帮派，8.修炼，9.兵书，10.英雄升星，11.英雄进阶，12.英雄，13.装备升星，14.神器进阶，15.竞技
+	-- {"level","power","recharge","cost","flower","sendFlower","guild","xiulian","vines","heroStar","heroPhase","heroPower","equipStar","godPhase","arena"}
+	--等级，战力，充值，消费，鲜花，送花，帮派战力，修炼，兵书，神器进阶，修炼，竞技，兵书，英雄战力，帮派战力
+	local list = {"level","power","recharge","cost","flower","sendFlower","heroStar","equipStar","heroPhase","godPhase","xiulian","arena","vines","heroPower","guild"}
 	self._rankList = nil
 	ClientHttp:requestAsyncInGameWithParams({
         modules = "leaderBoardRank?",

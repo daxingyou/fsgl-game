@@ -1,7 +1,7 @@
 --Created By Liuluyang 2015年06月13日
 local ChaozhiduihuanZhekouLayer = class("ChaozhiduihuanZhekouLayer",function ()
 	local layer = XTHD.createSprite()
-	layer:setContentSize( 431, 254 )
+	layer:setContentSize( 431, 268 )
 	return layer
 end)
 
@@ -19,7 +19,7 @@ end
 
 function ChaozhiduihuanZhekouLayer:initUI()	
 	self._talbeView = CCTableView:create(self:getContentSize())
-	self._talbeView:setPosition(-50,10)
+	self._talbeView:setPosition(-50,18)
     self._talbeView:setBounceable(true)
     self._talbeView:setDirection(cc.SCROLLVIEW_DIRECTION_VERTICAL) --设置横向纵向
     self._talbeView:setDelegate()
@@ -76,7 +76,7 @@ function ChaozhiduihuanZhekouLayer:initUI()
 				--原价
 				local yuanjia = XTHDLabel:create("原价：",13,"res/fonts/def.ttf")
 				yuanjia:setAnchorPoint(0,0.5)
-				yuanjia:setColor(XTHD.resource.textColor.red_text)
+				yuanjia:setColor(cc.c3b(0,140,20))
 				bg:addChild(yuanjia)
 				yuanjia:setPosition(15,item:getPositionY() - item:getContentSize().height * 0.5 * 0.8 - 2)
 				
@@ -86,7 +86,7 @@ function ChaozhiduihuanZhekouLayer:initUI()
 				exitem:setPosition(yuanjia:getContentSize().width + yuanjia:getPositionX() + 5,yuanjia:getPositionY())
 
 				local yuanjiaxiaohao = XTHDLabel:create("x " .. tostring(data.ingotprice),13,"res/fonts/def.ttf")
-				yuanjiaxiaohao:setColor(XTHD.resource.textColor.red_text)
+				yuanjiaxiaohao:setColor(cc.c3b(0,140,20))
 				yuanjiaxiaohao:setAnchorPoint(0,0.5)
 				bg:addChild(yuanjiaxiaohao)
 				yuanjiaxiaohao:setPosition(exitem:getPositionX() + exitem:getContentSize().width*0.5,exitem:getPositionY())
@@ -107,7 +107,7 @@ function ChaozhiduihuanZhekouLayer:initUI()
 				--现价
 				local xianjia = XTHDLabel:create("现价：",13,"res/fonts/def.ttf")
 				xianjia:setAnchorPoint(0,0.5)
-				xianjia:setColor(XTHD.resource.textColor.green_text)
+				xianjia:setColor(cc.c3b(0,140,20))
 				bg:addChild(xianjia)
 				xianjia:setPosition(15,item:getPositionY() - item:getContentSize().height * 0.5 * 0.8 - yuanjia:getContentSize().height - 7)
 
@@ -117,7 +117,7 @@ function ChaozhiduihuanZhekouLayer:initUI()
 				exitem_2:setPosition(xianjia:getContentSize().width + xianjia:getPositionX() + 5,xianjia:getPositionY())
 				
 				local yuanjiaxiaohao = XTHDLabel:create("x " .. tostring(data.ingotprice2),13,"res/fonts/def.ttf")
-				yuanjiaxiaohao:setColor(XTHD.resource.textColor.green_text)
+				yuanjiaxiaohao:setColor(cc.c3b(0,140,20))
 				yuanjiaxiaohao:setAnchorPoint(0,0.5)
 				bg:addChild(yuanjiaxiaohao)
 				yuanjiaxiaohao:setPosition(exitem_2:getPositionX() + exitem_2:getContentSize().width*0.5,exitem_2:getPositionY())
@@ -125,7 +125,7 @@ function ChaozhiduihuanZhekouLayer:initUI()
 				--限购次数
 				local lable = XTHDLabel:create("剩余购买次数："..self._data.list[_index].selfSurplusCount,13,"res/fonts/def.ttf")
 				lable:setAnchorPoint(0.5,0.5)
-				lable:setColor(XTHD.resource.textColor.green_text)
+				lable:setColor(cc.c3b(200,0,20))
 				bg:addChild(lable)
 				lable:setPosition(bg:getContentSize().width *0.5,bg:getContentSize().height - lable:getContentSize().height)
 				self._buyLableList[_index] = lable

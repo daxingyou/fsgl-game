@@ -59,10 +59,10 @@ function NewHuoyueyouli:init()
 		redDot:setVisible(false)	
 		redDot:setName("redDot")
 
-		local btn_lable = XTHDLabel:create(self._activityOpen[i].text,18)
+		local btn_lable = XTHDLabel:create(self._activityOpen[i].text,18,"res/fonts/hkys.ttf")
 		btn:addChild(btn_lable)
 		btn_lable:setAnchorPoint(0,0.5)
-		btn_lable:setColor(cc.c3b(255,255,255))
+		btn_lable:setColor(cc.c3b(255,240,180))
 		btn_lable:setPosition(layout:getContentSize().width *0.3 + 5,layout:getContentSize().height *0.4)
 
 		btn:setTouchEndedCallback(function()
@@ -215,6 +215,26 @@ function NewHuoyueyouli:SwichTab(index)
 			targetNeedsToRetain = self,
 			loadingType = HTTP_LOADING_TYPE.CIRCLE,
 			loadingParent = self,
+		} )
+	elseif self._activityOpen[index].isOpenid == 43 then
+		ClientHttp:requestAsyncInGameWithParams( {
+			modules = self._activityOpen[index].url,
+			successCallback = function(data)
+				self:refreshBtnstate()
+				if self._layerNode then
+					self._layerNode:removeFromParent()
+					self._layerNode = nil
+				end
+				local layer = requires("src/fsgl/layer/HuoDong/"..self._activityOpen[index].file):create(data,self)
+				self._Activitybg:addChild(layer)
+				layer:setPosition(self._Activitybg:getContentSize().width *0.5,self._Activitybg:getContentSize().height *0.5)
+				self._layerNode = layer
+			end,
+			failedCallback = function()
+				XTHDTOAST(LANGUAGE_TIPS_WEBERROR)
+			end,
+			loadingType = HTTP_LOADING_TYPE.CIRCLE,
+			loadingParent = node,
 		} )
 	else
 		ClientHttp:httpActivity(self._activityOpen[index].url,self,function(data)

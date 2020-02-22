@@ -49,9 +49,8 @@ function ShengJiLayer:initUI(levelNew, levelCur)
 	local difLevel = levelNew - nowLevel
 
 	if levelNew >= 10 and gameUser.getMonthState() == 0 then
-		local layer = requires("src/fsgl/layer/ConstraintPoplayer/ZhizunkaDalianye.lua"):create()
-		cc.Director:getInstance():getRunningScene():addChild(layer)
-		layer:show()
+		local voucherLayer = requires("src/fsgl/layer/VoucherCenter/VoucherCenterLayer.lua"):create(2)
+		LayerManager.addLayout(voucherLayer)
 	end
     
 	local NowData = gameData.getDataFromCSV("PlayerUpperLimit",{level = nowLevel})

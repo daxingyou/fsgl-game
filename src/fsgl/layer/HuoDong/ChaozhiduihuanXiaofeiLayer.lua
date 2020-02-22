@@ -1,7 +1,7 @@
 --Created By Liuluyang 2015年06月13日
 local ChaozhiduihuanXiaofeiLayer = class("ChaozhiduihuanXiaofeiLayer",function ()
 	local layer = XTHD.createSprite()
-	layer:setContentSize( 431, 254 )
+	layer:setContentSize( 431, 268 )
 	return layer
 end)
 
@@ -25,7 +25,7 @@ end
 
 function ChaozhiduihuanXiaofeiLayer:initUI()	
 	self._talbeView = CCTableView:create(self:getContentSize())
-	self._talbeView:setPosition(-50,10)
+	self._talbeView:setPosition(-50,18)
     self._talbeView:setBounceable(true)
     self._talbeView:setDirection(cc.SCROLLVIEW_DIRECTION_VERTICAL) --设置横向纵向
     self._talbeView:setDelegate()

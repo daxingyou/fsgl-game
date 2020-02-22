@@ -123,7 +123,7 @@ function ChenghaoLayer:BuildCell(index,cell)
 	
 	local lable = XTHDLabel:create(text,12)
 	lable:setAnchorPoint(0,0.5)
-	lable:setColor(cc.c3b(0,0,0))
+	lable:setColor(cc.c3b(70,0,0))
 	cellbg:addChild(lable)
 	lable:setPosition(shuxing:getPositionX() + shuxing:getContentSize().width,shuxing:getPositionY())
 
@@ -135,7 +135,7 @@ function ChenghaoLayer:BuildCell(index,cell)
 
 	local Droplable = XTHDLabel:create(data.description,12)
 	Droplable:setAnchorPoint(0,0.5)
-	Droplable:setColor(cc.c3b(0,0,0))
+	Droplable:setColor(cc.c3b(70,0,0))
 	cellbg:addChild(Droplable)
 	Droplable:setPosition(Drop:getPositionX() + Drop:getContentSize().width,Drop:getPositionY())
 

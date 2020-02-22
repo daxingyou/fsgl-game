@@ -359,8 +359,9 @@ function SheZhiLayer:initPlayerLeft()
            size = 19,
            color = cc.c3b(132,8,8),
            anchor = cc.p(0,0.5),
-           pos = cc.p(i%2 == 0 and infoTip1:getPositionX()+130 or infoTip1:getPositionX()+50, infoTip1:getPositionY()),
+         --  pos = cc.p(i%2 == 0 and infoTip1:getPositionX()+130 or infoTip1:getPositionX()+50, infoTip1:getPositionY()),
         })
+		infoTip2:setPosition(infoTip1:getPositionX() + infoTip1:getContentSize().width + 10, infoTip1:getPositionY())
         heroInfoBg:addChild(infoTip1)
         heroInfoBg:addChild(infoTip2)
 		

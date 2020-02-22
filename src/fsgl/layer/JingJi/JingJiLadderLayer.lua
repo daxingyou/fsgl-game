@@ -660,7 +660,9 @@ function JingJiLadderLayer:buildCell( cell, index, cellWidth, cellHeight )
 	cell:addChild(btn_tiaozhan)
 	btn_tiaozhan:setPosition(cell:getContentSize().width *0.5,btn_tiaozhan:getContentSize().height + 5)
 	btn_tiaozhan:setTouchEndedCallback(function()
-		self:clickChallenge(index)
+		local layer = requires("src/fsgl/layer/JingJi/JingJiRankGamePop.lua"):create(hero_teams,index,self)
+		self:addChild(layer)
+		layer:show()
 	end)
 end
 

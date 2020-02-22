@@ -110,8 +110,8 @@ function XiuLuoLianYuLayer:initUI(data)
 	help_btn:setPosition(self:getContentSize().width - help_btn:getContentSize().width - 50,self:getContentSize().height - help_btn:getContentSize().height*0.7 + 10)
 
 	local saintBeastChange = XTHDPushButton:createWithParams({
-		normalFile = "res/image/plugin/saint_beast/change_normal.png",
-		selectedFile = "res/image/plugin/saint_beast/change_selected.png",
+		normalFile = "res/image/plugin/saint_beast/xiuluo_normal.png",
+		selectedFile = "res/image/plugin/saint_beast/xiuluo_selected.png",
 		musicFile = XTHD.resource.music.effect_btn_common,
 	})
 	saintBeastChange:setAnchorPoint(0,0.5)

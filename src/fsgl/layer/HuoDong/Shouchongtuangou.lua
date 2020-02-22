@@ -186,7 +186,7 @@ function Shouchongtuangou:initUI()
 		cellbg2:setPosition(0,cellbg:getContentSize().height - cellbg2:getContentSize().height *0.5)
 
 		local taskname = XTHDLabel:create(self._CurdateList[_index].taskname.."：",13,"res/fonts/def.ttf")
-		taskname:setColor(cc.c3b(245,155,34))
+		taskname:setColor(cc.c3b(255,255,150))
 		taskname:setAnchorPoint(0,0.5)
 		cellbg2:addChild(taskname)
 		taskname:setPosition(5,cellbg2:getContentSize().height *0.5)
@@ -199,7 +199,7 @@ function Shouchongtuangou:initUI()
 			text = "全服首充人数达到"..tostring(self._CurdateList[_index].taskparam1).." ["..tostring(self._data.curServerSum).."]"
 		end
 		local description = XTHDLabel:create(text,13,"res/fonts/def.ttf")
-		description:setColor(cc.c3b(245,155,34))
+		description:setColor(cc.c3b(255,255,150))
 		description:setAnchorPoint(0,0.5)
 		cellbg2:addChild(description)
 		description:setPosition(taskname:getPositionX() + taskname:getContentSize().width - 5,cellbg2:getContentSize().height *0.5)

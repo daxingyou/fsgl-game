@@ -859,8 +859,8 @@ function ZhuChengMenuLayer:initNumberBar()
     for i = 1, 4 do
         --- 体力、银两、翡翠、元宝
         local _barkBG = XTHDPushButton:createWithParams( {
-            normalFile = "res/image/common/topbarItem_bg.png",
-            selectedFile = "res/image/common/topbarItem_bg.png",
+            normalFile = "res/image/common/goldbg.png",
+            selectedFile = "res/image/common/goldbg.png",
             needEnableWhenOut = true,
         } )
         -- ly3.15
@@ -886,7 +886,7 @@ function ZhuChengMenuLayer:initNumberBar()
 
         local physical_icon = cc.Sprite:create(_iconSRC[i])
         physical_icon:setScale(0.9)
-        physical_icon:setPosition(0, _barkBG:getContentSize().height / 2)
+        physical_icon:setPosition(18, _barkBG:getContentSize().height / 2)
         _barkBG:addChild(physical_icon)
         self._propertyIcon[i] = physical_icon
 

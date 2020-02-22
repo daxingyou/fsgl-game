@@ -86,14 +86,15 @@ function ChaozhiduihuanActivityLayer:initUI()
 	titlebg:setScale(1.043)
 	titlebg:setAnchorPoint(0,1)
 	self._bg:addChild(titlebg)
-	titlebg:setPosition(listviewbg:getContentSize().width,self._bg:getContentSize().height)
+	titlebg:setPosition(listviewbg:getContentSize().width,self._bg:getContentSize().height + 14)
 
 	--剩余兑换券
 	local juan = cc.Sprite:create("res/image/activities/chaozhiduihuan/duihuan.png")
 	titlebg:addChild(juan)
 	juan:setPosition(titlebg:getContentSize().width - juan:getContentSize().width *0.5,titlebg:getContentSize().height - juan:getContentSize().height *0.5 - 10)
 	self._juan = juan
-	self._juanCount = XTHDLabel:create(XTHD.resource.getItemNum(2324),16,"res/fonts/def.ttf")  
+	self._juanCount = XTHDLabel:create(XTHD.resource.getItemNum(2324),16,"res/fonts/def.ttf") 
+	self._juanCount:setColor(cc.c3b(100,40,0))
 	juan:addChild(self._juanCount)
 	self._juanCount:setPosition(juan:getContentSize().width/2 + 10,juan:getContentSize().height/2)
 	
@@ -116,8 +117,8 @@ function ChaozhiduihuanActivityLayer:initUI()
 	self._tableViewBg = cc.Sprite:create("res/image/activities/huoyueyouli/bg_2.png")
 	self._tableViewBg:setAnchorPoint(0,1)
 	self._bg:addChild(self._tableViewBg)
-	self._tableViewBg:setContentSize(self._tableViewBg:getContentSize().width,self:getContentSize().height - titlebg:getContentSize().height *1.043)
-	self._tableViewBg:setPosition(listviewbg:getContentSize().width,self._bg:getContentSize().height - titlebg:getContentSize().height * 1.043)
+	self._tableViewBg:setContentSize(self._tableViewBg:getContentSize().width,self:getContentSize().height - titlebg:getContentSize().height *1.043 + 18)
+	self._tableViewBg:setPosition(listviewbg:getContentSize().width,self._bg:getContentSize().height - titlebg:getContentSize().height * 1.043 + 15)
 
 	--排行榜按钮
 	local rankbtn = XTHDPushButton:createWithParams({
@@ -281,7 +282,7 @@ end
 
 function ChaozhiduihuanActivityLayer:RankJiangliPopLayer()
 	local layer = requires( "src/fsgl/layer/HuoDong/ChaozhiduihuanJiangliPopLayer.lua"):create()
-	self:addChild(layer)
+	cc.Director:getInstance():getRunningScene():addChild(layer)
 	layer:show()	
 end
 

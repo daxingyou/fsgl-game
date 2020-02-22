@@ -125,7 +125,7 @@ function BangPaiMain:init(sParams)
     _guildIconSp.guildIcon = _icon
     self.guildIconSp = _guildIconSp
     _guildIconSp:setAnchorPoint(cc.p(0.5,0.5))
-    _guildIconSp:setPosition(cc.p(_guildIconSp:getContentSize().width *0.5 + 40,self._leftbg:getContentSize().height - _guildIconSp:getContentSize().height *0.5 - 55))
+    _guildIconSp:setPosition(cc.p(_guildIconSp:getContentSize().width *0.5 + 50,self._leftbg:getContentSize().height - _guildIconSp:getContentSize().height *0.5 - 70))
     self._leftbg:addChild(_guildIconSp,5)
 	_guildIconSp:setScale(0.83)
 
@@ -133,7 +133,7 @@ function BangPaiMain:init(sParams)
     local _IDtitleLabel = XTHDLabel:create(LANGUAGE_KEY_GUILD_TEXT.guildIDTitleTextXc .. ":",self._fontSize-4)
     _IDtitleLabel:setColor(cc.c3b(46,1,1))
     _IDtitleLabel:setAnchorPoint(cc.p(0,0.5))
-    _IDtitleLabel:setPosition(self.guildIconSp:getPositionX() - self.guildIconSp:getContentSize().width *0.5 + 23,self.guildIconSp:getPositionY() + self.guildIconSp:getContentSize().height*0.5 - 15)
+    _IDtitleLabel:setPosition(self.guildIconSp:getPositionX() - self.guildIconSp:getContentSize().width *0.5 + 8,self.guildIconSp:getPositionY() + self.guildIconSp:getContentSize().height*0.5 + 5)
     self._leftbg:addChild(_IDtitleLabel)
 	--_IDtitleLabel:enableBold()
 

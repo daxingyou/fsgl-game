@@ -74,7 +74,7 @@ function YingXiongDetailPropertyLayer:init()
 
 	for i = 1,#lables do
 		local _heroDescript_label = XTHDLabel:create(lables[i],self.detail_fontSize-2,"res/fonts/hwzs.ttf")
-		_heroDescript_label:setColor(cc.c3b(60,0,0))
+		_heroDescript_label:setColor(cc.c3b(70,20,20))
 		_heroDescript_label:setAnchorPoint(cc.p(1,1))
 		_heroDescript_label:setDimensions(_width, height * count)    
 		kuang1:addChild(_heroDescript_label)

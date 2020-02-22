@@ -92,7 +92,7 @@ function ChaozhiduihuanRankPopLayer:initUI()
 
 		local name = XTHDLabel:create(self._data.list[index].charName,20,"res/fonts/def.ttf")
 		name:setAnchorPoint(0,0.5)
-		name:setColor(cc.c3b(0,0,0))
+		name:setColor(cc.c3b(70,40,20))
 		name:setPosition(rankIcon:getPositionX() + 50,cellBg:getContentSize().height *0.5)
 		cellBg:addChild(name)
 
@@ -103,20 +103,20 @@ function ChaozhiduihuanRankPopLayer:initUI()
 			camp = "(魔族)"
 		end
 		local campLable = XTHDLabel:create(camp,16,"res/fonts/def.ttf")
-		campLable:setColor(cc.c3b(0,0,0))
+		campLable:setColor(cc.c3b(70,40,20))
 		name:addChild(campLable)
 		campLable:setAnchorPoint(0,0.5)
 		campLable:setPosition(name:getContentSize().width,campLable:getContentSize().height / 2) 
 
 		local lable = XTHDLabel:create("兑换券消耗数量：".. self._data.list[index].totalPhase,16,"res/fonts/def.ttf")
 		lable:setAnchorPoint(0,0.5)
-		lable:setColor(cc.c3b(0,0,0))
+		lable:setColor(cc.c3b(70,40,20))
 		lable:setPosition(cellBg:getContentSize().width *0.5 + 130,cellBg:getContentSize().height*0.5)
 		cellBg:addChild(lable)
 
 		local dengji = XTHDLabel:create("等级：".. self._data.list[index].level,16,"res/fonts/def.ttf")
 		dengji:setAnchorPoint(0,0.5)
-		dengji:setColor(cc.c3b(0,0,0))
+		dengji:setColor(cc.c3b(70,40,20))
 		dengji:setPosition(cellBg:getContentSize().width *0.5,cellBg:getContentSize().height*0.5)
 		cellBg:addChild(dengji)
 		

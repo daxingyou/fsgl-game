@@ -175,22 +175,22 @@ function BangPaiLieBiao:init(sParams)
     bt_bg:addChild(bpName)
     -- ID号码
     local bpID = XTHDLabel:create("编号", 20)
-    bpID:setPosition(405, bt_bg:getContentSize().height / 2)
+    bpID:setPosition(357, bt_bg:getContentSize().height / 2)
     bpID:setColor(cc.c3b(55, 54, 112))
     bt_bg:addChild(bpID)
     -- 帮派等级
     local bplevel = XTHDLabel:create("帮派等级", 20)
-    bplevel:setPosition(515, bt_bg:getContentSize().height / 2)
+    bplevel:setPosition(467, bt_bg:getContentSize().height / 2)
     bplevel:setColor(cc.c3b(55, 54, 112))
     bt_bg:addChild(bplevel)
     -- 帮派人数
     local bpNum = XTHDLabel:create("帮派人数", 20)
-    bpNum:setPosition(615, bt_bg:getContentSize().height / 2)
+    bpNum:setPosition(610, bt_bg:getContentSize().height / 2)
     bpNum:setColor(cc.c3b(55, 54, 112))
     bt_bg:addChild(bpNum)
     -- 等级限制
     local bplimt = XTHDLabel:create("等级限制", 20)
-    bplimt:setPosition(745, bt_bg:getContentSize().height / 2)
+    bplimt:setPosition(740, bt_bg:getContentSize().height / 2)
     bplimt:setColor(cc.c3b(55, 54, 112))
     bt_bg:addChild(bplimt)
     -- 申请入帮

@@ -295,7 +295,7 @@ function Xianshiqianggou:SelectCurPage(_tableList,cellbg,itemNode,_index,cell)
 
 	local needNum = XTHDLabel:create(_tableList.ingotprice, 14, "res/fonts/def.ttf")
 	needNum:setAnchorPoint(0, 0.5)
-	needNum:setColor(cc.c3b(0, 0, 0))
+	needNum:setColor(cc.c3b(70, 20, 0))
 	cellbg:addChild(needNum)
 	needNum:setPosition(exitem:getPositionX() + exitem:getContentSize().width * 0.5, yuanjia:getPositionY())
 
@@ -319,7 +319,7 @@ function Xianshiqianggou:SelectCurPage(_tableList,cellbg,itemNode,_index,cell)
 
 	local needNum = XTHDLabel:create(_tableList.ingotprice2, 14, "res/fonts/def.ttf")
 	needNum:setAnchorPoint(0, 0.5)
-	needNum:setColor(cc.c3b(0, 0, 0))
+	needNum:setColor(cc.c3b(70, 20, 0))
 	cellbg:addChild(needNum)
 	needNum:setPosition(exitem:getPositionX() + exitem:getContentSize().width * 0.5, xianjia:getPositionY())
 

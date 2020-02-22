@@ -160,21 +160,21 @@ function RiChangHuoDongLayer:initUI( data )
     self._topBg = topBg
 
 	    -- 活动日期
-    local activityDate = XTHD.createLabel({
-        text = LANGUAGE_PRAYER_DAYS( data.beginMonth, data.beginDay, data.endMonth, data.endDay ),
-        fontSize  = 18,
-        anchor    = cc.p( 0, 0.5 ),
-        pos       = cc.p( 16, 8 ),
-		color	  = cc.c3b(255,255,159),
-        clickable = false,
-    })
-    topBg:addChild( activityDate )
-    self._activityDate = activityDate
+--    local activityDate = XTHD.createLabel({
+--        text = LANGUAGE_PRAYER_DAYS( data.beginMonth, data.beginDay, data.endMonth, data.endDay ),
+--        fontSize  = 18,
+--        anchor    = cc.p( 0, 0.5 ),
+--        pos       = cc.p( 16, 8 ),
+--		color	  = cc.c3b(255,255,159),
+--        clickable = false,
+--    })
+--    topBg:addChild( activityDate )
+--    self._activityDate = activityDate
     -- 活动时间
     local activityTime = XTHD.createLabel({
         fontSize  = 18,
-        anchor    = cc.p( 1, 0.5 ),
-        pos       = cc.p( topBg:getContentSize().width - 16, 8 ),
+        anchor    = cc.p( 0, 0.5 ),
+        pos       = cc.p( 16, 8 ),
 		color	  = cc.c3b(255,255,159),
         clickable = false,
     })
@@ -283,7 +283,7 @@ function RiChangHuoDongLayer:initUI( data )
                             self._tabSelected = cell
                             self._tabIndex = index
                             self._activityData = self:sortData( backData.list )
-                            self._activityDate:setString( LANGUAGE_PRAYER_DAYS( backData.beginMonth, backData.beginDay, backData.endMonth, backData.endDay ) )
+                           -- self._activityDate:setString( LANGUAGE_PRAYER_DAYS( backData.beginMonth, backData.beginDay, backData.endMonth, backData.endDay ) )
                             self:timer( backData.surplusTime )
                             self:switchTab()
                         end
@@ -652,7 +652,7 @@ function RiChangHuoDongLayer:refreshData()
             if tonumber( backData.result ) == 0 then
                 if self._exist then
                     self._activityData = self:sortData( backData.list )
-                    self._activityDate:setString( LANGUAGE_PRAYER_DAYS( backData.beginMonth, backData.beginDay, backData.endMonth, backData.endDay ) )
+                    --self._activityDate:setString( LANGUAGE_PRAYER_DAYS( backData.beginMonth, backData.beginDay, backData.endMonth, backData.endDay ) )
                     self:timer( backData.surplusTime )
                     self._actTableView:reloadDataAndScrollToCurrentCell()
                 end

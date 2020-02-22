@@ -34,7 +34,7 @@ function ShowPopJiBanInfo:initUI(index)
 	local lable = XTHDLabel:createWithParams({
 				text = self._JiBanData.describe ,
 				fontSize = 15,
-				color = cc.c3b(100,100,100),
+				color = cc.c3b(50,50,50),
 	})
 	lable:setAnchorPoint(cc.p(0,1))
 	lable:setDimensions(bg:getContentSize().width - 30,0)
@@ -65,7 +65,7 @@ function ShowPopJiBanInfo:initUI(index)
 		local herolabel = XTHDLabel:createWithParams({
 				text = heroData.herodescription ,
 				fontSize = 22,
-				color = cc.c3b(100,100,100),
+				color = cc.c3b(50,50,50),
 		})
 		herolabel:setDimensions(bg:getContentSize().width + 60,0)
 		heroNode:addChild(herolabel)

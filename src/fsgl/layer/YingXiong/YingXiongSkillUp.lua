@@ -156,7 +156,7 @@ function YingXiongSkillUp:init(heroData)
 	self:setSkillPointShow()
 
 	self.tableViewSize = cc.size(_bgSize.width ,_bgSize.height - 2-2)
-	self.tableViewCellSize = cc.size(self.tableViewSize.width,97)
+	self.tableViewCellSize = cc.size(self.tableViewSize.width,85)
 	self.skill_tableView = cc.TableView:create(self.tableViewSize)
 	TableViewPlug.init(self.skill_tableView)
 	self.skill_tableView:setBounceable(true)
@@ -277,7 +277,7 @@ function YingXiongSkillUp:createSkillCellInfo(_idx)
 	skill_bg:setAnchorPoint(0,0.5)
 	-- skill_bg:setScale(80/skill_bg:getContentSize().width)
 	skill_bg:setPosition(15,cell_bg:getContentSize().height / 2)
-	skill_bg:setScale(0.8)
+	skill_bg:setScale(0.65)
 	cell_bg:addChild(skill_bg)
 
     local _index = 1

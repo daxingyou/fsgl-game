@@ -66,7 +66,7 @@ function YingXiongLevelUp:init(heroData)
 
 	local _promptlabel = XTHDLabel:create(LANGUAGE_KEY_HERO_TEXT.touchBtnNoMovePromptTextXc,self.levelup_fontSize)
 	self.promptlabel = _promptlabel 
-	_promptlabel:setColor(cc.c3b(200,15,15))
+	_promptlabel:setColor(cc.c3b(255,255,200))
 	_promptlabel:setAnchorPoint(cc.p(0.5,0.5))
 	-- _promptlabel:setPosition(cc.p(27,self:getContentSize().height - 29))
 	_promptlabel:enableShadow(self:getLevelUpTextColor("chenghongse"),cc.size(0.4,-0.4),1)

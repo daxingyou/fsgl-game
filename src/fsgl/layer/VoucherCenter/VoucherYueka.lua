@@ -67,10 +67,7 @@ function VoucherYueka:initUI()
            
         end
     end
-    self.Time = XTHDLabel:create("",16,"res/fonts/def.ttf")
-    self.Time:setColor(cc.c3b(255,250,205))
-    self.monthcardBuy:addChild(self.Time)
-    self.Time:setPosition(yuekaBg:getContentSize().width/2 - 5,yuekaBg:getContentSize().height/2 - 85)
+    
     -- self:updateTime()
     local receiveBtn1 = XTHDPushButton:createWithFile({
     normalFile = "res/image/VoucherCenter/yueka/btn_lingqu_1.png",
@@ -93,6 +90,11 @@ function VoucherYueka:initUI()
     self.monthcardBuy:addChild(yilingqu1)
     yilingqu1:setName("yilingqu")
     yilingqu1:setPosition(yuekaBg:getContentSize().width/2 - 5,-receiveBtn1:getContentSize().height)
+
+	self.Time = XTHDLabel:create("",18,"res/fonts/hkys.ttf")
+    self.Time:setColor(cc.c3b(150,20,20))
+    self.monthcardBuy:addChild(self.Time)
+    self.Time:setPosition(yuekaBg:getContentSize().width/2 - 5, - self.Time:getContentSize().height - 80)
 
     --至尊卡
     local zhizunBg = cc.Sprite:create("res/image/VoucherCenter/yueka/bg2.png")

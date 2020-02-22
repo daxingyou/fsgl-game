@@ -249,8 +249,8 @@ function YingXiongZhuangbei:createCellbg(index, cell)
             _equipItem_spr:addChild(btn_item)
 
             -- 装备名
-            local equipName = XTHDLabel:create(equipItem_data.name, 20, "res/fonts/hwzs.ttf")
-            equipName:setColor(cc.c3b(0, 0, 0))
+            local equipName = XTHDLabel:create(equipItem_data.name, 20, "res/fonts/def.ttf")
+            equipName:setColor(cc.c3b(70, 20, 20))
             equipName:setAnchorPoint(0, 0.5)
             equipName:setPosition(btn_item:getPositionX() + btn_item:getContentSize().width * 0.25 + 10, cellbg:getContentSize().height - equipName:getContentSize().height)
             cellbg:addChild(equipName)
@@ -344,7 +344,7 @@ function YingXiongZhuangbei:createAddtionlable(data, parentNode, index)
         local text = nil
         text = _data[1] == "201" and "物攻加成：" or "魔攻加成："
         local lable = XTHDLabel:create(text .. _data[2], 14)
-        lable:setColor(cc.c3b(151, 2, 254))
+        lable:setColor(cc.c3b(0, 100, 20))
         lable:setAnchorPoint(0, 0.5)
         parentNode:addChild(lable)
         lable:setPosition(pos[index][1], lable:getContentSize().height * 0.5 + 5)
@@ -355,7 +355,7 @@ function YingXiongZhuangbei:createAddtionlable(data, parentNode, index)
             if __data[1] == "201" or __data[1] == "203" then
                 local text = __data[1] == "201" and "物攻加成：" or "魔攻加成："
                 local lable = XTHDLabel:create(text .. __data[2], 14)
-                lable:setColor(cc.c3b(151, 2, 254))
+                lable:setColor(cc.c3b(0, 100, 20))
                 lable:setAnchorPoint(0, 0.5)
                 parentNode:addChild(lable)
                 lable:setPosition(pos[index][i], lable:getContentSize().height * 0.5 + 5)
@@ -368,7 +368,7 @@ function YingXiongZhuangbei:createAddtionlable(data, parentNode, index)
             if __data[1] == "202" or __data[1] == "204" then
                 local text = __data[1] == "202" and "物防加成：" or "魔防加成："
                 local lable = XTHDLabel:create(text .. __data[2], 14)
-                lable:setColor(cc.c3b(151, 2, 254))
+                lable:setColor(cc.c3b(0, 100, 20))
                 lable:setAnchorPoint(0, 0.5)
                 parentNode:addChild(lable)
                 lable:setPosition(pos[index][i], lable:getContentSize().height * 0.5 + 5)
@@ -379,7 +379,7 @@ function YingXiongZhuangbei:createAddtionlable(data, parentNode, index)
         local text = nil
         text = "生命加成："
         local lable = XTHDLabel:create(text .. _data[2], 14)
-        lable:setColor(cc.c3b(151, 2, 254))
+        lable:setColor(cc.c3b(0, 100, 20))
         lable:setAnchorPoint(0, 0.5)
         parentNode:addChild(lable)
         lable:setPosition(pos[index][1], lable:getContentSize().height * 0.5 + 5)
@@ -390,7 +390,7 @@ function YingXiongZhuangbei:createAddtionlable(data, parentNode, index)
             if __data[1] == "202" or __data[1] == "204" then
                 local text = __data[1] == "202" and "物防加成：" or "魔防加成："
                 local lable = XTHDLabel:create(text .. __data[2], 14)
-                lable:setColor(cc.c3b(151, 2, 254))
+                lable:setColor(cc.c3b(0, 100, 20))
                 lable:setAnchorPoint(0, 0.5)
                 parentNode:addChild(lable)
                 lable:setPosition(pos[index][i], lable:getContentSize().height * 0.5 + 5)
@@ -403,7 +403,7 @@ function YingXiongZhuangbei:createAddtionlable(data, parentNode, index)
             if __data[1] == "200" then
                 local text = "生命加成："
                 local lable = XTHDLabel:create(text .. __data[2], 14)
-                lable:setColor(cc.c3b(151, 2, 254))
+                lable:setColor(cc.c3b(0, 100, 20))
                 lable:setAnchorPoint(0, 0.5)
                 parentNode:addChild(lable)
                 lable:setPosition(pos[index][i], lable:getContentSize().height * 0.5 + 5)

@@ -744,7 +744,8 @@ function XingNangLayer:refreshDetailInfo(item_data,idx)
             or tonumber(static_item_info["effecttype"]) == 10
             or tonumber(static_item_info["effecttype"]) == 11 
             or tonumber(static_item_info["effecttype"]) == 12 
-            or tonumber(static_item_info["effecttype"]) == 13 then
+            or tonumber(static_item_info["effecttype"]) == 13
+			or tonumber(static_item_info["effecttype"]) == 15 then
                 if tonumber(static_item_info["effecttype"]) == 10 and isVisable then
                     self._use_btn:setPosition(self._fenjiePos)
                     self._fenjie_btn:setPosition(self._inner_left_bg:getContentSize().width/2+120, -self._sell_btn:getContentSize().height/2+50)
