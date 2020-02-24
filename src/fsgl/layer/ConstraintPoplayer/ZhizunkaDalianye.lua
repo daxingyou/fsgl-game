@@ -30,6 +30,7 @@ function ZhizunkaDalianye:init()
 	btn_goBuy:setPosition(bg:getContentSize().width *0.5 - btn_goBuy:getContentSize().width *0.5 - 20,btn_goBuy:getContentSize().height + 38)
 	btn_goBuy:setTouchEndedCallback(function()
 		self:PopZhizunka()
+		self:hide()
 	end)
 
 	local yueka_award = {}
@@ -94,12 +95,8 @@ function ZhizunkaDalianye:setMonthWindow()
 end
 
 function ZhizunkaDalianye:PopZhizunka()
-	HttpRequestWithOutParams("mouthCardState",function (data)
-        self:hide()
-        local layer = requires("src/fsgl/layer/HuoDong/YueKaAndZhiZunKa.lua"):create(data)
-        self:getParent():addChild(layer)
-        layer:show()
-	end)
+	local voucherLayer = requires("src/fsgl/layer/VoucherCenter/VoucherCenterLayer.lua"):create(2)
+	LayerManager.addLayout(voucherLayer)
 end
 
 function ZhizunkaDalianye:create()

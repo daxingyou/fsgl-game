@@ -134,6 +134,7 @@ function NewDanBiChongZhiLayer:initCell(cell,index)
 
 		--领取按钮
 		if self._localData[index].state == 1 then
+			miaoshu:setString("可领取")
 			local btn_lingqu = XTHDPushButton:createWithParams({
 				touchSize = cc.size(cellbg:getContentSize().width,cellbg:getContentSize().height),
 				needEnableWhenMoving = true,

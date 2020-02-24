@@ -389,6 +389,7 @@ function LiLianlevelUpLuckTurnPop:onEnter()
     YinDaoMarg:getInstance():addGuide({ ----点击抽一次
         parent = self,
         target = self._turnplateBtn,
+		offset = cc.p(5,5),
         index = 3,
         needNext = false,
         updateServer = true,

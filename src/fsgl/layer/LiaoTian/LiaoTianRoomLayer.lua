@@ -630,7 +630,7 @@ function LiaoTianRoomLayer:createVeiwCell(data)
 				local _color = string.split(_titleInfo.rgb,"，")
 				local tilteName = XTHDLabel:create("《".._titleInfo.name.."》",14)
 				tilteName:setAnchorPoint(0,0.5)
-				tilteName:setColor(cc.c3b(tonumber(_color[1]),tonumber(_color[2]),tonumber(_color[3])))
+				tilteName:setColor(cc.c3b(255,0,130))
 				content:addChild(tilteName)
 				tilteName:setPosition(name:getPositionX() + name:getContentSize().width,name:getPositionY())
 

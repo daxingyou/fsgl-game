@@ -44,6 +44,7 @@ function YinDao:ctor( params )
         self._target = params.target
         self.touchPos = self._target:convertToWorldSpace(cc.p(0,0))
         self._targSize = self._target:getBoundingBox()
+		self._pos = params.pos
 
         self._isMode = params.isMode == 1 and true or false
         self._delayHand = params.delayHand and true or false
@@ -380,8 +381,7 @@ function YinDao:updateHandPos( )
             elseif self._direction == 4 then  ----右    
                 self._hand:setRotation(90)
             end 
-            self._hand:setPosition(self.targetBox.x + self.targetBox.width / 2,self.targetBox.y  + self.targetBox.height / 2)
-            
+			self._hand:setPosition(self.targetBox.x + self.targetBox.width / 2,self.targetBox.y  + self.targetBox.height / 2)  
         end 
     end
     self.handBox = cc.rect(self._hand:getPositionX(),self._hand:getPositionY(),75,75)
