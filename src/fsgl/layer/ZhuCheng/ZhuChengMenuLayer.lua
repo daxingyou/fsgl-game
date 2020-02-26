@@ -2999,6 +2999,7 @@ function ZhuChengMenuLayer:addGuide()
     } , {
         { 1, 6 },
         { 2, 10 },
+		{ 3, 1 },
         { 5, 7 },
         { 8, 2 },
     } )

@@ -731,10 +731,26 @@ function SheZhiLayer:initSetting()
 end
 
 function SheZhiLayer:Chenghao()
-	local layer =  requires("src/fsgl/layer/ZhuCheng/ChenghaoLayer.lua"):create()
-	cc.Director:getInstance():getRunningScene():addChild(layer)
-	layer:setName("Poplayer")
-	layer:show()
+	ClientHttp:requestAsyncInGameWithParams( {
+        modules = "titleList?",
+        successCallback = function(data)
+            if data.result == 0 then
+				gameUser.setCurTitleList(data.titles)
+				local layer =  requires("src/fsgl/layer/ZhuCheng/ChenghaoLayer.lua"):create()
+				cc.Director:getInstance():getRunningScene():addChild(layer)
+				layer:setName("Poplayer")
+				layer:show()
+            end
+        end,
+        failedCallback = function()
+            XTHDTOAST(LANGUAGE_TIPS_WEBERROR)
+            ------"网络请求失败")
+        end,
+        -- 失败回调
+        loadingType = HTTP_LOADING_TYPE.CIRCLE,
+        -- 加载图显示 circle 光圈加载 head 头像加载
+        loadingParent = node,
+    } )
 end
 
 function SheZhiLayer:changAcator(id)--回调函数改变主城头像by.hungjunjian

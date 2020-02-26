@@ -9,5 +9,7 @@ WelfareMall =
     { id = 7, tpyeA = 1, restrictSum = 1, name = "特惠招募礼包", Rechargeid = 17, rmb = 98, reward1type = 4, reward1ID = 2306, reward1Num = 10, reward2type = 2, reward2ID = 0, reward2Num = 200000, reward3type = 6, reward3ID = 0, reward3Num = 200000, reward4type = nil, reward4ID = nil, reward4Num = nil, },
     { id = 8, tpyeA = 1, restrictSum = 1, name = "高级招募礼包", Rechargeid = 18, rmb = 328, reward1type = 4, reward1ID = 2306, reward1Num = 28, reward2type = 2, reward2ID = 0, reward2Num = 500000, reward3type = 6, reward3ID = 0, reward3Num = 500000, reward4type = nil, reward4ID = nil, reward4Num = nil, },
     { id = 9, tpyeA = 1, restrictSum = 1, name = "特级招募礼包", Rechargeid = 19, rmb = 648, reward1type = 4, reward1ID = 2306, reward1Num = 50, reward2type = 2, reward2ID = 0, reward2Num = 1000000, reward3type = 6, reward3ID = 0, reward3Num = 1000000, reward4type = nil, reward4ID = nil, reward4Num = nil, },
+    { id = 10, tpyeA = 3, restrictSum = 5, name = "橙将养成礼包", Rechargeid = 20, rmb = 30, reward1type = 4, reward1ID = 2251, reward1Num = 300, reward2type = 4, reward2ID = 2302, reward2Num = 300, reward3type = 4, reward3ID = 2002, reward3Num = 3000, reward4type = 4, reward4ID = 2902, reward4Num = 3000, },
+    { id = 11, tpyeA = 3, restrictSum = 5, name = "红将养成礼包", Rechargeid = 21, rmb = 68, reward1type = 4, reward1ID = 2251, reward1Num = 680, reward2type = 4, reward2ID = 2302, reward2Num = 680, reward3type = 4, reward3ID = 2002, reward3Num = 6800, reward4type = 4, reward4ID = 2902, reward4Num = 6800, },
 }
 
