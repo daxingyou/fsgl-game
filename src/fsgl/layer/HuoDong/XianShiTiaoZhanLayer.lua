@@ -24,8 +24,9 @@ function XianShiTiaoZhanLayer:ctor(data)
 	self._serverData = data
 end
 
-function XianShiTiaoZhanLayer:create(node)
+function XianShiTiaoZhanLayer:create(node,serverData)
 	self._parent = node
+    self.serverData = serverData
     XTHDHttp:requestAsyncInGameWithParams({
         modules = "yearBeastInfo?",
         successCallback = function(data)
@@ -138,8 +139,8 @@ function XianShiTiaoZhanLayer:initRight( )
 	local size = cc.Director:getInstance():getWinSize()
 	local scaleX = size.width / _size.width
 	local scaleY = size.height / _size.height
-	local _spine = sp.SkeletonAnimation:createWithBinaryFile("res/spine/006.skel", "res/spine/006.atlas", 1.0) 
-    _spine:setAnimation(0,"idle",true)
+    local _spine = XTHD.getHeroSpineById(self.serverData.list[1].petId)
+	_spine:setAnimation(0,"idle",true)
     _spine:setScaleX(-1)
     local _node = cc.Node:create()
     self:addChild(_node)

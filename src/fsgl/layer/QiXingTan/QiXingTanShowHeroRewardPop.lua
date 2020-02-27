@@ -649,7 +649,7 @@ function QiXingTanShowHeroRewardPop:doHttpRequest( do_times )
     --recruitType = 1 表示英雄， recruitType = 2 表示道具
      ClientHttp:requestAsyncInGameWithParams({
         modules = "recruitRequest?",
-        params = {recruitType=1,sum=do_times},
+        params = {recruitType=1,sum=do_times,activityId=0},
         successCallback = function(data)
         if not data or next(data) == nil then
             XTHDTOAST(LANGUAGE_TIPS_WEBERROR)-------"网络请求失败")

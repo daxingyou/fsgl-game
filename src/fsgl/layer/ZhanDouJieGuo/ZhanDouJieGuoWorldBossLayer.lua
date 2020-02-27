@@ -53,7 +53,7 @@ function ZhanDouJieGuoWorldBossLayer:initUI(params)
 		end
     end
 
-	if self.battleType == BattleType.WORLDBOSS_PVE or self.battleType == BattleType.GUILD_BOSS_PVE then 
+	if self.battleType == BattleType.WORLDBOSS_PVE or self.battleType == BattleType.GUILD_BOSS_PVE or self.battleType == BattleType.CAMP_SHOUWEI then 
 		--标题图片
 		local title_sp=cc.Sprite:create("res/image/worldboss/battle_over.png")
 		title_sp:setPosition(bg_sp:getContentSize().width*0.5, bg_sp:getContentSize().height)
@@ -186,6 +186,9 @@ function ZhanDouJieGuoWorldBossLayer:initUI(params)
         end
         BangPaiFengZhuangShuJu.setGuildData(mDatas)
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_GUILDMAIN_LIST})
+    elseif self.battleType == BattleType.CAMP_SHOUWEI then
+        --刷新种族守卫界面的数据
+        XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_ZHONGZU_SHOUWEI})
     end
 end
 

@@ -748,6 +748,8 @@ function XuanZeYingXiongCopyLayer:BattleClickCallback( sInstancingid )
 		_params.myTeam = json.encode(_tb)
 	elseif self._battle_type == BattleType.GUILD_BOSS_PVE then
 		_params = {configId = sInstancingid}	
+    elseif self._battle_type == BattleType.CAMP_SHOUWEI then
+        _params = {cityId = sInstancingid}	
 	end
 	ClientHttp.http_StartChallenge(self, self._battle_type, _params, function(data)
 		local teamListLeft = {}
@@ -1073,36 +1075,61 @@ function XuanZeYingXiongCopyLayer:BattleClickCallback( sInstancingid )
 					createFailHttpTipToPop()
 				end, params)  
 			end		
-        elseif self._battle_type == BattleType.GUILD_BOSS_PVE then
+        elseif self._battle_type == BattleType.GUILD_BOSS_PVE or self._battle_type == BattleType.CAMP_SHOUWEI then
 			for i=1,#self._Spine_List do
 				local id = self._Spine_List[i]["heroid"] or 0  
 				local animal = {id = id ,_type = ANIMAL_TYPE.PLAYER}
 		    	teamListLeft[#teamListLeft + 1] = animal
 			end
-			local instanceData = gameData.getDataFromCSV("SectBoss", {["id"] = sInstancingid})
-			sound = "res/sound/"..tostring(instanceData.bgm)..".mp3"
-			battle_time = instanceData.time
+			local instanceData
+            if self._battle_type == BattleType.CAMP_SHOUWEI then
+                instanceData = gameData.getDataFromCSV("CampCityBoss", {["monsterId"] = self._user_data.monsterid})
+                sound = "res/sound/"..tostring(instanceData.sound)..".mp3"
+			    battle_time = 60
+            else
+                instanceData = gameData.getDataFromCSV("SectBoss", {["id"] = sInstancingid})
+                sound = "res/sound/"..tostring(instanceData.bgm)..".mp3"
+			    battle_time = instanceData.time
+            end
 			local background  = instanceData.background or 1
 			bgList[#bgList + 1] = "res/image/background/bg_"..background..".jpg"
 			local rightData = {}
-        	local monsters = {data.monsters}
+        	local monsters
+            if self._battle_type == BattleType.CAMP_SHOUWEI then
+                monsters = {data.boss}
+            else
+                monsters = {data.monsters}
+            end
         	local bossdata
             for index=1, #monsters do
 				local rightData 		= {}
 				--[[--该波的怪物]]
             	local waveMonsters 		= monsters[index]
             	local team 				= {}
-            	for k,monster in pairs(waveMonsters) do
-            		local monsterid = monster.monsterid
-            		local animal = {
-            			id = monsterid, 
-            			_type = ANIMAL_TYPE.MONSTER,
-            			monster = monster, 
-            			m_startHp = monster.curHp
-            		}
-            		bossdata = monster
-				    team[#team + 1]=animal
-            	end
+                if self._battle_type == BattleType.CAMP_SHOUWEI then
+                     local monsterid = waveMonsters.monsterid
+            		    local animal = {
+            			    id = monsterid, 
+            			    _type = ANIMAL_TYPE.MONSTER,
+            			    monster = waveMonsters, 
+            			    m_startHp = waveMonsters.curHp
+            		    }
+            		    bossdata = waveMonsters
+				        team[#team + 1]=animal
+                else
+                    for k,monster in pairs(waveMonsters) do
+            		    local monsterid = monster.monsterid
+            		    local animal = {
+            			    id = monsterid, 
+            			    _type = ANIMAL_TYPE.MONSTER,
+            			    monster = monster, 
+            			    m_startHp = monster.curHp
+            		    }
+            		    bossdata = monster
+				        team[#team + 1]=animal
+            	    end
+                end
+            	
 				if team ~= nil and #team > 0 then
 			    	--[[--排队]]
 			    	table.sort( team, function(a,b) 

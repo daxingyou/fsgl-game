@@ -10,6 +10,7 @@ function ZhongZuShouWei:createForLayerManager( params )
     print("领地战守卫服务器返回的数据为：")
     print_r(params)
     self.__cityID = params.cityID
+    self.mapLayer = params.par
     ZhongZuShouWei:doHttpOpenBossWindow(params.par, function ( data )
         LayerManager.addShieldLayout()
         local pLay = ZhongZuShouWei.new(params.serverData,data)
@@ -25,11 +26,13 @@ function ZhongZuShouWei:ctor(serverData,rankData)
 end
 
 function ZhongZuShouWei:onEnter( )
-
+    XTHD.addEventListener({name = CUSTOM_EVENT.REFRESH_ZHONGZU_SHOUWEI ,callback = function()
+        self:freshData()
+    end})
 end
 
 function ZhongZuShouWei:onCleanup ( )
-
+    XTHD.removeEventListener(CUSTOM_EVENT.REFRESH_ZHONGZU_SHOUWEI)
 end
 
 function ZhongZuShouWei:onExit( )
@@ -37,9 +40,6 @@ end
 
 function ZhongZuShouWei:initUI( )
     local size = self:getContentSize()
-
-    --伤害排名
---    self:hurtRankView()
 
     local  boss_sp= cc.Node:create()
     boss_sp:setContentSize(557, 379)
@@ -61,12 +61,12 @@ function ZhongZuShouWei:initUI( )
     self:addChild(exp_progress_bg)
     local now_percent=string.format("%.4f", tonumber(self.data1.curHp)/tonumber(self.data1.maxHp)) *100--math.floor((tonumber(self.data.curHp)/tonumber(self.data.maxHp))) *100
     local exp_progress_timer = cc.ProgressTimer:create(cc.Sprite:create("res/image/worldboss/loardingbar_green.png"))
-    self.exp_progress_timer=exp_progress_timer
     exp_progress_timer:setType(cc.PROGRESS_TIMER_TYPE_BAR)
     exp_progress_timer:setMidpoint(cc.p(0,0))
     exp_progress_timer:setBarChangeRate(cc.p(1,0))
     exp_progress_timer:setPosition(exp_progress_bg:getContentSize().width/2, exp_progress_bg:getContentSize().height/2)
     exp_progress_timer:setPercentage(now_percent)
+    self.exp_progress_timer=exp_progress_timer
     exp_progress_bg:addChild(exp_progress_timer)
     local percent_label=getCommonWhiteBMFontLabel(tostring(now_percent).."%")
     self.percent_label=percent_label                              
@@ -89,8 +89,8 @@ function ZhongZuShouWei:initUI( )
         musicFile = XTHD.resource.music.effect_btn_common,
         pos = cc.p(32,15),
         endCallback = function()
---            local reward_pop=requires("src/fsgl/layer/XiongShouLaiXi/XiongShouLaiXiRewardPop.lua"):create()
---            LayerManager.addLayout(reward_pop, {noHide = true})
+            local reward_pop=requires("src/fsgl/layer/ZhongZu/ShouWeiRewardLayer.lua"):create()
+            LayerManager.addLayout(reward_pop, {noHide = true})
         end
     })
     reward_btn:setScale(1.5)
@@ -103,19 +103,18 @@ function ZhongZuShouWei:initUI( )
         musicFile = XTHD.resource.music.effect_btn_common,
         pos = cc.p(size.width/4 + 100,135),
         endCallback = function()
---            if self.data1.openState and self.data1.openState==1 then
---                if self.data.cd ==0 then
---                    YinDaoMarg:getInstance():overCurrentGuide(true)
---                    LayerManager.addShieldLayout()
---                    local _layer = requires("src/fsgl/layer/ChuZhan/XuanZeYingXiongCopyLayer.lua"):create(BattleType.WORLDBOSS_PVE)
---                    fnMyPushScene(_layer)
---                else 
---                    local layer=self:revival()
---                    self:addChild(layer)
---                end
---            else 
---                XTHDTOAST(LANGUAGE_TIPS_WORDS237)
---            end
+            if self.mapLayer.__currentHost == 1 then
+                XTHDTOAST("不能攻打自己领地的守卫！")
+                return
+            end
+            if self.data1.deadState and self.data1.deadState==0 then
+                cityID = self.__cityID
+                LayerManager.addShieldLayout()
+                local _layer = requires("src/fsgl/layer/ChuZhan/XuanZeYingXiongCopyLayer.lua"):create(BattleType.CAMP_SHOUWEI,cityID,{monsterid = self.data1.bossId,cityid = cityID},true)
+                fnMyPushScene(_layer)
+            else 
+                XTHDTOAST("守卫已被击杀！")
+            end
         end
     })
     self.battle_btn=battle_btn
@@ -146,7 +145,7 @@ function ZhongZuShouWei:initUI( )
         selectedFile      = "res/image/camp/shouwei/crankBtn2.png",
         musicFile = XTHD.resource.music.effect_btn_common,
         endCallback = function()
-           
+           XTHDTOAST("暂未开启！")
         end
     })
     rankBg:addChild(guild_btn)
@@ -185,10 +184,12 @@ function ZhongZuShouWei:initUI( )
     nickName:setPosition(95,26)
     nickName:setColor(cc.c3b(255,255,255))
 
-    local attack = XTHDLabel:create("总伤害：暂无", 15, "res/fonts/def.ttf")
+    local attack = XTHDLabel:create("总伤害：0", 15, "res/fonts/def.ttf")
     rankBg:addChild(attack)
     attack:setPosition(215,26)
     attack:setColor(cc.c3b(255,255,255))
+    attack:setString(self.data2.myHurt == 0 and "总伤害：暂无" or "总伤害："..self.data2.myHurt)
+    self.attackText = attack
 
 --	local help_btn = XTHDPushButton:createWithParams({
 --		normalFile        = "res/image/camp/lifetree/wanfa_up.png",
@@ -201,147 +202,78 @@ function ZhongZuShouWei:initUI( )
 --	})
 --	self:addChild(help_btn)
 --	help_btn:setPosition(self:getContentSize().width / 2 -  help_btn:getContentSize().width + 50,self:getContentSize().height - help_btn:getContentSize().height / 2)
+
+    --伤害排行榜
+    self:hurtRankView()
    
 end
 
 --伤害排名
 function ZhongZuShouWei:hurtRankView(  )
-    local _hei = 60
-    local _bgSize = cc.size(513, self:getContentSize().height)
-    local hurtRankView_bg = ccui.Scale9Sprite:create("res/image/worldboss/sss_03.png")
-    self._hurtRankView_bg = hurtRankView_bg
-    hurtRankView_bg:setContentSize(_bgSize)
-    -- local hurtRankView_bg=cc.Sprite:create("res/image/worldboss/hurtrank_bg.png")
-    hurtRankView_bg:setAnchorPoint(0, 0.5)
-    hurtRankView_bg:setPosition(0 + GetScreenOffsetX(), _bgSize.height*0.5+10)
-    self:addChild(hurtRankView_bg)
 
-    local pHeight = 125
-    local _hurtListSize = cc.size(hurtRankView_bg:getContentSize().width - 10, _bgSize.height - pHeight - _hei)
+    table.sort(self.data2.hurtList, function(a, b)
+        return a.rank < b.rank
+    end)
 
-    local _myRankTitle = cc.Sprite:create("res/image/worldboss/worldBoss_myRank.png")----我的排名
-	_myRankTitle:setScale(0.8)
-    self._myRankTitle = _myRankTitle
-    _myRankTitle:setAnchorPoint(0, 0.5)
-    _myRankTitle:setPosition(_bgSize.width*0.5 - 50, _bgSize.height - 35)
-    hurtRankView_bg:addChild(_myRankTitle)
-
-     --我的排名
-    -- if _mRankNum > 0 then 
-    --     self.my_rank:setString(_mRankNum)
-    -- end 
-    -- local _mRankNum = tonumber(self.data.myRank) or 0
-    local my_rank = getCommonWhiteBMFontLabel("0")
-    self.my_rank = my_rank
-    my_rank:setAnchorPoint(1, 0.5)
-    my_rank:setPosition(_myRankTitle:getPositionX() , _myRankTitle:getPositionY() )
-    hurtRankView_bg:addChild(my_rank)
-
-
-    --我的伤害
-    local my_hurt = XTHDLabel:createWithParams({text="",size=22})
-    self.my_hurt = my_hurt
-    my_hurt:setAlignment(cc.TEXT_ALIGNMENT_CENTER)
-    my_hurt:setAnchorPoint(0.5, 1)
-    my_hurt:enableShadow(cc.c4b(70,34,34,255), cc.size(0.4,-0.4), 1)
-    my_hurt:setColor(cc.c3b(230, 215, 133))
-    my_hurt:setPosition(_bgSize.width*0.5 + 10, _myRankTitle:getPositionY() - _myRankTitle:getContentSize().height*0.5 - 5)
-    hurtRankView_bg:addChild(my_hurt)
-
-    self:freshSelfRankAndHurt(self.data.myRank, self.data.myHurt)
+    local _hurtListSize = cc.size(self.rankBg:getContentSize().width - 60,self.rankBg:getContentSize().height - 130)
 
     local hurtRankTableView = CCTableView:create(_hurtListSize)
-    self.hurtRankTableView = hurtRankTableView
     hurtRankTableView:setName("hurtRankTableView")
     hurtRankTableView:setDirection(cc.SCROLLVIEW_DIRECTION_VERTICAL)
-    hurtRankTableView:setPosition(cc.p(32, pHeight-20))
     hurtRankTableView:setVerticalFillOrder(cc.TABLEVIEW_FILL_TOPDOWN)
     hurtRankTableView:setBounceable(true)
     hurtRankTableView:setDelegate() 
-    hurtRankView_bg:addChild(hurtRankTableView)
+    self.hurtRankTableView = hurtRankTableView
+    self.rankBg:addChild(hurtRankTableView)
+    hurtRankTableView:setPosition(30,56)
     -- 注册事件
-    local _cellSize = cc.size(hurtRankView_bg:getContentSize().width - 10, 80 )
     local function numberOfCellsInTableView( table )
-        local pCount = self.data.hurtList and #self.data.hurtList or 0
-        return pCount
+        return #self.data2.hurtList
     end
 
-    local function _showFriend( _charId )
-        if not _charId then
-            return
-        end
-        if _charId == gameUser.getUserId() then
-            return
-        end
-        local function showFirendInfo( ... )
-            HaoYouPublic.showFirendInfo(_charId, self)
-        end
-        local pData = HaoYouPublic.getFriendData()
-        if not pData then
-            HaoYouPublic.httpGetFriendData( self, showFirendInfo)
-        else
-            showFirendInfo()
-        end 
-    end
     local function tableCellTouched(table, cell)
-        local _charId = cell._charId
-        _showFriend(_charId)
+        
     end
     local function cellSizeForTable( table, idx )
-        return _cellSize.width,_cellSize.height
+        return self.rankBg:getContentSize().width - 60,40
     end
     local function tableCellAtIndex( table, idx )
-        if #self.data.hurtList then
+        if #self.data2.hurtList then
             local cell = table:dequeueCell()
             if cell == nil then
                 cell = cc.TableViewCell:new()
-                cell:setContentSize(_cellSize)
+                cell:setContentSize(self.rankBg:getContentSize().width - 60,50)
             else
                 cell:removeAllChildren()
             end 
 
-            local cell_bg=ccui.Scale9Sprite:create("res/image/worldboss/sss_03.png")
-            cell_bg:setContentSize(393,_cellSize.height+5)
-            cell_bg:setAnchorPoint(0, 0.5)
-            cell_bg:setPosition(0, cell:getContentSize().height*0.5)
+            local cell_bg=cc.Sprite:create("res/image/camp/shouwei/cellBg.png")
             cell:addChild(cell_bg)
+            cell_bg:setPosition(cell:getContentSize().width/2, cell:getContentSize().height/2)
             --排名
             local index = idx + 1
             local rank_id
-            if index >= 1 and index <= 3 then
-                rank_id = cc.Sprite:create("res/image/worldboss/rank_" .. index .. ".png")
-            else
-                rank_id = XTHDLabel:createWithParams({text = index, size = 22})
-            end
-            rank_id:setPosition(35, cell:getContentSize().height*0.5-10)
+--            if index >= 1 and index <= 3 then
+--                rank_id = cc.Sprite:create("res/image/worldboss/rank_" .. index .. ".png")
+--            else
+                rank_id = XTHDLabel:createWithParams({text = index, size = 20})
+                rank_id:setColor(cc.c3b(0,0,0))
+--            end
+            rank_id:setPosition(30, cell:getContentSize().height/2)
             cell:addChild(rank_id)
-             --?图标
-            -- dump(self.data.hurtList)
-            local _hurtListData = self.data.hurtList[index] or {}
-            cell._charId = _hurtListData.charId
-            local icon_mum = _hurtListData.campId 
-            icon_mum = tonumber(icon_mum) or 1
-            icon_mum = icon_mum == 0 and 1 or icon_mum
-            local icon1 = cc.Sprite:create("res/image/common/camp_Icon_"..icon_mum..".png")
-            icon1:setAnchorPoint(0,0)
-            icon1:setPosition(70,cell:getContentSize().height/2-15)   
-            icon1:setScale(0.5) 
-            cell:addChild(icon1)
+
             --玩家名字
-            local name=XTHDLabel:createWithParams({text=_hurtListData.name,ttf="",size=18})
-            name:setColor(cc.c3b(211,210,210))
-            name:setAnchorPoint(0,0)
-            name:enableShadow(cc.c4b(70,34,34,255),cc.size(0.4,-0.4),1)
-            -- name:setColor(cc.c3b(70, 34, 34))
-            name:setPosition(icon1:getPositionX()+icon1:getContentSize().width-10,cell:getContentSize().height/2-5)
+            local name=XTHDLabel:createWithParams({text=self.data2.hurtList[index].name,ttf="",size=15})
+            name:setColor(cc.c3b(0,0,0))
+--            name:enableShadow(cc.c4b(70,34,34,255),cc.size(0.4,-0.4),1)
+            name:setPosition(rank_id:getPositionX()+82,cell:getContentSize().height/2)
             cell:addChild(name)
 
             --伤害
-            local hurt = XTHDLabel:createWithParams({text=LANGUAGE_KEY_WORLDBOSS_TODAYATK(_hurtListData.hurt), size=18})
-            hurt:setAnchorPoint(0,1)
+            local hurt = XTHDLabel:createWithParams({text=self.data2.hurtList[index].hurt, size=15})
             -- hurt:enableShadow(cc.c4b(70,34,34,255),cc.size(0.4,-0.4),1)
-            hurt:setColor(cc.c3b(230, 215, 133))
-            hurt:setPosition(70,cell:getContentSize().height/2-10)
+            hurt:setColor(cc.c3b(0, 0, 0))
+            hurt:setPosition(name:getPositionX() + 105,cell:getContentSize().height/2)
             cell:addChild(hurt)
             return cell
         end 
@@ -353,82 +285,43 @@ function ZhongZuShouWei:hurtRankView(  )
     hurtRankTableView:reloadData()
 -- end
 
---伤害显示
-
-    local _hurtViewSize = cc.size(hurtRankView_bg:getContentSize().width - 10, pHeight)
-    local hurtTableView = CCTableView:create(_hurtViewSize)
-    self.hurtTableView = hurtTableView
-    hurtTableView:setName("hurtTableView")
-    hurtTableView:setDirection(cc.SCROLLVIEW_DIRECTION_VERTICAL)
-    hurtTableView:setPosition(cc.p(32+GetScreenOffsetX(), 0))
-    hurtTableView:setVerticalFillOrder(cc.TABLEVIEW_FILL_BOTTOMUP)--(cc.TABLEVIEW_FILL_TOPDOWN);
-    hurtTableView:setBounceable(true)
-    -- hurtTableView:scrollToLastCell(true)
-    hurtTableView:setDelegate()
-    hurtRankView_bg:addChild(hurtTableView)
-    -- 注册事件
-    local function numberOfCellsInTableView( table )
-        local pCount = self.data.logList and #self.data.logList or 0
-        return pCount
-    end
-    local function cellSizeForTable( table, idx )
-        return  (hurtTableView:getContentSize().width-10),30
-    end
-    local function tableCellAtIndex( table, idx )
-        if #self.data.logList then 
-            local cell = table:dequeueCell()
-            if cell == nil then
-                cell = cc.TableViewCell:new()
-            else
-                cell:removeAllChildren()
-            end
-            cell:setContentSize(cc.size(hurtTableView:getContentSize().width - 10, 30 ))
-            --伤害
-            local index = idx + 1
-            local hurt = XTHDLabel:createWithParams({
-                text = self.data.logList[index], 
-                size = 18,
-                color = cc.c3b(230, 215, 133),
-                anchor = cc.p(0,0.5),
-                pos = cc.p(5,cell:getContentSize().height/2),
-            })
-            hurt:enableShadow(cc.c4b(70,34,34,255),cc.size(0.4,-0.4),1)
-            cell:addChild(hurt)
-            return cell
-        end 
-    end
-    hurtTableView:registerScriptHandler(numberOfCellsInTableView,cc.NUMBER_OF_CELLS_IN_TABLEVIEW)  
-    hurtTableView:registerScriptHandler(cellSizeForTable,cc.TABLECELL_SIZE_FOR_INDEX)
-    hurtTableView:registerScriptHandler(tableCellAtIndex,cc.TABLECELL_SIZE_AT_INDEX)
-    hurtTableView:reloadData()
-end
-
-function ZhongZuShouWei:freshSelfRankAndHurt( rankNum, hurtNum )
-    local pWidth = self._hurtRankView_bg:getContentSize().width - 70
-
-    local pNum = tonumber(rankNum) or 0
-    pNum = pNum > 0 and pNum or 0
-    self.my_rank:setString(pNum)
-    self.my_rank:setFontSize(28)
-    local _width = self.my_rank:getContentSize().width + self._myRankTitle:getContentSize().width
-    self._myRankTitle:setPositionX(pWidth*0.5 - _width*0.5)
-    self.my_rank:setPositionX(self._myRankTitle:getPositionX() + self._myRankTitle:getContentSize().width + 20)
-    
-    self.my_hurt:setString(LANGUAGE_KEY_WORLDBOSS_TODAYATK(hurtNum))
-    self.my_hurt:setPositionX(pWidth*0.5 + 15)
 end
 
 function ZhongZuShouWei:freshData()
-
+    --刷新数据
+    print("刷新种族守卫界面")
+    local campID 
+    if self.mapLayer.__currentHost == 1 then
+        campID = gameUser.getCampID()
+    else
+        campID = gameUser.getCampID() == 1 and 2 or 1
+    end
+    HttpRequestWithParams("campBossInfo",{cityId = self.__cityID,campId = campID}, function(data)
+        local now_percent = string.format("%.4f", tonumber(data.curHp)/tonumber(data.maxHp)) *100
+        self.exp_progress_timer:setPercentage(now_percent)
+    end )
+    HttpRequestWithParams("campBossHurtRank",{cityId = self.__cityID,campId = campID}, function(data)
+        self.data2 = data
+        table.sort(self.data2.hurtList, function(a, b)
+            return a.rank < b.rank
+        end)
+        self.hurtRankTableView:reloadData()
+    end )
 end
 
 function ZhongZuShouWei:doHttpOpenBossWindow( par, callSuccess, callFail )
+    local campID 
+    if self.mapLayer.__currentHost == 1 then
+        campID = gameUser.getCampID()
+    else
+        campID = gameUser.getCampID() == 1 and 2 or 1
+    end
     ClientHttp:requestAsyncInGameWithParams({
         modules = "campBossHurtRank?",
-        params = {cityId = self.__cityID,campId = gameUser.getCampID()},
+        params = {cityId = self.__cityID,campId = campID},
         successCallback = function(data)
-         print("伤害排行榜服务器返回数据为：")
-         print_r(data)
+--         print("伤害排行榜服务器返回数据为：")
+--         print_r(data)
             if data.result==0 then
                 if callSuccess then
                     callSuccess(data)

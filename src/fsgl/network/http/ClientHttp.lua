@@ -120,7 +120,7 @@ local _challengeHttpTitle = {
     "attackVeinsBattlePoint?", --19真气副本抢夺
     "",--20
     "challangeDiffcultyEctype?", --21恶魔副本
-    "",--22
+    "challangeCampGuard?",--22
     "challangeSingleEctype?",  --23单挑之王
     "challengeServantEctype?", --24登界游方
 }

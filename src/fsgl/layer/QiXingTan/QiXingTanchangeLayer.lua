@@ -347,7 +347,7 @@ function QiXingTanchangeLayer:doHttpRequest(_recruitType, times )
     YinDaoMarg:getInstance():guideTouchEnd()
     ClientHttp:requestAsyncInGameWithParams({
         modules = "recruitRequest?",
-        params = {recruitType=_recruitType,sum=times},
+        params = {recruitType=_recruitType,sum=times,activityId=0},
         successCallback = function(data)
             --获取奖励成功
             if  tonumber(data.result) == 0 then

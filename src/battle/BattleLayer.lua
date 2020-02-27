@@ -528,7 +528,7 @@ function BattleLayer:createOneWaveEnemy(_wave)
             animal:setVisible(true)
             animal:setFaceDirection(BATTLE_DIRECTION.LEFT)
             animal:setPosition(cc.p(x, y))
-			if self._battleType == BattleType.GUILD_BOSS_PVE then
+			if self._battleType == BattleType.GUILD_BOSS_PVE or self._battleType == BattleType.CAMP_SHOUWEI then
 				animal:setPosition(cc.p(x, y - 40))
 			end
             self._animalLayer:addChild(animal, z)

@@ -997,9 +997,15 @@ function ZhongZuMap:requestEnemyCityData( cityIndex )
         method = "campRivalCity?",
         params = {cityId = cityIndex},
         success = function(data)       		
-			self:updateEnemyCityDFDSUM(cityIndex,data)
-			local page = requires("src/fsgl/layer/ZhongZu/EnemyCitySPLayer1.lua"):create(cityIndex,self.__currentHost,self)
-			self:addChild(page,4)		
+            HttpRequestWithParams("campBossInfo",{cityId = cityIndex,campId = gameUser.getCampID() == 1 and 2 or 1}, function(data)
+                if data.deadState == 0 then
+                    LayerManager.createModule("src/fsgl/layer/ZhongZu/ZhongZuShouWei.lua", { par = self ,serverData = data,cityID = cityIndex})
+                else
+                    self:updateEnemyCityDFDSUM(cityIndex,data)
+			        local page = requires("src/fsgl/layer/ZhongZu/EnemyCitySPLayer1.lua"):create(cityIndex,self.__currentHost,self)
+			        self:addChild(page,4)	
+                end
+            end )	
     	end,
     	failure = function(data)
     		if data and data.result == 4801 then  ----城市已被占领

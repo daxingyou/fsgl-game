@@ -305,7 +305,7 @@ function ZhuChenglayer:initNewBg( ... )
     --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     ---创建建筑
     for i = 1, 10 do 
-        if i ~= 7 then 
+        if i ~= 7 and i ~= 4 then 
             local _build = BuildingItem1:create({
                 buildingId = i,
                 endCallback = function( )

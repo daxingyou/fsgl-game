@@ -5,6 +5,10 @@ local TimelimitAnctivityLayer = class("TimelimitAnctivityLayer",function()
 end)
 
 function TimelimitAnctivityLayer:ctor()
+    HttpRequestWithOutParams("redHeroActivityList", function(data)
+        print("---------------")
+        print_r(data)
+    end )
 	self._btnList = {}
 	self._layerNode = nil
 	self._selectedIndex = 0
@@ -140,7 +144,9 @@ function TimelimitAnctivityLayer:selectedNode(index)
 	    end, 0.1)
 	else
         performWithDelay(self, function()
-	        requires("src/fsgl/layer/HuoDong/XianShiTiaoZhanLayer.lua"):create(self._layerNode) 
+            HttpRequestWithOutParams("limitPetList", function(data)
+                requires("src/fsgl/layer/HuoDong/XianShiTiaoZhanLayer.lua"):create(self._layerNode,data) 
+            end )
 	    end, 0.1) 
 	end
 

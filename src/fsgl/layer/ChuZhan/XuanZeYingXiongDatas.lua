@@ -407,6 +407,10 @@ function mDatas.getBackFileStr( )
 		elseif pLay._battle_type == BattleType.GUILD_BOSS_PVE then
 			pString = "SectBoss"
 			_key = "id"
+        elseif pLay._battle_type == BattleType.CAMP_SHOUWEI then
+			pString = "CampCityBoss"
+			_key = "monsterId"
+            mInstancingid = pLay._user_data.monsterid
 		end
 		if pString then
 			local background_data = gameData.getDataFromCSV(pString, {[_key] = mInstancingid})["background"] or 1
@@ -473,6 +477,7 @@ function mDatas.isPve( ... )
 	  or pLay._battle_type == BattleType.JADITE_COPY_PVE
 	  or pLay._battle_type == BattleType.WORLDBOSS_PVE
 	  or pLay._battle_type == BattleType.GUILD_BOSS_PVE
+      or pLay._battle_type == BattleType.CAMP_SHOUWEI
 	  or pLay._battle_type == BattleType.DIFFCULTY_COPY
 	then
 		return true
