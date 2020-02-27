@@ -51,13 +51,6 @@ function ZhongZuShouWei:initUI( )
     if heroid < 10 then
         heroid = "0"..heroid
     end
-    local  boss_effect = sp.SkeletonAnimation:createWithBinaryFile( "res/spine/0"..heroid..".skel", "res/spine/0"..heroid..".atlas",1.0);
-    boss_effect:setPosition(GetScreenOffsetX() + 80, 90)
-    boss_effect:setAnimation(0,BATTLE_ANIMATION_ACTION.IDLE,true)
-    boss_effect:setScale(1)
-    boss_sp:addChild(boss_effect)
-    self._bossSp = boss_sp
-    self._bossEffect = boss_effect
     
     --进度条君
     local exp_progress_bg = cc.Sprite:create("res/image/worldboss/loardingbar_green_bg.png")
@@ -80,6 +73,14 @@ function ZhongZuShouWei:initUI( )
     percent_label:setPosition(exp_progress_bg:getContentSize().width/2,exp_progress_bg:getContentSize().height/2-5)
     exp_progress_bg:addChild(percent_label)
     percent_label:setVisible(false)
+
+	local  boss_effect = sp.SkeletonAnimation:createWithBinaryFile( "res/spine/0"..heroid..".skel", "res/spine/0"..heroid..".atlas",1.0);
+    boss_effect:setPosition(exp_progress_bg:getPositionX(), size.height *0.4 - 30)
+    boss_effect:setAnimation(0,BATTLE_ANIMATION_ACTION.IDLE,true)
+    boss_effect:setScale(1)
+    self:addChild(boss_effect)
+    self._bossSp = boss_sp
+    self._bossEffect = boss_effect
 
     --查看奖励
     local reward_btn = XTHDPushButton:createWithParams({
