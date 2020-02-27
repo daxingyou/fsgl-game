@@ -947,9 +947,9 @@ function RenWuLayer:refreshTopTask()
 			self._loadingbar:setPercentage(100)
 		end
 	else
+		self._loadingbarBg:setVisible( true )
 		if  self._selectIndex ~= 1 then
 			self._loadingbar:setVisible( true )
-			self._loadingbarBg:setVisible( true )
 			self._topTaskTip:setVisible( true )
 			self._loadingbarNum:setVisible( true )
 			self._topRewardIcon:setVisible( true )
@@ -960,6 +960,7 @@ function RenWuLayer:refreshTopTask()
 			self._loadingbarNum:setVisible( false )
 			self._topRewardIcon:setVisible( false )
 			self._topRewardIcon:setEnable( false )
+			self._topFinishAllTasks:setVisible( false )
 		end
 		local data = self._tabTopTaskData[self._tabIndex][1]
 		if data.curNum < data.maxNum then
