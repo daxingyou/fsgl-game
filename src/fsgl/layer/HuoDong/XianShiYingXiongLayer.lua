@@ -129,9 +129,9 @@ function XianShiYingXiongLayer:initLayer()
 	local _buyBtn = XTHD.createButton({
 			normalFile = "res/image/plugin/timehero_act/lananniu.png",
 			selectedFile = "res/image/plugin/timehero_act/lananniu.png",
-			text = "购买",
+			text = "十连抽",
 			ttf = "res/fonts/def.ttf",
-			fontSize = 36,
+			fontSize = 30,
 		})
 	-- local _buyBtn = XTHD.createCommonButton({
 	-- 	btnColor = "write",
@@ -208,12 +208,14 @@ function XianShiYingXiongLayer:initLayer()
     _lastNumTitle:setAnchorPoint(cc.p(0.5,0.5))
     _lastNumTitle:setColor(self.redColor)
     _lastNumTitle:enableShadow(self.redColor, cc.size(0.4,-0.4), 0.4)
+    _lastNumTitle:setVisible(false)
 
     local _lastNumValue = XTHDLabel:create("0",20)
     self.lastNumValue = _lastNumValue
     _lastNumValue:setAnchorPoint(cc.p(0,0.5))
     _lastNumValue:setColor(self.redColor)
     _lastNumValue:enableShadow(self.redColor, cc.size(0.4,-0.4), 0.4)
+    _lastNumValue:setVisible(false)
 
     _lastNumTitle:setPosition(cc.p(_popNode:getContentSize().width/2 -_lastNumValue:getContentSize().width/2-5,80))
     _lastNumValue:setPosition(cc.p(_lastNumTitle:getBoundingBox().x+_lastNumTitle:getBoundingBox().width + 10,_lastNumTitle:getPositionY()))
@@ -244,13 +246,14 @@ function XianShiYingXiongLayer:buyBtnCallback(_configId)
 			    end
 		    	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
 			end
-			gameData.saveDataToDB({[1] =data["petInfo"]},1)
+            data["resultList"][1].id = data["resultList"][1].petId
+			gameData.saveDataToDB({[1] =data["resultList"][1]},1)
 			self:refreshLastNumTitle()
 			self:refreshResourceValue()
 			local layer = requires("src/fsgl/layer/QiXingTan/QiXingTanGetNewHeroLayer.lua"):create({
         		par = cc.Director:getInstance():getRunningScene(),
-	            id = data["petInfo"].id,
-	            star = data["petInfo"].starLevel,
+	            id = data["resultList"][1].petId,
+	            star = data["resultList"][1].starLevel,
 			})
 
 			RedPointManage:getDynamicHeroData()
