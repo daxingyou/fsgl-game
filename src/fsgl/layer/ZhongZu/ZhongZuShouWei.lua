@@ -11,6 +11,7 @@ function ZhongZuShouWei:createForLayerManager( params )
     print_r(params)
     self.__cityID = params.cityID
     self.mapLayer = params.par
+    self.mapData = params.mapData or {}
     ZhongZuShouWei:doHttpOpenBossWindow(params.par, function ( data )
         LayerManager.addShieldLayout()
         local pLay = ZhongZuShouWei.new(params.serverData,data)
@@ -113,7 +114,10 @@ function ZhongZuShouWei:initUI( )
                 local _layer = requires("src/fsgl/layer/ChuZhan/XuanZeYingXiongCopyLayer.lua"):create(BattleType.CAMP_SHOUWEI,cityID,{monsterid = self.data1.bossId,cityid = cityID},true)
                 fnMyPushScene(_layer)
             else 
-                XTHDTOAST("守卫已被击杀！")
+                cityID = self.__cityID
+                self.mapLayer:updateEnemyCityDFDSUM(cityID,self.mapData)
+			    local page = requires("src/fsgl/layer/ZhongZu/EnemyCitySPLayer1.lua"):create(cityID,self.mapLayer.__currentHost,self.mapLayer)
+			    self.mapLayer:addChild(page,4)	
             end
         end
     })
@@ -305,6 +309,7 @@ function ZhongZuShouWei:freshData()
         table.sort(self.data2.hurtList, function(a, b)
             return a.rank < b.rank
         end)
+        self.attackText:setString(self.data2.myHurt == 0 and "总伤害：暂无" or "总伤害："..self.data2.myHurt)
         self.hurtRankTableView:reloadData()
     end )
 end

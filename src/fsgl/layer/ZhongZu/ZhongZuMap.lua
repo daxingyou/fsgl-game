@@ -997,14 +997,11 @@ function ZhongZuMap:requestEnemyCityData( cityIndex )
         method = "campRivalCity?",
         params = {cityId = cityIndex},
         success = function(data)       		
-            HttpRequestWithParams("campBossInfo",{cityId = cityIndex,campId = gameUser.getCampID() == 1 and 2 or 1}, function(data)
-                if data.deadState == 0 then
-                    LayerManager.createModule("src/fsgl/layer/ZhongZu/ZhongZuShouWei.lua", { par = self ,serverData = data,cityID = cityIndex})
-                else
-                    self:updateEnemyCityDFDSUM(cityIndex,data)
-			        local page = requires("src/fsgl/layer/ZhongZu/EnemyCitySPLayer1.lua"):create(cityIndex,self.__currentHost,self)
-			        self:addChild(page,4)	
-                end
+            HttpRequestWithParams("campBossInfo",{cityId = cityIndex,campId = gameUser.getCampID() == 1 and 2 or 1}, function(data1)
+                LayerManager.createModule("src/fsgl/layer/ZhongZu/ZhongZuShouWei.lua", { par = self ,serverData = data1,cityID = cityIndex,mapData = data})
+--               self:updateEnemyCityDFDSUM(cityIndex,data)
+--			    local page = requires("src/fsgl/layer/ZhongZu/EnemyCitySPLayer1.lua"):create(cityIndex,self.__currentHost,self)
+--			    self:addChild(page,4)	
             end )	
     	end,
     	failure = function(data)
