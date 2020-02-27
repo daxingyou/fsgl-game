@@ -246,15 +246,16 @@ function XianShiYingXiongLayer:buyBtnCallback(_configId)
 			    end
 		    	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
 			end
-            data["resultList"][1].id = data["resultList"][1].petId
-			gameData.saveDataToDB({[1] =data["resultList"][1]},1)
+            self:getHeroReward(1,data)
+--            data["resultList"][1].id = data["resultList"][1].petId
+--			gameData.saveDataToDB({[1] =data["resultList"][1]},1)
 			self:refreshLastNumTitle()
 			self:refreshResourceValue()
-			local layer = requires("src/fsgl/layer/QiXingTan/QiXingTanGetNewHeroLayer.lua"):create({
-        		par = cc.Director:getInstance():getRunningScene(),
-	            id = data["resultList"][1].petId,
-	            star = data["resultList"][1].starLevel,
-			})
+--			local layer = requires("src/fsgl/layer/QiXingTan/QiXingTanGetNewHeroLayer.lua"):create({
+--        		par = cc.Director:getInstance():getRunningScene(),
+--	            id = data["resultList"][1].petId,
+--	            star = data["resultList"][1].starLevel,
+--			})
 
 			RedPointManage:getDynamicHeroData()
 			RedPointManage:getDynamicItemData()
@@ -262,6 +263,59 @@ function XianShiYingXiongLayer:buyBtnCallback(_configId)
 			XTHD.dispatchEvent({["name"] =CUSTOM_EVENT.REFRESH_FUNCTION_REDPOINT})
 
         end)
+end
+
+function XianShiYingXiongLayer:getHeroReward(_type, data )
+    local _data = data
+    if not _data then
+        return
+    end
+    if not _data["addPets"] or not _data["resultList"] then
+        return
+    end
+    local function _goShowReward()
+		if _type == 1 then
+			local showReward = requires("src/fsgl/layer/QiXingTan/QiXingTanShowHeroRewardPop.lua"):create(_data)
+			LayerManager.pushModule(showReward)
+		else
+			local showReward = requires("src/fsgl/layer/QiXingTan/QiXingTanShowEquipRewardPop.lua"):create(data)
+			LayerManager.pushModule(showReward)
+		end
+    end 
+
+    if _data.serverAddress ~= "" and _data.token ~= "" then
+        gameUser.setToken(_data.token)
+        gameUser.setNewLoginToken(_data.token) 
+        GAME_API = _data.serverAddress.."/game/"
+        XTHDHttp:requestAsyncWithParams({
+            url = _data.serverAddress .. "/game/newLogin?token="..gameUser.getNewLoginToken(),
+            successCallback = function( sData )
+                if sData.result == 0 then
+                    cc.UserDefault:getInstance():setStringForKey(KEY_NAME_LAST_UUID, sData["uuid"])
+                    cc.UserDefault:getInstance():flush()
+                    gameUser.setSocketIP(0)
+                    gameUser.setSocketPort(0)
+                    gameUser.initWithData(sData)
+                    MsgCenter:getInstance()
+                    _goShowReward()
+                    return 
+                end
+                gameUser.setToken(nil)
+                LayerManager.backToLoginLayer()
+            end,
+            failedCallback = function()
+                gameUser.setToken(nil)
+                LayerManager.backToLoginLayer()
+            end,
+            targetNeedsToRetain = self,--需要保存引用的目标
+            loadingType = HTTP_LOADING_TYPE.CIRCLE,--加载图显示 circle 光圈加载 head 头像加载
+        })
+    else
+        if _data.serverAddress ~= "" then
+            MsgCenter:getInstance()
+        end
+        _goShowReward()
+    end
 end
 
 function XianShiYingXiongLayer:setHeroSp()
