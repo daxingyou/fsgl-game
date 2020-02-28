@@ -330,8 +330,11 @@ function ZhuChengMenuLayer:init()
     } )
 
     if mGameUser.getLevel() > 7 and mGameUser.getMeiRiQianDaoState() == 1 then
-        local popLayer = requires("src/fsgl/layer/ConstraintPoplayer/MeiRiQianDaoPopLayer.lua"):create()
-        self:addChild(popLayer)
+		ClientHttp:httpActivity("getCheckInDailyList?",self,function(data)
+			local popLayer = requires("src/fsgl/layer/ConstraintPoplayer/MeiRiQianDaoPopLayer.lua"):create(data)
+			self:addChild(popLayer)
+			popLayer:show()
+		end,{})
     end
     self:refreshTopInfo()
     self:refreshBaseInfo()
@@ -3157,6 +3160,7 @@ end
 function ZhuChengMenuLayer:ZhanlijingsaiActivityLayer()
 	local biwuzhaoqin = requires("src/fsgl/layer/Biwuzhaoqin/Biwuzhaoqin.lua"):create()
 	LayerManager.addLayout(biwuzhaoqin)
+	
 --    local list = { "heroStar", "heroPhase", "heroPower", "equipStar", "godPhase" }
 --    ClientHttp:requestAsyncInGameWithParams( {
 --        modules = "leaderBoardRank?",
