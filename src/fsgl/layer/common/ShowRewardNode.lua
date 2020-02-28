@@ -151,7 +151,7 @@ function ShowRewardNode:ctor(params)
                         local itemName = XTHDLabel:createWithParams( {
                             text = item._Name,
                             fontSize = 16,
-                            color = XTHD.resource.color.gray_desc
+                            color = cc.c3b(255,246,127),
                         } )
                         itemName:setAnchorPoint(0.5, 1)
                         itemName:setPosition(item:getPositionX(), item:getPositionY() - item:getBoundingBox().height / 2 - 2)
@@ -299,7 +299,7 @@ function ShowRewardNode:createRewardTablview(param, rewardNum)
 							local itemName = XTHDLabel:createWithParams( {
 								text = item._Name,
 								fontSize = 16,
-								color = XTHD.resource.color.gray_desc
+								color = cc.c3b(255,246,127),
 							} )
 							itemName:setAnchorPoint(0.5, 1)
 							itemName:setPosition(item:getPositionX(), item:getPositionY() - item:getBoundingBox().height / 2 - 2)
@@ -330,7 +330,7 @@ function ShowRewardNode:createRewardTablview(param, rewardNum)
 							local itemName = XTHDLabel:createWithParams( {
 								text = item._Name,
 								fontSize = 16,
-								color = XTHD.resource.color.gray_desc
+								color = cc.c3b(255,246,127),
 							} )
 							itemName:setAnchorPoint(0.5, 1)
 							itemName:setPosition(item:getPositionX(), item:getPositionY() - item:getBoundingBox().height / 2 - 2)

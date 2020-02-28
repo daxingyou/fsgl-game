@@ -578,16 +578,16 @@ function replaceLayer(params)
         turnStageChapterScene(chapterId,ChapterType.Normal,node)
     elseif id == 2 then    --2ăç˛žčąĺŻćŹ
         local _elite_open_data = gameData.getDataFromCSV("FunctionInfoList", {["id"] = 19} )
-            if tonumber(_elite_open_data["unlocktype"]) == 2 then
-                if gameUser.getInstancingId() < tonumber(_elite_open_data["unlockparam"]) then
+        if tonumber(_elite_open_data["unlocktype"]) == 2 then
+			if gameUser.getInstancingId() < tonumber(_elite_open_data["unlockparam"]) then
                 XTHDTOAST(LANGUAGE_KEY_NOTOPEN)------"ç˛žčąĺŻćŹććŞĺźĺŻ!")
                 return
             end
-            if tonumber(_elite_open_data["unlocktype"]) == 1 then
-                if gameUser.getLevel() < tonumber(_elite_open_data["unlockparam"]) then
-                    XTHDTOAST(LANGUAGE_TIPS_OPEN_ELITE(_elite_open_data["unlockparam"]))------"ç˛žčąĺŻćŹććŞĺźĺŻ!")
-                    return
-                end
+        end
+		if tonumber(_elite_open_data["unlocktype"]) == 1 then
+			if gameUser.getLevel() < tonumber(_elite_open_data["unlockparam"]) then
+				XTHDTOAST(LANGUAGE_TIPS_OPEN_ELITE(_elite_open_data["unlockparam"]))------"ç˛žčąĺŻćŹććŞĺźĺŻ!")
+                return
             end
         end
         turnStageChapterScene(chapterId,ChapterType.ELite,node)
