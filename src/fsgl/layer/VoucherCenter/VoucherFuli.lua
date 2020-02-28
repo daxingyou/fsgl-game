@@ -89,7 +89,9 @@ function VoucherFuli:createTableViewCell(index,cell)
 		local itembtn = XTHDPushButton:createWithParams({
 			normalFile = "res/image/VoucherCenter/fulilibao/fulilibao_" .. _data.id ..".png",
 			selectedFile = "res/image/VoucherCenter/fulilibao/fulilibao_" .. _data.id ..".png",
+			needEnableWhenMoving = true,
 		})
+		itembtn:setSwallowTouches(false)
 		cellbg:addChild(itembtn,10)
 		itembtn:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height *0.5 + 10)
 		itembtn:setScale(0.7)
@@ -122,6 +124,7 @@ function VoucherFuli:createTableViewCell(index,cell)
 			touchSize =cc.size(cellbg:getContentSize().width,cell:getContentSize().height),
 			needEnableWhenMoving = true,
 		})
+		buyBtn:setSwallowTouches(false)
 		cellbg:addChild(buyBtn)
 		buyBtn:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height *0.5)
 		

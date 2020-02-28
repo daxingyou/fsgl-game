@@ -111,7 +111,9 @@ function NewDanBiChongZhiLayer:initCell(cell,index)
 		local itembtn = XTHDPushButton:createWithParams({
 			normalFile = "res/image/VoucherCenter/danbi/danbi_"..index ..".png",
 			selectedFile = "res/image/VoucherCenter/danbi/danbi_"..index ..".png",
+			needEnableWhenMoving = true,
 		})
+		itembtn:setSwallowTouches(false)
 		cellbg:addChild(itembtn,10)
 		itembtn:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height *0.5 + 10)
 		itembtn:setScale(0.7)

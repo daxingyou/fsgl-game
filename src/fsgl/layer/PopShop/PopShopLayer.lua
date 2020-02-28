@@ -164,7 +164,7 @@ function PopShopLayer:createNeednum(cellbg,data,index)
 	local needItemcoutns = {}
 	local n = 0
 
-	if self._key == "ArenaStore" or self._key == "recycle" or self._key == "flower" or self._key == "reward" or self._key == "arena" then
+	if self._key == "ArenaStore" or self._key == "recycle" or self._key == "flower" or self._key == "reward" or self._key == "arena" or self._key == "shura" then
 		for i = 1,#Params do
 			if data[Params[i]] and data[Params[i]] > 0 then
 				n = n + 1 
@@ -186,6 +186,12 @@ function PopShopLayer:createNeednum(cellbg,data,index)
 					needItemfiles[n] = IMAGE_KEY_HEADER_OFFERREWARD
 				elseif self._key == "arena" then
 					needItemfiles[n] = IMAGE_KEY_HEADER_AWARD
+				elseif self._key == "shura" then
+					if i == 3 then
+						needItemfiles[n] = IMAGE_KEY_HEADER_BLOOD
+					elseif i == 4 then
+						needItemfiles[n] = IMAGE_KEY_HEADER_INGOT
+					end
 				end
 			
 				needItemcoutns[n] = data[Params[i]]
@@ -337,6 +343,18 @@ function PopShopLayer:buyItem(index)
 								end
 							end
 							gameUser.updateDataById(_data[1],_data[2])
+						end
+					end
+					if data.gods then
+						
+						for i = 1, #data.gods do
+							local _data = data.gods[i]
+							local goddata = gameData.getDataFromCSV("SuperWeaponUpInfo",{id = _data.templateId})
+							local idx = #showlist + 1
+							showlist[idx] = {}
+							--showlist[idx].rewardtype = 4
+							showlist[idx].rewardtype = goddata._type
+							showlist[idx].num = 1
 						end
 					end
 					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})

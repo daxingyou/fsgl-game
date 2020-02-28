@@ -108,7 +108,7 @@ function ChenghaoLayer:BuildCell(index,cell)
 	for i = 1,#shuxinglist do
 		print(_texts[i],index,data.id)
 		local _index = shuxinglist[i]
-		if _index == 7 or _index == 8 or _index == 9 or _index == 10 or _index == 11 or _index == 12 or _index == 13
+		if _index == 6 or _index == 7 or _index == 8 or _index == 9 or _index == 10 or _index == 11 or _index == 12 or _index == 13
 			or _index == 14 or _index == 15 or _index == 16 or _index == 17 or _index == 18 or _index == 19 or _index == 20 then
 			text = text.._texts[_index]..data[tostring(params[_index])].."%"
 		else
