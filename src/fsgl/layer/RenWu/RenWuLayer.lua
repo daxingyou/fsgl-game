@@ -945,6 +945,7 @@ function RenWuLayer:refreshTopTask()
 			self._loadingbar:setVisible( false )
 		else
 			self._loadingbar:setPercentage(100)
+			self._loadingbar:setVisible( true )
 		end
 	else
 		self._loadingbarBg:setVisible( true )
@@ -961,6 +962,7 @@ function RenWuLayer:refreshTopTask()
 			self._topRewardIcon:setVisible( false )
 			self._topRewardIcon:setEnable( false )
 			self._topFinishAllTasks:setVisible( false )
+			self._loadingbar:setVisible( true )
 		end
 		local data = self._tabTopTaskData[self._tabIndex][1]
 		if data.curNum < data.maxNum then
@@ -1057,12 +1059,14 @@ function RenWuLayer:refreshTopTask()
 				local data = self._tabTopTaskData[self._tabIndex][1]
 				self._loadingbar:setPercentage(data.curNum)
 				for i = 1, #self._huoyueRenwu do
-					if self._huoyueRenwu[i].taskid == self._tabTopTaskData[self._selectIndex][1].taskid then
-						self._HuoyueNode.btnSpine[i]:setVisible(true)
-						self._HuoyueNode.btnSpine[i]:setAnimation( 0, "renwu", true )
-						self._HuoyueNode.boxlist[i]:setVisible(false)
-						self._HuoyueNode.btnList[i]:setEnable(true)
-						self._HuoyueNode.btnList[i]:setTouchEndedCallback(function()
+					local jindu = string.split(self._huoyueRenwu[i].taskparam,"#")[2]
+					for j = 1, #self._tabTopTaskData[self._selectIndex] do
+						if self._huoyueRenwu[i].taskid == self._tabTopTaskData[self._selectIndex][j].taskid and data.curNum >= tonumber(jindu) then
+							self._HuoyueNode.btnSpine[i]:setVisible(true)
+							self._HuoyueNode.btnSpine[i]:setAnimation( 0, "renwu", true )
+							self._HuoyueNode.boxlist[i]:setVisible(false)
+							self._HuoyueNode.btnList[i]:setEnable(true)
+							self._HuoyueNode.btnList[i]:setTouchEndedCallback(function()
 							XTHDHttp:requestAsyncInGameWithParams({
 								modules="finishTask?",
 								params = {taskId = data.taskid},
@@ -1108,6 +1112,7 @@ function RenWuLayer:refreshTopTask()
 								loadingType = HTTP_LOADING_TYPE.CIRCLE,--加载图显示 circle 光圈加载 head 头像加载
 							})
 						end)
+						end
 					end
 				end
 			end
