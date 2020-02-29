@@ -8,7 +8,7 @@ end)
 
 function MeiRiQianDaoPopLayer:ctor(data)
 	self._data = data
-	dump(data)
+--	dump(data)
 	gameUser.setMeiRiQianDaoState(0)
 end
 

@@ -83,6 +83,12 @@ function ZhongZuShouWei:initUI( )
     self._bossSp = boss_sp
     self._bossEffect = boss_effect
 
+    local jisha = XTHDLabel:create("守卫已被击杀", 23, "res/fonts/def.ttf")
+    self:addChild(jisha)
+    jisha:setPosition(exp_progress_timer:getPositionX() + 100,self:getContentSize().height - 75)
+    jisha:setColor(cc.c3b(255,10,10))
+    self.jishaText = jisha
+
     --查看奖励
     local reward_btn = XTHDPushButton:createWithParams({
         normalFile        = "res/image/camp/shouwei/rewardBtn1.png", 
@@ -108,17 +114,36 @@ function ZhongZuShouWei:initUI( )
                 XTHDTOAST("不能攻打自己领地的守卫！")
                 return
             end
-            if self.data1.deadState and self.data1.deadState==0 then
-                cityID = self.__cityID
-                LayerManager.addShieldLayout()
-                local _layer = requires("src/fsgl/layer/ChuZhan/XuanZeYingXiongCopyLayer.lua"):create(BattleType.CAMP_SHOUWEI,cityID,{monsterid = self.data1.bossId,cityid = cityID},true)
-                fnMyPushScene(_layer)
-            else 
-                cityID = self.__cityID
-                self.mapLayer:updateEnemyCityDFDSUM(cityID,self.mapData)
-			    local page = requires("src/fsgl/layer/ZhongZu/EnemyCitySPLayer1.lua"):create(cityID,self.mapLayer.__currentHost,self.mapLayer)
-			    self.mapLayer:addChild(page,4)	
-            end
+            ZhongZuDatas.requestServerData({
+                target = self.mapLayer,
+                method = "campRivalCity?",
+                params = {cityId = self.__cityID},
+                success = function(data)       		
+                    if self.data1.deadState and self.data1.deadState==0 then
+                        cityID = self.__cityID
+                        LayerManager.addShieldLayout()
+                        local _layer = requires("src/fsgl/layer/ChuZhan/XuanZeYingXiongCopyLayer.lua"):create(BattleType.CAMP_SHOUWEI,cityID,{monsterid = self.data1.bossId,cityid = cityID},true)
+                        fnMyPushScene(_layer)
+                    else 
+                        cityID = self.__cityID
+                        self.mapLayer:updateEnemyCityDFDSUM(cityID,data)
+			            local page = requires("src/fsgl/layer/ZhongZu/EnemyCitySPLayer1.lua"):create(cityID,self.mapLayer.__currentHost,self.mapLayer)
+			            self.mapLayer:addChild(page,4)	
+                    end
+    	        end,
+    	        failure = function(data)
+    		        if data and data.result == 4801 then  ----城市已被占领
+				        ZhongZuDatas.requestServerData({
+					        target = self.mapLayer,
+				            method = "rivalCampCityList?",
+				            success = function( )
+				    	        self.mapLayer:updateCitysTips()
+				    	        self.mapLayer:refreshTopBars()
+				            end
+				        })
+    		        end 
+    	        end
+            })
         end
     })
     self.battle_btn=battle_btn
@@ -127,6 +152,12 @@ function ZhongZuShouWei:initUI( )
     self.battle_btn:setScale(1.3)
     battle_btn:setAnchorPoint(0.5,0)
     self:addChild(battle_btn)   
+
+    local tip = XTHDLabel:create("守卫已被击杀,请点击攻城攻入城内", 23, "res/fonts/def.ttf")
+    self:addChild(tip)
+    tip:setPosition(exp_progress_timer:getPositionX() + 120,battle_btn:getPositionY() - 15)
+    tip:setColor(cc.c3b(255,10,10))
+    self.tip = tip
 
     local textBg = cc.Sprite:create("res/image/camp/shouwei/textBg.png")
     self:addChild(textBg)
@@ -195,17 +226,25 @@ function ZhongZuShouWei:initUI( )
     attack:setString(self.data2.myHurt == 0 and "总伤害：暂无" or "总伤害："..self.data2.myHurt)
     self.attackText = attack
 
---	local help_btn = XTHDPushButton:createWithParams({
---		normalFile        = "res/image/camp/lifetree/wanfa_up.png",
---        selectedFile      = "res/image/camp/lifetree/wanfa_down.png",
---        musicFile = XTHD.resource.music.effect_btn_common,
---        endCallback       = function()
---            local StoredValue = requires("src/fsgl/layer/common/WanFaShuoMingLayer.lua"):create({type=32});
---            self:addChild(StoredValue)
---        end,
---	})
---	self:addChild(help_btn)
---	help_btn:setPosition(self:getContentSize().width / 2 -  help_btn:getContentSize().width + 50,self:getContentSize().height - help_btn:getContentSize().height / 2)
+    if self.data1.deadState == 1 then
+        self.tip:setVisible(true)
+        self.jishaText:setVisible(true)
+    else
+        self.tip:setVisible(false)
+        self.jishaText:setVisible(false)
+    end
+
+	local help_btn = XTHDPushButton:createWithParams({
+		normalFile        = "res/image/camp/lifetree/wanfa_up.png",
+        selectedFile      = "res/image/camp/lifetree/wanfa_down.png",
+        musicFile = XTHD.resource.music.effect_btn_common,
+        endCallback       = function()
+            local StoredValue = requires("src/fsgl/layer/common/WanFaShuoMingLayer.lua"):create({type=40});
+            self:addChild(StoredValue)
+        end,
+	})
+	self:addChild(help_btn)
+	help_btn:setPosition(self:getContentSize().width / 2 -  help_btn:getContentSize().width + 50,self:getContentSize().height - help_btn:getContentSize().height / 2)
 
     --伤害排行榜
     self:hurtRankView()
@@ -303,6 +342,13 @@ function ZhongZuShouWei:freshData()
     HttpRequestWithParams("campBossInfo",{cityId = self.__cityID,campId = campID}, function(data)
         local now_percent = string.format("%.4f", tonumber(data.curHp)/tonumber(data.maxHp)) *100
         self.exp_progress_timer:setPercentage(now_percent)
+        if data.deadState == 1 then
+            self.tip:setVisible(true)
+            self.jishaText:setVisible(true)
+        else
+            self.tip:setVisible(false)
+            self.jishaText:setVisible(false)
+        end
     end )
     HttpRequestWithParams("campBossHurtRank",{cityId = self.__cityID,campId = campID}, function(data)
         self.data2 = data

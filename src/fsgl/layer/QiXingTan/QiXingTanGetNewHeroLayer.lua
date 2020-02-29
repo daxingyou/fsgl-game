@@ -16,6 +16,13 @@ function QiXingTanGetNewHeroLayer:onCleanup(  )
         musicManager.stopEffect(self._heroSound)
         self._heroSound = nil
     end
+    if self._heroinfoList.rank == 4 then
+        local layer = requires("src/fsgl/layer/ConstraintPoplayer/HeroPeiYangPopLayer.lua"):create(1)
+        self:addChild(layer)
+    elseif self._heroinfoList.rank == 5 then
+        local layer = requires("src/fsgl/layer/ConstraintPoplayer/HeroPeiYangPopLayer.lua"):create(2)
+        self:addChild(layer)
+    end
 end
 
 function QiXingTanGetNewHeroLayer:ctor(hero_id,star,callback)

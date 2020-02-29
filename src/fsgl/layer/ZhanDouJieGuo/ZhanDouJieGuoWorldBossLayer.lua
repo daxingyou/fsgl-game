@@ -188,6 +188,29 @@ function ZhanDouJieGuoWorldBossLayer:initUI(params)
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_GUILDMAIN_LIST})
     elseif self.battleType == BattleType.CAMP_SHOUWEI then
         --刷新种族守卫界面的数据
+        --物品类型
+        local show = {}
+        if params.bagItems and #params.bagItems ~= 0 then
+            for i=1,#params.bagItems do
+                local item_data = params.bagItems[i]
+                local showCount = item_data.count
+                if item_data.count and tonumber(item_data.count) ~= 0 then
+                    --print("itemCount: "..DBTableItem.getCountByID(item_data.dbId))
+                    showCount = item_data.count - tonumber(DBTableItem.getCountByID(item_data.dbId))
+                    DBTableItem.updateCount(gameUser.getUserId(),item_data,item_data.dbId)
+                else
+                    DBTableItem.deleteData(gameUser.getUserId(),item_data.dbId)
+                end
+                --如果奖励类型
+                local idx = #show + 1
+                show[idx] = {}
+                show[idx].rewardtype = 4 -- item_data.item_type
+                show[idx].id = item_data.itemId
+                show[idx].num = showCount
+            end
+        end
+        --显示领取奖励成功界面
+        ShowRewardNode:create(show)
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_ZHONGZU_SHOUWEI})
     end
 end

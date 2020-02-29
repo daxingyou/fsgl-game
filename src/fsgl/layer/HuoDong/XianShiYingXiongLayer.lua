@@ -228,7 +228,7 @@ function XianShiYingXiongLayer:initLayer()
 end
 
 function XianShiYingXiongLayer:buyBtnCallback(_configId)
-	ClientHttp:httpCommon("recruitRequest?", self,{recruitType=1,sum=1,activityId=11}, function(data)   --exchangeLimitPet
+	ClientHttp:httpCommon("recruitRequest?", self,{recruitType=1,sum=10,activityId=11}, function(data)   --exchangeLimitPet
 		    -- print("限时英雄服务器返回的数据为：----------")
 		    -- print_r(data)
 			self.infoData.surplusCount = data.surplusCount or 0

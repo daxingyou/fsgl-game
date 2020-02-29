@@ -992,31 +992,32 @@ function ZhongZuMap:showBuildEffect(tag,isShow,targ,index)----显示在建筑上
 end
 
 function ZhongZuMap:requestEnemyCityData( cityIndex )
-    ZhongZuDatas.requestServerData({
-        target = self,
-        method = "campRivalCity?",
-        params = {cityId = cityIndex},
-        success = function(data)       		
-            HttpRequestWithParams("campBossInfo",{cityId = cityIndex,campId = gameUser.getCampID() == 1 and 2 or 1}, function(data1)
-                LayerManager.createModule("src/fsgl/layer/ZhongZu/ZhongZuShouWei.lua", { par = self ,serverData = data1,cityID = cityIndex,mapData = data})
+     HttpRequestWithParams("campBossInfo",{cityId = cityIndex,campId = gameUser.getCampID() == 1 and 2 or 1}, function(data1)
+        LayerManager.createModule("src/fsgl/layer/ZhongZu/ZhongZuShouWei.lua", { par = self ,serverData = data1,cityID = cityIndex})
 --               self:updateEnemyCityDFDSUM(cityIndex,data)
 --			    local page = requires("src/fsgl/layer/ZhongZu/EnemyCitySPLayer1.lua"):create(cityIndex,self.__currentHost,self)
 --			    self:addChild(page,4)	
-            end )	
-    	end,
-    	failure = function(data)
-    		if data and data.result == 4801 then  ----城市已被占领
-				ZhongZuDatas.requestServerData({
-					target = self,
-				    method = "rivalCampCityList?",
-				    success = function( )
-				    	self:updateCitysTips()
-				    	self:refreshTopBars()
-				    end
-				})
-    		end 
-    	end
-    })
+    end )	
+--    ZhongZuDatas.requestServerData({
+--        target = self,
+--        method = "campRivalCity?",
+--        params = {cityId = cityIndex},
+--        success = function(data)       		
+
+--    	end,
+--    	failure = function(data)
+--    		if data and data.result == 4801 then  ----城市已被占领
+--				ZhongZuDatas.requestServerData({
+--					target = self,
+--				    method = "rivalCampCityList?",
+--				    success = function( )
+--				    	self:updateCitysTips()
+--				    	self:refreshTopBars()
+--				    end
+--				})
+--    		end 
+--    	end
+--    })
 end
 
 function ZhongZuMap:requestEnemyCityList()
