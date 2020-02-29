@@ -83,12 +83,6 @@ function ZhongZuShouWei:initUI( )
     self._bossSp = boss_sp
     self._bossEffect = boss_effect
 
-    local jisha = XTHDLabel:create("守卫已被击杀", 23, "res/fonts/def.ttf")
-    self:addChild(jisha)
-    jisha:setPosition(exp_progress_timer:getPositionX() + 100,self:getContentSize().height - 75)
-    jisha:setColor(cc.c3b(255,10,10))
-    self.jishaText = jisha
-
     --查看奖励
     local reward_btn = XTHDPushButton:createWithParams({
         normalFile        = "res/image/camp/shouwei/rewardBtn1.png", 
@@ -128,7 +122,7 @@ function ZhongZuShouWei:initUI( )
                         cityID = self.__cityID
                         self.mapLayer:updateEnemyCityDFDSUM(cityID,data)
 			            local page = requires("src/fsgl/layer/ZhongZu/EnemyCitySPLayer1.lua"):create(cityID,self.mapLayer.__currentHost,self.mapLayer)
-			            self.mapLayer:addChild(page,4)	
+			            self:addChild(page,10)	
                     end
     	        end,
     	        failure = function(data)
@@ -153,9 +147,15 @@ function ZhongZuShouWei:initUI( )
     battle_btn:setAnchorPoint(0.5,0)
     self:addChild(battle_btn)   
 
+    local jisha = XTHDLabel:create("守卫已被击杀", 23, "res/fonts/def.ttf")
+    self:addChild(jisha)
+    jisha:setPosition(battle_btn:getPositionX(),self:getContentSize().height - 75)
+    jisha:setColor(cc.c3b(255,10,10))
+    self.jishaText = jisha
+
     local tip = XTHDLabel:create("守卫已被击杀,请点击攻城攻入城内", 23, "res/fonts/def.ttf")
     self:addChild(tip)
-    tip:setPosition(exp_progress_timer:getPositionX() + 120,battle_btn:getPositionY() - 15)
+    tip:setPosition(battle_btn:getPositionX(),battle_btn:getPositionY() - 15)
     tip:setColor(cc.c3b(255,10,10))
     self.tip = tip
 
@@ -340,6 +340,7 @@ function ZhongZuShouWei:freshData()
         campID = gameUser.getCampID() == 1 and 2 or 1
     end
     HttpRequestWithParams("campBossInfo",{cityId = self.__cityID,campId = campID}, function(data)
+        self.data1 = data
         local now_percent = string.format("%.4f", tonumber(data.curHp)/tonumber(data.maxHp)) *100
         self.exp_progress_timer:setPercentage(now_percent)
         if data.deadState == 1 then

@@ -744,6 +744,7 @@ function ZhongZuMap:handlBuildCicked( sender )
 	if self.__currentHost == 1 then 
 		data = ZhongZuDatas._serverSelfCity.citys
 	elseif self.__currentHost == 2 then 
+        self.__selectedCityIndex = i
 		if ZhongZuDatas:isCampWarStart() == true then 
 			data = ZhongZuDatas._serverEnemyCity.citys
 		else

@@ -64,7 +64,18 @@ function BangPaiHuoDong:init(  )
 			_itemBtn:setScale(1)
             self:switchActivity(i)        
         end)
+        if i == 4 then
+            self.xiulianBtn = _itemBtn
+        end
     end
+    YinDaoMarg:getInstance():addGuide({ ----点击帮派修炼
+        parent = self,
+        target = self.xiulianBtn,
+        index = 3,
+        needNext = false,
+        offset = cc.p(210,100),
+    },17)
+    YinDaoMarg:getInstance():doNextGuide() 
 end
 
 function BangPaiHuoDong:switchActivity( idx )
@@ -89,6 +100,7 @@ function BangPaiHuoDong:switchActivity( idx )
                 LayerManager.addLayout(_newLayer,{noHide = true})
             end,{})
     else
+        YinDaoMarg:getInstance():guideTouchEnd()
         XTHD.createBibleLayer(cc.Director:getInstance():getRunningScene())
     end
 end

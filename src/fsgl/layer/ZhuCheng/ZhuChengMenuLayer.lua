@@ -1212,12 +1212,13 @@ function ZhuChengMenuLayer:initBottomMenu()
             -- menuBtn:setPosition(cc.p(self:getContentSize().width-340,10))
         elseif i == 6 then
             -- 修炼
-            self:PushBtnTorightfloorNode(menuBtn)
+--            self:PushBtnTorightfloorNode(menuBtn)
             local redDot = XTHDImage:create("res/image/common/heroList_redPoint.png")
             menuBtn:addChild(redDot)
             redDot:setPosition(menuBtn:getContentSize().width - redDot:getContentSize().width, menuBtn:getContentSize().height - 15)
             redDot:setVisible(false)
             self._baodianRedDot = redDot
+            menuBtn:setVisible(false)
             self.__functionButtons[17] = menuBtn
             -- xiulian
             -- menuBtn:setPosition(cc.p(self:getContentSize().width-360,10))
@@ -1733,6 +1734,7 @@ function ZhuChengMenuLayer:adjustBottomBtns()
             end
         end
     end
+    self.__functionButtons[17]:setVisible(false)
 end
 
 --------------------------------------与主城对接方法--------------------------------------
@@ -2980,7 +2982,7 @@ function ZhuChengMenuLayer:addGuide()
     --- 任务
     local _equip = self.__functionButtons[13]
     --- 装备
-    local _baodian = self.__functionButtons[17]
+--    local _baodian = self.__functionButtons[17]
     --- 宝典
     YinDaoMarg:getInstance():addGuide( {
         -----引导去英雄
@@ -3025,8 +3027,8 @@ function ZhuChengMenuLayer:addGuide()
     } )
     YinDaoMarg:getInstance():addGuide( {
         parent = self,
-        target = _baodian,
-        -----宝典
+        target = _family,
+        -----修炼
         index = 2,
         needNext = false,
     } , 17)

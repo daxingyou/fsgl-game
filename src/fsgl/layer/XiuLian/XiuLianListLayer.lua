@@ -610,14 +610,14 @@ end
 
 function XiuLianListLayer:addGuide( )
     local _guideGroup,_guideIndex = YinDaoMarg:getInstance():getGuideSteps()
-    if _guideGroup == 17 and _guideIndex == 3 then 
-        YinDaoMarg:getInstance():addGuide({index = 3,parent = self},17) ----剧情
+    if _guideGroup == 17 and _guideIndex == 4 then 
+        YinDaoMarg:getInstance():addGuide({index = 4,parent = self},17) ----剧情
         local _target = self:initGuide(1)
         if _target then 
             YinDaoMarg:getInstance():addGuide({
                 parent = self,
                 target = _target,-----点击生命宝典
-                index = 4,
+                index = 5,
                 needNext = false,
             },17)
         end 

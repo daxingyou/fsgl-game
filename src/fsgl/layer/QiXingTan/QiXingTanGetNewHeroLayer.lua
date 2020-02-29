@@ -18,10 +18,10 @@ function QiXingTanGetNewHeroLayer:onCleanup(  )
     end
     if self._heroinfoList.rank == 4 then
         local layer = requires("src/fsgl/layer/ConstraintPoplayer/HeroPeiYangPopLayer.lua"):create(1)
-        self:addChild(layer)
+        cc.Director:getInstance():getRunningScene():addChild(layer,5)
     elseif self._heroinfoList.rank == 5 then
         local layer = requires("src/fsgl/layer/ConstraintPoplayer/HeroPeiYangPopLayer.lua"):create(2)
-        self:addChild(layer)
+        cc.Director:getInstance():getRunningScene():addChild(layer,6)
     end
 end
 

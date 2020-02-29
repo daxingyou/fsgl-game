@@ -206,7 +206,7 @@ function ZhanDouJieGuoWorldBossLayer:initUI(params)
                 show[idx] = {}
                 show[idx].rewardtype = 4 -- item_data.item_type
                 show[idx].id = item_data.itemId
-                show[idx].num = showCount
+                show[idx].num = 1
             end
         end
         --显示领取奖励成功界面

@@ -1118,8 +1118,8 @@ function BangPaiMain:createForLayerManager( sParams )
 end
 
 function BangPaiMain:onEnter( )
-    YinDaoMarg:getInstance():addGuide({parent = self,index = 3},8)----剧情
-    YinDaoMarg:getInstance():doNextGuide() 
+--    YinDaoMarg:getInstance():addGuide({parent = self,index = 3},8)----剧情
+--    YinDaoMarg:getInstance():doNextGuide() 
 end
 function BangPaiMain:RedPoint()
     --判断加不加红点
