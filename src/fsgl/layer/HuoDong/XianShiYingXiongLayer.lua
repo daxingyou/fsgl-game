@@ -53,7 +53,7 @@ function XianShiYingXiongLayer:initLayer()
     	end)
 
     local _titlePosY = _popNode:getContentSize().height - 90
-    local _titleSp = cc.Sprite:create("res/image/activities/TimelimitActivity/heroname.png")
+    local _titleSp = cc.Sprite:create("res/image/activities/TimelimitActivity/heroname"..self.infoData.petId..".png")
 	_titleSp:setAnchorPoint(cc.p(0.5,0.5))
     _titleSp:setPosition(cc.p(_popNode:getContentSize().width/2,_titlePosY))
     _popNode:addChild(_titleSp)
@@ -229,8 +229,8 @@ end
 
 function XianShiYingXiongLayer:buyBtnCallback(_configId)
 	ClientHttp:httpCommon("recruitRequest?", self,{recruitType=1,sum=10,activityId=11}, function(data)   --exchangeLimitPet
-		     print("限时英雄服务器返回的数据为：----------")
-		     print_r(data)
+		    print("限时英雄服务器返回的数据为：----------")
+		    print_r(data)
 			self.infoData.surplusCount = data.surplusCount or 0
 			self:setCurrentCostResource()
 			if data.bagItems and #data.bagItems ~= 0 then
@@ -251,6 +251,7 @@ function XianShiYingXiongLayer:buyBtnCallback(_configId)
 --			gameData.saveDataToDB({[1] =data["resultList"][1]},1)
 			self:refreshLastNumTitle()
 			self:refreshResourceValue()
+            self.resourceValue:setString(XTHD.resource.getItemNum(2310)) 
 --			local layer = requires("src/fsgl/layer/QiXingTan/QiXingTanGetNewHeroLayer.lua"):create({
 --        		par = cc.Director:getInstance():getRunningScene(),
 --	            id = data["resultList"][1].petId,

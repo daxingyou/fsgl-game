@@ -201,7 +201,7 @@ function LiaoTianRoomLayer:init()
     -- local _type = {20,16,32,8}  ------公告(综合)/世界、种族、帮派
     local _type = { 20, 16, 32, 8, 40, 0 } --0是引导调试用
     ------世界、种族、帮派、队伍
-    for i = 1, #_type do
+    for i = 1, #_type - 1 do
         local _normal = cc.Sprite:create("res/image/chatroom/chatroom_channel" .. i .. "_1.png")
         local _selected = cc.Sprite:create("res/image/chatroom/chatroom_channel" .. i .. "_2.png")
 

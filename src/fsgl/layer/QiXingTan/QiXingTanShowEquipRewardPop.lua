@@ -433,7 +433,7 @@ function QiXingTanShowEquipRewardPop:doHttpRequest( do_times )
     --recruitType = 1 表示英雄， recruitType = 2 表示道具
      ClientHttp:requestAsyncInGameWithParams({
         modules = "recruitRequest?",
-        params = {recruitType=2,sum=do_times,activityId=0},
+        params = {recruitType=2,sum=do_times},
         successCallback = function(data)
 
         if not data or next(data) == nil then
