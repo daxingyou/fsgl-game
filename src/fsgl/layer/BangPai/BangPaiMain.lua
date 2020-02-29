@@ -307,7 +307,10 @@ function BangPaiMain:createZhuYeUI()
 		self:addChild(layer,2)
 		layer:show()
 	end)
-	local pLay = requires("src/fsgl/layer/BangPai/BangPaiHuoDong.lua"):create()
+	
+	local bangpaihuodong = requires("src/fsgl/layer/BangPai/BangPaiHuoDong.lua")
+	local pos = cc.p(self._rightbg:getContentSize().width *0.5,220 *0.5)
+	local pLay = bangpaihuodong:create(self,pos)
     self._rightbg:addChild(pLay)
 	pLay:setPosition(self._rightbg:getContentSize().width *0.5,pLay:getContentSize().height *0.5)
 end
