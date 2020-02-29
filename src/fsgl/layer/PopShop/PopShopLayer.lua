@@ -300,6 +300,12 @@ function PopShopLayer:createNeednum(cellbg,data,index)
 		lable:setAnchorPoint(0.5,0.5)
 		lable:setColor(cc.c3b(64,46,7))
 		lable:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height *0.25 - 2)
+	elseif self._key == "shura" then
+		local lable = XTHDLabel:create("限购次数："..self._severData[index].count.."次",15)
+		cellbg:addChild(lable)
+		lable:setAnchorPoint(0.5,0.5)
+		lable:setColor(cc.c3b(64,46,7))
+		lable:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height *0.25 - 2)
 	end
 end
 
@@ -429,7 +435,7 @@ function PopShopLayer:createShopData()
 	elseif self._key == "shura" then	--修罗商店
 		self._shopdata = gameData.getDataFromCSV("SingleRaceStore")
 		self._titleFile = "res/image/PopShop/xiuluo_title.png"
-		self._storeExRequest = "buyMallItem?"
+		self._storeExRequest = "asuraSwap?"
 		self._iconFile = IMAGE_KEY_HEADER_BLOOD
 	elseif self._key == "guild" then	--帮派商店
 		self._shopdata = gameData.getDataFromCSV("SectStore")

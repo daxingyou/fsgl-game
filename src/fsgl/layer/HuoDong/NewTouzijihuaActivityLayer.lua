@@ -357,7 +357,7 @@ function NewTouzijihuaActivityLayer:InvestPlanBuy()
 		rightCallback = rightfunc,
 		msg = ("确认购买此投资计划吗？")
     } );
-    self:addChild(_confirmLayer, 1)
+    cc.Director:getInstance():getRunningScene():addChild(_confirmLayer, 1)
 end
 
 function NewTouzijihuaActivityLayer:ChangeTableView()

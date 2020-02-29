@@ -1002,7 +1002,7 @@ function ZhuChengMenuLayer:initLeftMenu()
             redDot:setVisible(false)
             self.xxsjRedDot = redDot
             self.__functionButtons[31] = menuBtn
-            self.__functionButtons[31]:setVisible(gameUser.getLevel() >= 40)
+            self.__functionButtons[31]:setVisible(true)
         elseif i == 5 then
             -- 资源找回按钮位置
             self:PushBtnToLeftNode(menuBtn)
@@ -1976,7 +1976,7 @@ function ZhuChengMenuLayer:refreshBaseInfo()
 
     if self.__functionButtons[31] then
         -- 修仙圣境
-        self.__functionButtons[31]:setVisible(gameUser.getLevel() >= 40)
+        --self.__functionButtons[31]:setVisible(gameUser.getLevel() >= 40)
     end
 
     if self.__functionButtons[66] then

@@ -15,14 +15,14 @@ local LiLianStageChapterLayer = class("LiLianStageChapterLayer", function()
 end )
 
 local Linepos = {
-					{"242,256","226,267","210,280","198,295","189,314","186,334"},
-					{"336,153","317,162","300,175","288,190","276,208"},
-					{"458,220","440,205","423,194","405,185"},
-					{"507,360","500,341","495,321","489,302","484,282"},
-					{"640,309","622,324","605,337","593,351","577,364"},
-					{"720.172","710,189","701,207","694,227","684,245","676,263"},
-					{"872,194","853,185","834,175","817,165","799,154","778,153"},
-					{"881,383","866,370","861,350","869,331","880,317","883,299","886,279","884,258","880,239","879,214"},
+					{"171,332","174,312","182,293","193,278","207,265","221,255"},
+					{"255,206","266,188","277,174","293,160","311,152"},
+					{"375,184","392,192","408,204","425,219"},
+					{"450,280","455,297","458,309","460,324","464,340","469,356"},
+					{"536,362","551,349","562,335","578,322","595,307"},
+					{"629,262","636,243","646,226","652,205","661,188","671,172"},
+					{"704,152","724,152","744,153","760,163","777,173","794,183"},
+					{"810,205","815,220","820,242","829,258","833,279","828,298","819,313","809,330","802,348","806,368","821,381"},
 				}
 
 
@@ -1036,6 +1036,7 @@ function LiLianStageChapterLayer:loadCellById(sBgSprite, sID)
                 end
 
                 local _tmp_pos = string.split(var["pos"] or "", '#')
+				print("========Scale=====",bsize.width/1024,bsize.height/615)
                 local pos = cc.p((_tmp_pos[1] or 150)*bsize.width/1024, (_tmp_pos[2] or 150)*bsize.height/615)
                 stage_icon:setPosition(pos)
 
@@ -1048,7 +1049,7 @@ function LiLianStageChapterLayer:loadCellById(sBgSprite, sID)
                     last_stage_idx = index
                 else
                     if last_stage_idx < index then
-                        local _pos_list = self:getPosListBetweenToPos(last_stage_idx)
+                        local _pos_list = self:getPosListBetweenToPos(last_stage_idx,bsize)
                         local imgPth = "res/image/plugin/stageChapter/page_dot_selected.png"
                         if var.instancingid > _my_instancing then
                             imgPth = "res/image/plugin/stageChapter/page_dot_normal.png"
@@ -1306,17 +1307,21 @@ function LiLianStageChapterLayer:getBgImgFile(index, sType)
 end
 
 -- 根据一条贝塞尔曲线，获取线上的若干点
-function LiLianStageChapterLayer:getPosListBetweenToPos(index)
+function LiLianStageChapterLayer:getPosListBetweenToPos(index,size)
     --    local _pos_list = { }
 --    local distance_ = getDistance(pos1, pos2)
 --    local _pos_count = math.floor(distance_ / 30)
 --    for i = 1, _pos_count - 1 do
 --        _pos_list[#_pos_list + 1] = cc.p(pos1.x +((pos2.x + (i -1)*10) - pos1.x) / _pos_count * i  + (i - 1) - 30, pos1.y +(pos2.y - pos1.y) / _pos_count * i)
 --    end
+	local _scaleX = size.width /1024
+	local _scaleY = size.height /615
 	local _pos_list = { }
 	for i = 1,#Linepos[index] do
 		local data = string.split(Linepos[index][i],",")
-		_pos_list[#_pos_list + 1] = cc.p(data[1],data[2])
+		local x = tonumber(data[1]*_scaleX)
+		local y = tonumber(data[2]*_scaleY)
+		_pos_list[#_pos_list + 1] = cc.p(x,y)
 	end
     return _pos_list
 end

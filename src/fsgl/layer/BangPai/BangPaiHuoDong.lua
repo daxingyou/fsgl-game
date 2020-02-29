@@ -89,7 +89,7 @@ function BangPaiHuoDong:switchActivity( idx )
                 LayerManager.addLayout(_newLayer,{noHide = true})
             end,{})
     else
-        XTHDTOAST(LANGUAGE_TIPS_WORDS11)
+        XTHD.createBibleLayer(cc.Director:getInstance():getRunningScene())
     end
 end
 
