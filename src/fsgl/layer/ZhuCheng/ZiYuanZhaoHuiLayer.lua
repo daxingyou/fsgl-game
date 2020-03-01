@@ -417,9 +417,9 @@ function ZiYuanZhaoHuiLayer:createVeiwCell(data)
 			count = itemData.rewardSum,
 		})
 		
-		item:setScale(0.6)
+		item:setScale(0.5)
 		if not _tabView then
-			item:setPosition((i - 1) * 65 + 40, 37)
+			item:setPosition((i - 1) * 55 + 40, 37)
 			cellBg:addChild(item)
 		else
 			local itemSize = cc.size(60, 60)
@@ -449,6 +449,7 @@ function ZiYuanZhaoHuiLayer:createVeiwCell(data)
 	        self:addChild(confirmLayer)
 		end
 	})
+	yinliangBtn:setScale(0.8)
 	yinliangBtn:setAnchorPoint(cc.p(1, 0.5))
 	yinliangBtn:setPosition(cellBg:getContentSize().width - 10, cellBg:getContentSize().height * 0.7)
 	cellBg:addChild(yinliangBtn)
@@ -474,6 +475,7 @@ function ZiYuanZhaoHuiLayer:createVeiwCell(data)
 	        self:addChild(confirmLayer)
 		end
 	})
+	yuanbaoBtn:setScale(0.8)
 	yuanbaoBtn:setAnchorPoint(cc.p(1, 0.5))
 	yuanbaoBtn:setPosition(cellBg:getContentSize().width - 10, cellBg:getContentSize().height * 0.3)
 	cellBg:addChild(yuanbaoBtn)

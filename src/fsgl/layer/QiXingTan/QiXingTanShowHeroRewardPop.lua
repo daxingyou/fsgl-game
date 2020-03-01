@@ -756,7 +756,7 @@ function QiXingTanShowHeroRewardPop:loadDataForHero( param )
         end
         local label = XTHDLabel:createWithParams({
             text = name,
-            fontSize = 18,
+            fontSize = 15,
             color = XTHD.resource.getQualityItemColor( quality )
         })
 		label["quality"] = quality

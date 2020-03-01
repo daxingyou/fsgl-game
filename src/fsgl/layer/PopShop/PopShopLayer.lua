@@ -15,6 +15,10 @@ function PopShopLayer:ctor(key)
 	
 end
 
+function PopShopLayer:onExit()
+	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TASKLIST})
+end
+
 function PopShopLayer:init()
 	local bg = cc.Sprite:create("res/image/PopShop/bg.png")
 	self:addContent(bg)

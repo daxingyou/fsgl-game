@@ -58,6 +58,19 @@ function YingXiongSkillUp:onEnter(  )
 end
 
 function YingXiongSkillUp:init(heroData)
+	local help_btn = XTHDPushButton:createWithParams({
+		normalFile        = "res/image/camp/lifetree/wanfa_up.png",
+        selectedFile      = "res/image/camp/lifetree/wanfa_down.png",
+        musicFile = XTHD.resource.music.effect_btn_common,
+        endCallback       = function()
+            local StoredValue = requires("src/fsgl/layer/common/WanFaShuoMingLayer.lua"):create({type=42});
+            cc.Director:getInstance():getRunningScene():addChild(StoredValue)
+        end,
+	})
+	help_btn:setScale(0.5)
+	self:addChild(help_btn)
+	help_btn:setPosition(self:getContentSize().width - help_btn:getBoundingBox().width *0.5 - 5,self:getContentSize().height - help_btn:getBoundingBox().height*0.5 - 5)
+
 	--接收监听
 	self:getEventCustom()
 

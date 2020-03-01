@@ -110,10 +110,10 @@ function RiChangRenWuLayer:initUI()
         [11] = {name = "duorenfuben",callFunc = function () ----多人副本
             requires("src/fsgl/layer/DuoRenFuBen/DuoRenFuBenLayer.lua"):create()
         end,id = 80},
-		[12] = {name = "shipu",callFunc = function ()
-            XTHD.createServantsChapter(self)
-        end,id = 88},
-		[13] = {name = "challenge",callFunc = function ()
+--		[12] = {name = "shipu",callFunc = function ()
+--            XTHD.createServantsChapter(self)
+--        end,id = 88},
+		[12] = {name = "challenge",callFunc = function ()
             XTHD.createChallengeChapter(self)
         end,id = 87},
 	}

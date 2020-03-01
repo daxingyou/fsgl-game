@@ -352,7 +352,7 @@ function SheZhiLayer:initPlayerLeft()
             size = 19,
             color = cc.c3b(40,18,10),
             anchor = cc.p(0,0.5),
-            pos = cc.p(i%2 == 0 and 250 or 15, initPosY - (math.floor((i - 1)/2))*35),
+            pos = cc.p(i%2 == 0 and 270 or 15, initPosY - (math.floor((i - 1)/2))*35),
         })
         local infoTip2 = XTHDLabel:createWithParams({
            text = infoTable[i].value,
@@ -368,9 +368,9 @@ function SheZhiLayer:initPlayerLeft()
 		if i == 1 then
 			local mySex = cc.Sprite:create("res/image/PlayerName/sex_"..gameUser.getSex()..".png")
 			heroInfoBg:addChild(mySex)
-			mySex:setScale(0.8)
+			mySex:setScale(0.7)
 			mySex:setAnchorPoint(0,0.5)
-			mySex:setPosition(infoTip2:getPositionX() + infoTip2:getContentSize().width + 5,infoTip2:getPositionY())
+			mySex:setPosition(infoTip2:getPositionX() + infoTip2:getContentSize().width,infoTip2:getPositionY())
 		end
 
         if i == 1 then
@@ -470,7 +470,7 @@ function SheZhiLayer:initPlayerLeft()
     })
     changName:setAnchorPoint(1,0.5)
     changName:setTouchSize(cc.size(50,50))
-    changName:setPosition(heroInfoBg:getContentSize().width -250, initPosY)
+    changName:setPosition(heroInfoBg:getContentSize().width - 230, initPosY)
     heroInfoBg:addChild(changName)
 
    self:initSetting()

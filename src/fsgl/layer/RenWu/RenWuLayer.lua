@@ -325,7 +325,7 @@ function RenWuLayer:initTopTask()
 		})
 		btnbg:addChild(btn)
 		btn:setPosition(btnbg:getContentSize().width *0.5,btnbg:getContentSize().height *0.5)
-		btn:setEnable(false)
+		--btn:setEnable(false)
 		self._HuoyueNode.btnList[#self._HuoyueNode.btnList + 1] = btn
 
 		local huoyueLable = XTHDLabel:create(_data[2].."活跃",16)
@@ -719,7 +719,7 @@ function RenWuLayer:createIcons( data )
 	icons:setContentSize( 300, 100 )
 	-- icons数据，ShowResult弹窗使用
 	local iconData = {}
-	if data.taskType < 4 then
+	if  data.taskType < 4 then
 		for i = 1, 5 do
 	        if data["reward"..i.."type"] then
 	            local count = data["reward"..i.."param"]
@@ -737,7 +737,7 @@ function RenWuLayer:createIcons( data )
 	            })
 	            rewardIcon:setScale(0.4)
 	            rewardIcon:setAnchorPoint(0.5, 0.5 )
-	            rewardIcon:setPosition( 50 *i, icons:getContentSize().height *0.5 + 10)
+	            rewardIcon:setPosition( 50 *i + 5, icons:getContentSize().height *0.5 + 10)
 	            icons:addChild( rewardIcon )
 	            if data["reward"..i.."type"] == 4 then
 	            	iconData[#iconData + 1] = {
@@ -832,6 +832,7 @@ function RenWuLayer:buildData()
 	local renwuList = gameData.getDataFromCSV( "RenwuList")
 	for k,v in pairs(renwuList) do
 		if v["type"] == 3 and  v.needtype == 12 then
+			v.taskType = 1
 			self._huoyueRenwu[#self._huoyueRenwu + 1] = v
 		end
 	end
@@ -940,7 +941,7 @@ function RenWuLayer:refreshTopTask()
 		self._topRewardIcon:setVisible( false )
 		self._topRewardIcon:setEnable( false )
 		if  self._selectIndex ~= 1 then
-			self._topFinishAllTasks:setVisible( true )
+			self._topFinishAllTasks:setVisible( false )
 			self._loadingbarBg:setVisible( false )
 			self._loadingbar:setVisible( false )
 		else
@@ -948,15 +949,16 @@ function RenWuLayer:refreshTopTask()
 			self._loadingbar:setVisible( true )
 		end
 	else
-		self._loadingbarBg:setVisible( true )
 		if  self._selectIndex ~= 1 then
-			self._loadingbar:setVisible( true )
-			self._topTaskTip:setVisible( true )
-			self._loadingbarNum:setVisible( true )
-			self._topRewardIcon:setVisible( true )
-			self._topRewardIcon:setEnable( true )
+			self._loadingbarBg:setVisible( false )
+			self._loadingbar:setVisible( false )
+			self._topTaskTip:setVisible( false )
+			self._loadingbarNum:setVisible( false )
+			self._topRewardIcon:setVisible( false )
+			self._topRewardIcon:setEnable( false )
 			self._topFinishAllTasks:setVisible( false )
 		else
+			self._loadingbarBg:setVisible( true )
 			self._topTaskTip:setVisible( false )
 			self._loadingbarNum:setVisible( false )
 			self._topRewardIcon:setVisible( false )
@@ -971,6 +973,7 @@ function RenWuLayer:refreshTopTask()
 				self._loadingbar:setPercentage( ( data.curNum/data.maxNum )*100 )
 				self._iconSpine:setAnimation( 0, "idle", true )
 	    		self._topRewardIcon:setTouchEndedCallback(function()
+					dump(data)
 	    			local icons, iconData = self:createIcons( data )
 	    			-- 预览弹窗
 	   				local popLayer = XTHD.createPopLayer({opacityValue = 1})
@@ -996,13 +999,41 @@ function RenWuLayer:refreshTopTask()
 	    		end)
 			else
 				self._loadingbar:setPercentage(data.curNum)
---				for i = 1,#self._HuoyueNode.btnList do
---					if self._huoyueRenwu[i].taskid >= self._tabTopTaskData[self._selectIndex][1].taskid then
---						self._HuoyueNode.btnList[i]:setTouchEndedCallback(function()
---							XTHDTOAST("未满足领取条件")
---						end)
---					end
---				end
+				for i = 1, #self._HuoyueNode.btnList do
+					local btn = self._HuoyueNode.btnList[i]
+					local _data = self._huoyueRenwu[i]
+					btn:setTouchEndedCallback(function()
+						for j = 1,#self._HuoyueNode.btnList do
+							local _btn = self._HuoyueNode.btnList[j]
+							if _btn:getChildByName("popLayer") then
+								_btn:getChildByName("popLayer"):hide()
+							end
+						end
+						local icons, iconData = self:createIcons( _data )
+	    				-- 预览弹窗
+	   					local popLayer = XTHD.createPopLayer({opacityValue = 1})
+   						popLayer._containerLayer:setContentSize( #iconData*80 + 20, 130 )
+   						popLayer._containerLayer:setAnchorPoint( cc.p( 0.5, 1 ) )
+   						popLayer._containerLayer:setPosition( self._topRewardIcon:getContentSize().width*0.5, 0 )
+   						btn:addChild( popLayer )
+						popLayer:setName("popLayer")
+   						popLayer:show()
+   						-- 预览背景
+   						local previewPop = ccui.Scale9Sprite:create( "res/image/common/scale9_bg2_25.png" )
+	    				previewPop:setAnchorPoint( cc.p( 0, 1 ) )
+	    				previewPop:setPosition( 0, 110 )
+	    				previewPop:setContentSize( #iconData*50, 100 )
+	    				popLayer:addContent( previewPop )
+	    				-- 预览标题
+   						local previewTitle = XTHD.createSprite( "res/image/plugin/tasklayer/rewardtext.png" )
+	    				previewTitle:setAnchorPoint( cc.p( 0.5, 1 ) )
+	    				previewTitle:setPosition( previewPop:getContentSize().width*0.5, previewPop:getContentSize().height - 5 )
+	    				previewPop:addChild( previewTitle )
+	    				icons:setAnchorPoint( cc.p( 0, 0 ) )
+						icons:setPosition( -30, -10 )
+	    				previewPop:addChild( icons ) 
+					end)
+				end
 			end
 		else
 			if self._selectIndex ~= 1 then
