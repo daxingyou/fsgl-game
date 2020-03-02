@@ -542,7 +542,7 @@ function LiaoTianRoomLayer:createVeiwCell(data)
         ----头像
         local icon = nil
         local background = nil
-        if data.chatType == LiaoTianDatas.__chatType.TYPE_ANNOUNCEMENT or data.chatType == LiaoTianDatas.__chatType.TYPE_FIGHTREPORT then
+        if data.chatType == LiaoTianDatas.__chatType.TYPE_ANNOUNCEMENT then
             ----公告/战报
             icon = cc.Sprite:create("res/image/chatroom/chat_system_repbox.png")
             icon:setScale(0.7)
@@ -591,7 +591,7 @@ function LiaoTianRoomLayer:createVeiwCell(data)
             x = 18
         end
         ----
-        if data.chatType == LiaoTianDatas.__chatType.TYPE_ANNOUNCEMENT or data.chatType == LiaoTianDatas.__chatType.TYPE_FIGHTREPORT then
+        if data.chatType == LiaoTianDatas.__chatType.TYPE_ANNOUNCEMENT then
             ----公告/战报
             ----
             local _icon = cc.Sprite:create("res/image/chatroom/chat_announce_icon.png")

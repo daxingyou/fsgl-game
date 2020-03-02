@@ -279,10 +279,10 @@ function YingXiongAdvanceNode:isUnLockSkill(advanceId) --进阶到改阶是否�
 	if advanceId == 1 then
 	    local skillId = _skillTable["skillid1"] and _skillTable["skillid1"] or 0
 	    return skillId
-	elseif advanceId == 4 then
+	elseif advanceId == 5 then
 	    local skillId = _skillTable["skillid2"] and _skillTable["skillid2"] or 0
 	    return skillId
-	elseif advanceId == 8 then
+	elseif advanceId == 9 then
 	    local skillId = _skillTable["skillid3"] and _skillTable["skillid3"] or 0
 	    return skillId
 	else
