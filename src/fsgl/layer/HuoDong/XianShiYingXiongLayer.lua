@@ -276,7 +276,7 @@ function XianShiYingXiongLayer:getHeroReward(_type, data )
     end
     local function _goShowReward()
 		if _type == 1 then
-			local showReward = requires("src/fsgl/layer/QiXingTan/QiXingTanShowHeroRewardPop.lua"):create(_data)
+			local showReward = requires("src/fsgl/layer/QiXingTan/QiXingTanShowHeroRewardPop.lua"):create(_data,2)
 			LayerManager.pushModule(showReward)
 		else
 			local showReward = requires("src/fsgl/layer/QiXingTan/QiXingTanShowEquipRewardPop.lua"):create(data)

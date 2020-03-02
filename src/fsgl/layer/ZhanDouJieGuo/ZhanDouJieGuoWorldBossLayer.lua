@@ -202,15 +202,15 @@ function ZhanDouJieGuoWorldBossLayer:initUI(params)
                     DBTableItem.deleteData(gameUser.getUserId(),item_data.dbId)
                 end
                 --如果奖励类型
-                local idx = #show + 1
-                show[idx] = {}
-                show[idx].rewardtype = 4 -- item_data.item_type
-                show[idx].id = item_data.itemId
-                show[idx].num = 1
+--                local idx = #show + 1
+--                show[idx] = {}
+--                show[idx].rewardtype = 4 -- item_data.item_type
+--                show[idx].id = item_data.itemId
+--                show[idx].num = 1
             end
         end
         --显示领取奖励成功界面
-        ShowRewardNode:create(show)
+--        ShowRewardNode:create(show)
         XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_ZHONGZU_SHOUWEI})
     end
 end
@@ -280,7 +280,15 @@ function ZhanDouJieGuoWorldBossLayer:itemData(params)
     if params and params.bagItems then
         for i=1,#params.bagItems do
            DBTableItem.updateCount(gameUser.getUserId(),params.bagItems[i], params.bagItems[i]["dbId"])
+            if self.battleType == BattleType.CAMP_SHOUWEI then
+                fall_items[#fall_items + 1] = {
+				    ["_type_"] = 4,
+            	    ["count"] = 1,
+            	    ["itemId"] = params.bagItems[i].itemId, 
+                }
+            end
         end
+        
 	end
 	if self.battleType == BattleType.PVP_CUTGOODS  then
     	self._battle_data.allPets = self._battle_data.allPets or {}

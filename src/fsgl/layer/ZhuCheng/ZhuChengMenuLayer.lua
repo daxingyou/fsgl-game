@@ -884,7 +884,7 @@ function ZhuChengMenuLayer:initNumberBar()
                 self._boxTips = nil
             end
         end )
-        _barkBG:setPosition(x + _barkBG:getBoundingBox().width / 2, self:getContentSize().height - _barkBG:getBoundingBox().height / 2 - 10)
+        _barkBG:setPosition(x + _barkBG:getBoundingBox().width / 3 + 5, self:getContentSize().height - _barkBG:getBoundingBox().height / 2 - 10)
         self:addChild(_barkBG)
 
         local physical_icon = cc.Sprite:create(_iconSRC[i])

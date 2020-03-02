@@ -153,7 +153,7 @@ function ZhongZuShouWei:initUI( )
     jisha:setColor(cc.c3b(255,10,10))
     self.jishaText = jisha
 
-    local tip = XTHDLabel:create("守卫已被击杀,请点击攻城攻入城内", 23, "res/fonts/def.ttf")
+    local tip = XTHDLabel:create("请点击攻城攻入城内", 23, "res/fonts/def.ttf")
     self:addChild(tip)
     tip:setPosition(battle_btn:getPositionX(),battle_btn:getPositionY() - 15)
     tip:setColor(cc.c3b(255,10,10))

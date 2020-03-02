@@ -6,8 +6,9 @@ local QiXingTanShowHeroRewardPop = class("QiXingTanShowHeroRewardPop",function (
     return XTHDDialog:create()
 end)
 
-function QiXingTanShowHeroRewardPop:ctor(param)
+function QiXingTanShowHeroRewardPop:ctor(param,_type)
 
+    self._type = _type or 1
     self._param = {} 
     self._effect_tab = {}  --存放特效，为了提高播放动画的效率，提前加载动画
     self._item_name = {}   --通过查表获取装备名字
@@ -343,6 +344,11 @@ function QiXingTanShowHeroRewardPop:doActionForTenSecond( ... )
 
     try_again:runAction(cc.Sequence:create( cc.DelayTime:create(0.5),cc.FadeIn:create(0.5) ))
     be_ok:runAction(cc.Sequence:create( cc.DelayTime:create(0.5),cc.FadeIn:create(0.5) ))
+
+    if self._type == 2 then
+        try_again:setVisible(false)
+        be_ok:setPosition(self._img_bg:getContentSize().width/2,try_again:getPositionY())
+    end
 end
 
 --抽取十次后，点击确定，处理数据及播放动画
