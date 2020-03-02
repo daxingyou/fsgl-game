@@ -205,19 +205,19 @@ function HuoDongLayer:getOpenActivity(tab)
             pictureid = 5,
             redPointid = 1,
         },
-        --累计登录
-        [5] = {
-            url = "loginRecord?",
-            file = "LeiJiDengLuLayer.lua",
-            title = LANGUAGE_KEY_ACTIVITYTAB[6],
-            priority = 3000,
-            isOpen = 1,
-            isOpenid = 0,
-            pictureid = 6,
-            redPointid = 2,
-        },
+--        --累计登录
+--        [5] = {
+--            url = "loginRecord?",
+--            file = "LeiJiDengLuLayer.lua",
+--            title = LANGUAGE_KEY_ACTIVITYTAB[6],
+--            priority = 3000,
+--            isOpen = 1,
+--            isOpenid = 0,
+--            pictureid = 6,
+--            redPointid = 2,
+--        },
         --在线奖励
-        [6] = {
+        [5] = {
             url = "timeRewardRecord?",
             file = "ZaiXianJiangLiLayer.lua",
             title = LANGUAGE_KEY_ACTIVITYTAB[7],
@@ -228,7 +228,7 @@ function HuoDongLayer:getOpenActivity(tab)
             redPointid = 3,
         },
         --冲级奖励
-        [7] = {
+        [6] = {
             url = "levelRewardRecord?",
             file = "ChongJiJiangLiLayer.lua",
             title = LANGUAGE_KEY_ACTIVITYTAB[8],

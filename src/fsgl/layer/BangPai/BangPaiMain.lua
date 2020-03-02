@@ -940,7 +940,7 @@ function BangPaiMain:refreshGuildIcon()
     self.guildIconSp = BangPaiFengZhuangShuJu.createGuildIcon(_icon,self.guildData.level or 1)
 	self.guildIconSp:setScale(0.8)
     self.guildIconSp.guildIcon = _icon
-    self.guildIconSp:setPosition(cc.p(self.guildIconSp:getContentSize().width *0.5 + 40,self._leftbg:getContentSize().height - self.guildIconSp:getContentSize().height *0.5 - 55))
+    self.guildIconSp:setPosition(cc.p(self.guildIconSp:getContentSize().width *0.5 + 50,self._leftbg:getContentSize().height - self.guildIconSp:getContentSize().height *0.5 - 70))
     self._leftbg:addChild(self.guildIconSp)
 end
 

@@ -341,6 +341,7 @@ CUSTOM_EVENT.REFRESH_GUILDBATTLEGROUP				= "refresh_guildbattlegroup"--刷新帮
 CUSTOM_EVENT.REFRESH_ACTIVITY_BFYL					= "refresh_activity_bfyl" --刷新缤纷有礼红点
 CUSTOM_EVENT.REFRESH_QIXINGTAN_NUMLABLE				= "refresh_qixingtan_numlable"--刷新七星潭界面召唤师和天星石数量
 CUSTOM_EVENT.REFRESH_ZHONGZU_SHOUWEI				= "refresh_zhongzu_shouwei"--刷新种族守卫界面
+CUSTOM_EVENT.REFRESH_SHENQIYIZHILABLE				= "refresh_shenqiyizhilable"--刷新神器遗址界面钥匙显示数量
 
 function CUSTOM_EVENT_REFRESH_TOP_INFO(_sockettime)
 	return CUSTOM_EVENT.REFRESH_TOP_INFO .. "_" .. _sockettime

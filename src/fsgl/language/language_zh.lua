@@ -934,8 +934,8 @@ LANGUAGE_KEY_HERO_TEXT = {
 	noRecruitHeroTextXc = "未拥有英雄"
 	,initSkill = "初始技能"
 	,advanceGreenIndicate = "英雄进阶到+1后解锁"
-	,advanceBlueIndicate = "英雄进阶到+4后解锁"
-	,advancePupleIndicate = "英雄进阶到+8后解锁"
+	,advanceBlueIndicate = "英雄进阶到+5后解锁"
+	,advancePupleIndicate = "英雄进阶到+9后解锁"
 	,ownedHeros = "拥有英雄"
 	,highestHeroFVIM = "最高英雄战力"
 	,ownedArtifact = "拥有神器"
@@ -1945,13 +1945,13 @@ LANGUAGE_GAME_DIRECTION = {
 	[37] = {
 			"七星坛抽奖说明",
 			"1．援军降临通过英雄密令进行抽英雄",
-			" a．首次十连抽100%获得三星以上英雄",
+			" a．首次十连抽100%获得SSR英雄",
 			" b．单抽品质为R英雄概率为1.5%",
 			" c．单抽品质为SR英雄概率为1.5%",
 			" d．十连抽英雄必得R以上SSR以下品质英雄",
 			" e．vip7以上十连抽英雄必得SR以上SSSR以下品质英雄",
 			" f．vip12以上单抽品质为SSR的英雄概率为0.3%",
-			" g．品质SSSR英雄只能通过特殊活动获得",
+			" g．品质UR英雄只能通过特殊活动开启获得",
 			"2．神兵异宝通过神兵号角进行抽道具装备",
 			" a．初级进阶丹概率为7%",
 			" b．召唤石概率为4%",
@@ -2559,7 +2559,7 @@ function LANGUAGE_TIPS_equipItemLevelPromptTextXc(_str)
 	return _str .. "级可装备"
 end
 function LANGUAGE_TIPS_skillUnlockDescTextXc(_idx)
-	local _strTable = {"+1","+4","+8"}
+	local _strTable = {"+1","+5","+9"}
 	local _str = _strTable[tonumber(_idx)]
 	return "进阶到" .. _str .. "后解锁"
 end

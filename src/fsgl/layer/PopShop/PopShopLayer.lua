@@ -367,6 +367,9 @@ function PopShopLayer:buyItem(index)
 							showlist[idx].num = 1
 						end
 					end
+					if self._key == "Artifact" then
+						XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_SHENQIYIZHILABLE})
+					end
 					XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_MAINCITY_TOP_INFO})
 				end
 				ShowRewardNode:create(showlist)
