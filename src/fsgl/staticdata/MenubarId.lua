@@ -6,7 +6,7 @@ MenubarId =
     { id = 4, systemName = "试炼之塔", functionid = 26, },
     { id = 5, systemName = "神兵阁", functionid = 27, },
     { id = 6, systemName = "神器遗迹", functionid = 23, },
-    { id = 7, systemName = "万宝阁", functionid = 10, },
+    { id = 7, systemName = "神秘商店", functionid = 10, },
     { id = 8, systemName = "商城", functionid = 0, },
     { id = 9, systemName = "阵营商店兑换", functionid = 32, },
     { id = 10, systemName = "竞技场兑换", functionid = 33, },
@@ -63,8 +63,5 @@ MenubarId =
     { id = 75, systemName = "噩梦副本", functionid = 82, },
     { id = 76, systemName = "押运粮草", functionid = 76, },
     { id = 77, systemName = "献祭", functionid = 95, },
-    { id = 78, systemName = "六六大顺", functionid = 68, },
-    { id = 79, systemName = "帮派", functionid = 72, },
-    { id = 80, systemName = "阵营捐献", functionid = 46, },
 }
 
