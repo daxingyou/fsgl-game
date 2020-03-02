@@ -19,7 +19,7 @@ QxtExchange =
     { id = 17, _type = 1, exchangeType = 1, beforeExNeedHero = 0, equipid = 2225, exchangeNum = 5, exchangeNeedEquip = 2301, needNum = 45, needLevel = 20, },
     { id = 18, _type = 1, exchangeType = 1, beforeExNeedHero = 0, equipid = 2245, exchangeNum = 10, exchangeNeedEquip = 2301, needNum = 5, needLevel = 20, },
     { id = 19, _type = 2, exchangeType = 1, beforeExNeedHero = 7, equipid = 2356, exchangeNum = 1, exchangeNeedEquip = 2302, needNum = 300, needLevel = 1, },
-    { id = 20, _type = 2, exchangeType = 1, beforeExNeedHero = 7, equipid = 2357, exchangeNum = 1, exchangeNeedEquip = 2303, needNum = 500, needLevel = 1, },
+    { id = 20, _type = 2, exchangeType = 1, beforeExNeedHero = 7, equipid = 2357, exchangeNum = 1, exchangeNeedEquip = 2302, needNum = 500, needLevel = 1, },
     { id = 21, _type = 2, exchangeType = 1, beforeExNeedHero = 1, equipid = 1001, exchangeNum = 1, exchangeNeedEquip = 2302, needNum = 1, needLevel = 1, },
     { id = 22, _type = 2, exchangeType = 1, beforeExNeedHero = 3, equipid = 1003, exchangeNum = 1, exchangeNeedEquip = 2302, needNum = 1, needLevel = 1, },
     { id = 23, _type = 2, exchangeType = 1, beforeExNeedHero = 4, equipid = 1004, exchangeNum = 1, exchangeNeedEquip = 2302, needNum = 1, needLevel = 1, },

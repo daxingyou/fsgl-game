@@ -367,7 +367,7 @@ function XianShiTiaoZhanLayer:createKillCell(index)
 	_campIcon:setPosition(60,node:getContentSize().height / 2 - 7)
 	----名字
 	local _name = string.format("%s LV:%d",data.name,data.level) ------%sLv%d\
-	_name = XTHDLabel:createWithSystemFont(_name,XTHD.SystemFont,16)
+	_name = XTHDLabel:createWithSystemFont(_name,XTHD.SystemFont,15)
 	_name:setColor(cc.c3b(255,255,255))
 	_name:enableShadow(cc.c4b(255,255,255,255),cc.size(0.5,-0.5))
 	_name:setAnchorPoint(0,0.5)
@@ -379,7 +379,7 @@ function XianShiTiaoZhanLayer:createKillCell(index)
 	_kill:enableShadow(cc.c4b(0xff,0xff,0xff,0xff),cc.size(0.5,-0.5))
 	_kill:setAnchorPoint(0,0.5)
 	node:addChild(_kill)
-	_kill:setPosition(node:getContentSize().width * 2/3 + 10,_name:getPositionY())
+	_kill:setPosition(node:getContentSize().width * 2/3 + 30,_name:getPositionY())
 	-----击杀数量
 	local _amount = XTHDLabel:createWithSystemFont(data.killSum,XTHD.SystemFont,18)-----击杀
 	_amount:setColor(cc.c3b(251,254,0))
