@@ -5,10 +5,7 @@ local TimelimitAnctivityLayer = class("TimelimitAnctivityLayer",function()
 end)
 
 function TimelimitAnctivityLayer:ctor()
-    HttpRequestWithOutParams("redHeroActivityList", function(data)
-        print("---------------")
-        print_r(data)
-    end )
+ 
 	self._btnList = {}
 	self._layerNode = nil
 	self._selectedIndex = 0
@@ -27,7 +24,7 @@ function TimelimitAnctivityLayer:ctor()
 		[2] = {
             url = nil,
             file = "XianShiTiaoZhanLayer.lua",
-            priority = 750,
+            priority = 800,
             isOpen = 0,                     -- 0：根据isOpenid控制活动是否开启，1：长期开启，不判断isOpenid
             isOpenid = 7,                   -- 活动开启id，后端控制
             pictureid = 7,
@@ -48,7 +45,7 @@ function TimelimitAnctivityLayer:ctor()
 		end
 	end
 	table.sort(self._activityOpen,function(data1,data2)
-		return tonumber(data1.isOpenid)<tonumber(data2.isOpenid)
+		return tonumber(data1.priority)<tonumber(data2.priority)
 	end)
 	
 	self._tabNumber = table.nums(self._activityOpen)	
