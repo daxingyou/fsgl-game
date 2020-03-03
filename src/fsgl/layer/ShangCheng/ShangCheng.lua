@@ -1321,7 +1321,9 @@ function ShangCheng:doExchange( storeData,index,targ, name,_index)
 								local _data = data.items[i]
 								local num = gameData.getDataFromDynamicDB(gameUser.getUserId(), DB_TABLE_NAME_ITEM,{itemid = _data.itemId}).count or 0
 								local num2 = _data.count - num
-								show_data[#show_data+1] = {rewardtype = 4, id =_data.itemId, num = num2}
+								if num2 > 0 then
+									show_data[#show_data+1] = {rewardtype = 4, id =_data.itemId, num = num2}
+								end
 								DBTableItem.updateCount(gameUser.getUserId(),_data,_data["dbId"])
 							end
 							ShowRewardNode:create(show_data)
@@ -1864,6 +1866,8 @@ function ShangCheng:getNumTable(data,name,index)
 			_playeLablePath = "银两"
 		elseif tonumber(_data[1]) == 3 then
 			_playeLablePath = "元宝"
+		elseif tonumber(_data[1]) == 4 then
+			_playeLablePath = gameData.getDataFromCSV("ArticleInfoSheet",{itemid = tonumber(_data[2])}).name
 		else
 			_playeLablePath = "翡翠"
 		end
