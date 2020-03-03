@@ -52,6 +52,10 @@ function JingJiLadderLayer:onEnter( )
 end
 
 function JingJiLadderLayer:refreshList(data)
+	local ruanwiList = {"青铜组","白银组","黄金组","白金组","钻石组","至尊组","王者组"}
+	if self.duanweiLable then
+		self.duanweiLable:setString(ruanwiList[data.duan])
+	end
 	local list ={}
 	for k,v in pairs(data.rivals) do
 		if v.charId ~= gameUser.getUserId() then
@@ -248,6 +252,7 @@ function JingJiLadderLayer:initUI(data)
 	duanweiLable:setAnchorPoint(0,0.5)
 	m_infobg:addChild(duanweiLable)
 	duanweiLable:setPosition(battleCdBg:getContentSize().width + battleCdBg:getPositionX() + 10,battleCdBg:getPositionY())
+	self.duanweiLable = duanweiLable
 	
 	--挑战次数
 	local m_time = XTHDLabel:create("挑战次数：",20,"res/fonts/def.ttf")

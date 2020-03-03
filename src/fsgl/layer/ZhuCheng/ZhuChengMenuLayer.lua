@@ -777,7 +777,7 @@ function ZhuChengMenuLayer:initHeadBar(...)
     charge:setAnchorPoint(0, 1)
     charge:setPosition(vipBox:getPositionX() + vipBox:getBoundingBox().width + 35, vipBox:getPositionY() + 30)
     charge:setTouchEndedCallback( function()
-      	local voucherLayer = requires("src/fsgl/layer/VoucherCenter/VoucherCenterLayer.lua"):create()
+      	local voucherLayer = requires("src/fsgl/layer/VoucherCenter/VoucherCenterLayer.lua"):create(3)
 		LayerManager.addLayout(voucherLayer)
     end )
     self._chargeBtn = charge
