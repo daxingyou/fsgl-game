@@ -690,35 +690,23 @@ function ZhuChengMenuLayer:initHeadBar(...)
     local vipNode = cc.Node:create()
     self:addChild(vipNode)
     vipNode:setPosition(280, self:getContentSize().height - 22)
+	self._vipNode = vipNode
     local vipBg = cc.Sprite:create("res/image/vip/vip_big.png")
     vipBg:setScale(0.4)
     vipNode:addChild(vipBg)
-    if mGameUser.getVip() < 10 then
-        local vipg = cc.Sprite:create("res/image/vip/vip_" .. tostring(mGameUser.getVip()) .. ".png")
-        vipg:setScale(0.5)
-        vipNode:addChild(vipg)
-        vipNode:setContentSize(vipBg:getBoundingBox().width * 0.4 + vipg:getBoundingBox().width, vipBg:getBoundingBox().height)
-        vipg:setPosition(vipBg:getBoundingBox().width - 23, vipBg:getBoundingBox().height / 2 - 22)
-        self.vipG = vipg
-        local vips = cc.Sprite:create("res/image/vip/vip_" .. tostring((mGameUser.getVip() % 10)) .. ".png")
-        vips:setScale(0.5)
-        vipNode:addChild(vips)
-        vips:setPosition(vipBg:getBoundingBox().width + vipg:getBoundingBox().width - 26, vipBg:getBoundingBox().height / 2 - 22)
-        vips:setVisible(false)
-        self.vipS = vips
-    else
-        local vipg = cc.Sprite:create("res/image/vip/vip_" .. tostring((math.floor(mGameUser.getVip() / 10))) .. ".png")
-        vipg:setScale(0.5)
-        vipNode:addChild(vipg)
-        local vips = cc.Sprite:create("res/image/vip/vip_" .. tostring((mGameUser.getVip() % 10)) .. ".png")
-        vips:setScale(0.5)
-        vipNode:addChild(vips)
-        vipNode:setContentSize(vipBg:getBoundingBox().width * 0.4 + vipg:getBoundingBox().width * 0.5 + vips:getBoundingBox().width * 0.5, vipBg:getBoundingBox().height * 0.5)
-        vipg:setPosition(vipBg:getBoundingBox().width - 23, vipBg:getBoundingBox().height / 2 - 22)
-        vips:setPosition(vipBg:getBoundingBox().width + vipg:getBoundingBox().width - 26, vipBg:getBoundingBox().height / 2 - 22)
-        self.vipG = vipg
-        self.vipS = vips
-    end
+	self._vipBg = vipBg
+    local vipg = cc.Sprite:create()
+    vipg:setScale(0.5)
+	vipNode:addChild(vipg)
+    self.vipG = vipg
+        
+    local vips = cc.Sprite:create()
+    vips:setScale(0.5)
+    vipNode:addChild(vips)
+    vipNode:setContentSize(vipBg:getBoundingBox().width * 0.4 + vipg:getBoundingBox().width * 0.5 + vips:getBoundingBox().width * 0.5, vipBg:getBoundingBox().height * 0.5)
+    vipg:setPosition(vipBg:getBoundingBox().width - 23, vipBg:getBoundingBox().height / 2 - 22)
+    vips:setPosition(vipBg:getBoundingBox().width + vipg:getBoundingBox().width - 26, vipBg:getBoundingBox().height / 2 - 22)
+    self.vipS = vips
 
     local vipBtn = XTHDPushButton:createWithParams( {
         musicFile = XTHD.resource.music.effect_btn_common,
@@ -1760,7 +1748,9 @@ function ZhuChengMenuLayer:refreshTopInfo()
     else
         self.vipG:initWithFile("res/image/vip/vip_" .. tostring((math.floor(mGameUser.getVip() / 10))) .. ".png")
         self.vipS:initWithFile("res/image/vip/vip_" .. tostring((mGameUser.getVip() % 10)) .. ".png")
-        self.vipS:setVisible(true)
+		self._vipNode:setContentSize(self._vipBg:getBoundingBox().width * 0.4 + self.vipG:getBoundingBox().width * 0.5 + self.vipS:getBoundingBox().width * 0.5, self._vipBg:getBoundingBox().height * 0.5)
+		self.vipG:setPosition(self._vipBg:getBoundingBox().width - 23, self._vipBg:getBoundingBox().height / 2 - 22)
+		self.vipS:setPosition(self.vipG:getPositionX() + self.vipG:getBoundingBox().width *0.5 + self.vipS:getBoundingBox().width *0.5, self._vipBg:getBoundingBox().height / 2 - 22)
     end
 
     if self._propertyLable and #self._propertyLable > 3 then
