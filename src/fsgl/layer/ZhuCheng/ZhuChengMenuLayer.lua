@@ -700,6 +700,12 @@ function ZhuChengMenuLayer:initHeadBar(...)
         vipNode:setContentSize(vipBg:getBoundingBox().width * 0.4 + vipg:getBoundingBox().width, vipBg:getBoundingBox().height)
         vipg:setPosition(vipBg:getBoundingBox().width - 23, vipBg:getBoundingBox().height / 2 - 22)
         self.vipG = vipg
+        local vips = cc.Sprite:create("res/image/vip/vip_" .. tostring((mGameUser.getVip() % 10)) .. ".png")
+        vips:setScale(0.5)
+        vipNode:addChild(vips)
+        vips:setPosition(vipBg:getBoundingBox().width + vipg:getBoundingBox().width - 26, vipBg:getBoundingBox().height / 2 - 22)
+        vips:setVisible(false)
+        self.vipS = vips
     else
         local vipg = cc.Sprite:create("res/image/vip/vip_" .. tostring((math.floor(mGameUser.getVip() / 10))) .. ".png")
         vipg:setScale(0.5)
@@ -1754,6 +1760,7 @@ function ZhuChengMenuLayer:refreshTopInfo()
     else
         self.vipG:initWithFile("res/image/vip/vip_" .. tostring((math.floor(mGameUser.getVip() / 10))) .. ".png")
         self.vipS:initWithFile("res/image/vip/vip_" .. tostring((mGameUser.getVip() % 10)) .. ".png")
+        self.vipS:setVisible(true)
     end
 
     if self._propertyLable and #self._propertyLable > 3 then

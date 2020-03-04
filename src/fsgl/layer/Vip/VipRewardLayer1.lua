@@ -117,15 +117,15 @@ function VipRewardLayer1:initUI(data)
     self._vip_bg:addChild(gold_num)
 
     -- 下个vip级别
-    if gameUser.getVip() < 17 then
-			if gameUser.getVip() < 10 then
-			local next_vip = cc.Sprite:create("res/image/vip/vip_" .. tonumber(gameUser.getVip()).. ".png")
+    if gameUser.getVip() < 16 then
+			if gameUser.getVip() < 9 then
+			local next_vip = cc.Sprite:create("res/image/vip/vip_" .. tonumber(gameUser.getVip() + 1).. ".png")
 			next_vip:setAnchorPoint(0,0.5)
 			next_vip:setPosition(self._vip_bg:getContentSize().width*0.75 + 5, self._vip_bg:getContentSize().height *0.5)
 			self._vip_bg:addChild(next_vip)
 			next_vip:setScale(0.6)
 		else
-			local vip_index = tonumber(gameUser.getVip() - 10)
+			local vip_index = tonumber(gameUser.getVip() - 9)
 			local next_vip = cc.Sprite:create("res/image/vip/vip_1.png")
 			next_vip:setAnchorPoint(0,0.5)
 			next_vip:setPosition(self._vip_bg:getContentSize().width*0.7 + 20, self._vip_bg:getContentSize().height *0.5)

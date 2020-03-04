@@ -276,11 +276,11 @@ function XianShiYingXiongLayer:initLayer()
     _popNode:addChild(_lastNumTitle)
     _popNode:addChild(_lastNumValue)
 
-    local tipText = XTHDLabel:create("每满100次可领取100个活动英雄碎片",20)                       ----------------------全服剩余数量
+    local tipText = XTHDLabel:create("每满10次十连抽可领取100个活动英雄碎片（领取上限：3次）",15)                   
     tipText:setAnchorPoint(cc.p(0.5,0.5))
     tipText:setColor(self.redColor)
     tipText:enableShadow(self.redColor, cc.size(0.4,-0.4), 0.4)
-    tipText:setPosition(cc.p(_popNode:getContentSize().width/2 -_lastNumValue:getContentSize().width/2+15,75))
+    tipText:setPosition(cc.p(_popNode:getContentSize().width/2 -_lastNumValue:getContentSize().width/2+35,73))
     _popNode:addChild(tipText)
 
     self:refreshLastNumTitle()
