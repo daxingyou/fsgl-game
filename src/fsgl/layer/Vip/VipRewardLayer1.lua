@@ -117,7 +117,7 @@ function VipRewardLayer1:initUI(data)
     self._vip_bg:addChild(gold_num)
 
     -- 下个vip级别
-    if gameUser.getVip() < 16 then
+    if gameUser.getVip() < 17 then
 			if gameUser.getVip() < 9 then
 			local next_vip = cc.Sprite:create("res/image/vip/vip_" .. tonumber(gameUser.getVip() + 1).. ".png")
 			next_vip:setAnchorPoint(0,0.5)

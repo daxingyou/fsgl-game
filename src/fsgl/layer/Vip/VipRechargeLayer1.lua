@@ -521,7 +521,7 @@ function VipRechargeLayer1:refreshVIPMsg(  )
 --    _vip_bg:addChild(can_levelup)
 
      --下个vip级别
-	if gameUser.getVip() < 16 then
+	if gameUser.getVip() < 17 then
 		if gameUser.getVip() < 9 then
 			local next_vip = cc.Sprite:create("res/image/vip/vip_" .. tonumber(gameUser.getVip() + 1).. ".png")
 			next_vip:setAnchorPoint(0,0.5)
