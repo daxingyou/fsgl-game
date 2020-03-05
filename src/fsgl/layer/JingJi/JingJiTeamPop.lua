@@ -181,6 +181,7 @@ function JingJiTeamPop:onEnter( )
         parent = self,
         target = self.changeBtn,-----排位赛设置防守队伍
         index = 7,
+		offset = cc.p(-15,-5),
         needNext = false
     },11)
     YinDaoMarg:getInstance():doNextGuide()

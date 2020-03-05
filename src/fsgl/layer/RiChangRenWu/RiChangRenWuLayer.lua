@@ -176,6 +176,7 @@ function RiChangRenWuLayer:initUI()
 				return
 			end
             if XTHD.getUnlockStatus(funcList[i].id, false) == false then
+				funcList[i].ywcIndex = i
                 local RiChangRenWuPop = requires("src/fsgl/layer/RiChangRenWu/RiChangRenWuPop.lua"):create(funcList[i])
                 self:addChild(RiChangRenWuPop)
                 RiChangRenWuPop:show()

@@ -15,6 +15,7 @@ function RenWuLayer:ctor( data, CallFunc, index ,sdata)
 	self._huoyueRenwu = {}
 	self._selectIndex = 1
 	self._HuoyueNode = nil
+	self.btnTable = {}
 
     -- 变量
     self._size = self:getContentSize()
@@ -493,8 +494,10 @@ function RenWuLayer:initTasks()
 						pos = cc.p( cellBg:getContentSize().width - 55, 30 ),
 						endCallback = function()
 							if self._tabIndex < 4 then
+								self.btnTable[_index]:setEnable(false)
 								self:receiveTask(data.configId,iconData)
 							else
+								self.btnTable[_index]:setEnable(false)
 								self:reciveRewardOne(data.configId)
 							end 
 						end})
@@ -504,6 +507,7 @@ function RenWuLayer:initTasks()
 					fetchButton:addChild( fetchSpine )
 					fetchSpine:setPosition( fetchButton:getContentSize().width*0.5 + 2, fetchButton:getContentSize().height/2)
 					fetchSpine:setAnimation( 0, "querenjinjie", true )
+					self.btnTable[_index] = fetchButton
     			elseif data.gotype ~= 0 then
     				-- 前往
     				local gotoButton = XTHDPushButton:createWithParams({
@@ -1098,6 +1102,7 @@ function RenWuLayer:refreshTopTask()
 							self._HuoyueNode.boxlist[i]:setVisible(false)
 							self._HuoyueNode.btnList[i]:setEnable(true)
 							self._HuoyueNode.btnList[i]:setTouchEndedCallback(function()
+							self._HuoyueNode.btnList[i]:setEnable(false)
 							XTHDHttp:requestAsyncInGameWithParams({
 								modules="finishTask?",
 								params = {taskId = data.taskid},
@@ -1132,12 +1137,15 @@ function RenWuLayer:refreshTopTask()
 										end
 										self:refresshHuoyueNode()
 										XTHD.FristChongZhiPopLayer(cc.Director:getInstance():getRunningScene())
+										self._HuoyueNode.btnList[i]:setEnable(true)
 									else
 										XTHDTOAST(finishTask.msg)
+										self._HuoyueNode.btnList[i]:setEnable(true)
 									end
 								end,--成功回调
 								failedCallback = function()
 									XTHDTOAST(LANGUAGE_TIPS_WEBERROR)
+									self._HuoyueNode.btnList[i]:setEnable(true)
 								end,--失败回调
 								targetNeedsToRetain = self,--需要保存引用的目标
 								loadingType = HTTP_LOADING_TYPE.CIRCLE,--加载图显示 circle 光圈加载 head 头像加载
