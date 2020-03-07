@@ -1285,7 +1285,7 @@ function ZhuChengMenuLayer:initRightUpMenu()
                 XTHDTOAST("12级解锁世界Boss")
                 return
             end
-            YinDaoMarg:getInstance():guideTouchEnd()
+            YinDaoMarg:getInstance():overCurrentGuide(true)
             LayerManager.createModule("src/fsgl/layer/XiongShouLaiXi/XiongShouLaiXiLayer.lua", { par = self })
         elseif sIndex == 5 then
             -- 首冲
