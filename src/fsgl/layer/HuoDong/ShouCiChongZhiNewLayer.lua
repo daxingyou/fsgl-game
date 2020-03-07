@@ -502,7 +502,7 @@ function ShouCiChongZhiNewLayer:onCleanup()
 	if gameUser.getMeiRiQianDaoState() == 1 then
     	ClientHttp:httpActivity("getCheckInDailyList?",self,function(data)
 			local popLayer = requires("src/fsgl/layer/ConstraintPoplayer/MeiRiQianDaoPopLayer.lua"):create(data)
-			self:addChild(popLayer)
+			cc.Director:getInstance():getRunningScene():addChild(popLayer)
 			popLayer:show()
 		end,{})
     end

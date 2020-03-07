@@ -332,7 +332,8 @@ function ZhuChengMenuLayer:init()
     if mGameUser.getLevel() > 7 and mGameUser.getMeiRiQianDaoState() == 1 then
 		ClientHttp:httpActivity("getCheckInDailyList?",self,function(data)
 			local popLayer = requires("src/fsgl/layer/ConstraintPoplayer/MeiRiQianDaoPopLayer.lua"):create(data)
-			self:addChild(popLayer)
+			cc.Director:getInstance():getRunningScene():addChild(popLayer)
+			popLayer:setName("Poplayer")
 			popLayer:show()
 		end,{})
     end
@@ -1961,12 +1962,12 @@ function ZhuChengMenuLayer:refreshBaseInfo()
 
         -- 战力竞赛
         if self.__functionButtons[40] then
-            self.__functionButtons[40]:setVisible(gameUser.getZLJSOpenState() == 1)
+            self.__functionButtons[40]:setVisible(false)
         end
 
         -- 全民竞技
         if self.__functionButtons[41] then
-            self.__functionButtons[41]:setVisible(gameUser.getQMJJOpenState() == 1)
+            self.__functionButtons[41]:setVisible(false)
         end
 
         self.scaleBtn:setRotation(0)
@@ -2007,7 +2008,7 @@ function ZhuChengMenuLayer:refreshBaseInfo()
 --        end
 --    end
 
-    -- self:adjustLeftUpMenu()
+-- self:adjustLeftUpMenu()
     self:refreshCeilNodeBtnPos()
     self:refreshRightNodeBtnPos()
     self:refreshRightFloorBtnPos()

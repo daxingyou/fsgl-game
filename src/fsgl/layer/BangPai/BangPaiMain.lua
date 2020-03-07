@@ -220,6 +220,7 @@ function BangPaiMain:init(sParams)
 	powerLable:setColor(cc.c3b(46,1,1))
 	powerLable:setAnchorPoint(1,0.5)
 	powerLable:setPosition(cc.p(_memberNumberStr:getPositionX(), _guildZhanli:getPositionY()))
+	self._powerLable = powerLable
 	--powerLable:enableBold()
 	self._leftbg:addChild(powerLable)
 
@@ -293,6 +294,7 @@ function BangPaiMain:createZhuYeUI()
 	local juanxianbg = cc.Sprite:create("res/image/newGuild/donatebg.png")
 	self._rightbg:addChild(juanxianbg)
 	juanxianbg:setPosition(self._rightbg:getContentSize().width *0.5, self._rightbg:getContentSize().height - juanxianbg:getContentSize().height *0.5)
+	juanxianbg:setName("juanxianbg")
 
 	self:initRankList(juanxianbg)
 
@@ -547,7 +549,7 @@ function BangPaiMain:updateRankList()
             if tonumber(data.result) == 0 then
 				-- dump(data)
 				self._rankListData = data.ranks
-				if self._rankTableView then
+				if self._rankTableView and self._rightbg:getChildByName("juanxianbg") then
 					self._rankTableView:reloadData()
 				end
             end
@@ -923,7 +925,7 @@ end
 
 function BangPaiMain:refreshGuildListLayer()
     self:refreshGuildMemberNumber()
-
+	self:refreshGuildPower()
     self:refreshNotificationState()
     self:refreshBtnState()
 end
@@ -964,6 +966,13 @@ function BangPaiMain:refreshGuildMemberNumber()
         return
     end
     self.memberNumberStr:setString(self.guildData.curSum .. "/" .. self.guildData.maxSum)
+end
+
+function BangPaiMain:refreshGuildPower()
+	if self._powerLable ==nil then
+        return
+    end
+	self._powerLable:setString(self.guildData.power)
 end
 function BangPaiMain:refreshGuildName()
     self.guildName:setString(self.guildData.guildName or "")

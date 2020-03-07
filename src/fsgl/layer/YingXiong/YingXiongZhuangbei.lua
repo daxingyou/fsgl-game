@@ -349,29 +349,33 @@ function YingXiongZhuangbei:createAddtionlable(data, parentNode, index)
         parentNode:addChild(lable)
         lable:setPosition(pos[index][1], lable:getContentSize().height * 0.5 + 5)
     elseif data.bagindex == 2 then
+		local idx = 0
         local _data = string.split(data.baseProperty, "#")
         for i = 1, #_data do
             local __data = string.split(_data[i], ",")
             if __data[1] == "201" or __data[1] == "203" then
+				idx = idx + 1
                 local text = __data[1] == "201" and "物攻加成：" or "魔攻加成："
                 local lable = XTHDLabel:create(text .. __data[2], 14)
                 lable:setColor(cc.c3b(0, 100, 20))
                 lable:setAnchorPoint(0, 0.5)
                 parentNode:addChild(lable)
-                lable:setPosition(pos[index][i], lable:getContentSize().height * 0.5 + 5)
+                lable:setPosition(pos[index][idx], lable:getContentSize().height * 0.5 + 5)
             end
         end
     elseif data.bagindex == 3 then
         local _data = string.split(data.baseProperty, "#")
+		local idx = 0
         for i = 1, #_data do
             local __data = string.split(_data[i], ",")
             if __data[1] == "202" or __data[1] == "204" then
+				idx = idx + 1
                 local text = __data[1] == "202" and "物防加成：" or "魔防加成："
                 local lable = XTHDLabel:create(text .. __data[2], 14)
                 lable:setColor(cc.c3b(0, 100, 20))
                 lable:setAnchorPoint(0, 0.5)
                 parentNode:addChild(lable)
-                lable:setPosition(pos[index][i], lable:getContentSize().height * 0.5 + 5)
+                lable:setPosition(pos[index][idx], lable:getContentSize().height * 0.5 + 5)
             end
         end
     elseif data.bagindex == 4 then
@@ -386,27 +390,31 @@ function YingXiongZhuangbei:createAddtionlable(data, parentNode, index)
     elseif data.bagindex == 5 then
         local _data = string.split(data.baseProperty, "#")
         for i = 1, #_data do
+			local idx = 0
             local __data = string.split(_data[i], ",")
             if __data[1] == "202" or __data[1] == "204" then
+				idx = idx + 1
                 local text = __data[1] == "202" and "物防加成：" or "魔防加成："
                 local lable = XTHDLabel:create(text .. __data[2], 14)
                 lable:setColor(cc.c3b(0, 100, 20))
                 lable:setAnchorPoint(0, 0.5)
                 parentNode:addChild(lable)
-                lable:setPosition(pos[index][i], lable:getContentSize().height * 0.5 + 5)
+                lable:setPosition(pos[index][idx], lable:getContentSize().height * 0.5 + 5)
             end
         end
     elseif data.bagindex == 6 then
         local _data = string.split(data.baseProperty, "#")
         for i = 1, #_data do
+			local idx = 0
             local __data = string.split(_data[i], ",")
             if __data[1] == "200" then
+				idx = idx + 1
                 local text = "生命加成："
                 local lable = XTHDLabel:create(text .. __data[2], 14)
                 lable:setColor(cc.c3b(0, 100, 20))
                 lable:setAnchorPoint(0, 0.5)
                 parentNode:addChild(lable)
-                lable:setPosition(pos[index][i], lable:getContentSize().height * 0.5 + 5)
+                lable:setPosition(pos[index][idx], lable:getContentSize().height * 0.5 + 5)
             end
         end
     end
