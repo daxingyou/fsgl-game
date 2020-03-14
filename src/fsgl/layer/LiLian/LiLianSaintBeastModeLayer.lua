@@ -7,6 +7,12 @@ end)
 function LiLianSaintBeastModeLayer:ctor(data,_type,beast,callfunc)
 	self.callfunc = callfunc
 	self:initUI(data,_type,beast)
+	XTHD.addEventListener({
+        name = CUSTOM_EVENT.REFRESH_SHENQIYIZHILABLE,
+        callback = function ()
+        	self:refreshLable()
+        end,
+    })
 end
 
 function LiLianSaintBeastModeLayer:initUI(data,_type,beast)
@@ -372,6 +378,16 @@ function LiLianSaintBeastModeLayer:refreshReward(id)
 	self.rewardBg:addChild(firstStone)
 	firstStone:setScale(0.9)
 	addFirstSign(firstStone)
+end
+
+function LiLianSaintBeastModeLayer:refreshLable()
+	if self.ownNum then
+		self.ownNum:setString(XTHD.resource.getItemNum(self.beastData[1].consume))
+	end
+end
+
+function LiLianSaintBeastModeLayer:onExit()
+	XTHD.removeEventListener( CUSTOM_EVENT.REFRESH_SHENQIYIZHILABLE )
 end
 
 function LiLianSaintBeastModeLayer:createChallage(_type,id,beast)

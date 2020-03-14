@@ -220,6 +220,7 @@ function BangPaiMain:init(sParams)
 	powerLable:setColor(cc.c3b(46,1,1))
 	powerLable:setAnchorPoint(1,0.5)
 	powerLable:setPosition(cc.p(_memberNumberStr:getPositionX(), _guildZhanli:getPositionY()))
+	self._powerLable = powerLable
 	--powerLable:enableBold()
 	self._leftbg:addChild(powerLable)
 
@@ -293,6 +294,7 @@ function BangPaiMain:createZhuYeUI()
 	local juanxianbg = cc.Sprite:create("res/image/newGuild/donatebg.png")
 	self._rightbg:addChild(juanxianbg)
 	juanxianbg:setPosition(self._rightbg:getContentSize().width *0.5, self._rightbg:getContentSize().height - juanxianbg:getContentSize().height *0.5)
+	juanxianbg:setName("juanxianbg")
 
 	self:initRankList(juanxianbg)
 
@@ -307,7 +309,10 @@ function BangPaiMain:createZhuYeUI()
 		self:addChild(layer,2)
 		layer:show()
 	end)
-	local pLay = requires("src/fsgl/layer/BangPai/BangPaiHuoDong.lua"):create()
+	
+	local bangpaihuodong = requires("src/fsgl/layer/BangPai/BangPaiHuoDong.lua")
+	local pos = cc.p(self._rightbg:getContentSize().width *0.5,220 *0.5)
+	local pLay = bangpaihuodong:create(self,pos)
     self._rightbg:addChild(pLay)
 	pLay:setPosition(self._rightbg:getContentSize().width *0.5,pLay:getContentSize().height *0.5)
 end
@@ -544,7 +549,7 @@ function BangPaiMain:updateRankList()
             if tonumber(data.result) == 0 then
 				-- dump(data)
 				self._rankListData = data.ranks
-				if self._rankTableView then
+				if self._rankTableView and self._rightbg:getChildByName("juanxianbg") then
 					self._rankTableView:reloadData()
 				end
             end
@@ -920,7 +925,7 @@ end
 
 function BangPaiMain:refreshGuildListLayer()
     self:refreshGuildMemberNumber()
-
+	self:refreshGuildPower()
     self:refreshNotificationState()
     self:refreshBtnState()
 end
@@ -937,7 +942,7 @@ function BangPaiMain:refreshGuildIcon()
     self.guildIconSp = BangPaiFengZhuangShuJu.createGuildIcon(_icon,self.guildData.level or 1)
 	self.guildIconSp:setScale(0.8)
     self.guildIconSp.guildIcon = _icon
-    self.guildIconSp:setPosition(cc.p(self.guildIconSp:getContentSize().width *0.5 + 40,self._leftbg:getContentSize().height - self.guildIconSp:getContentSize().height *0.5 - 55))
+    self.guildIconSp:setPosition(cc.p(self.guildIconSp:getContentSize().width *0.5 + 50,self._leftbg:getContentSize().height - self.guildIconSp:getContentSize().height *0.5 - 70))
     self._leftbg:addChild(self.guildIconSp)
 end
 
@@ -961,6 +966,13 @@ function BangPaiMain:refreshGuildMemberNumber()
         return
     end
     self.memberNumberStr:setString(self.guildData.curSum .. "/" .. self.guildData.maxSum)
+end
+
+function BangPaiMain:refreshGuildPower()
+	if self._powerLable ==nil then
+        return
+    end
+	self._powerLable:setString(self.guildData.power)
 end
 function BangPaiMain:refreshGuildName()
     self.guildName:setString(self.guildData.guildName or "")
@@ -1118,8 +1130,8 @@ function BangPaiMain:createForLayerManager( sParams )
 end
 
 function BangPaiMain:onEnter( )
-    YinDaoMarg:getInstance():addGuide({parent = self,index = 3},8)----剧情
-    YinDaoMarg:getInstance():doNextGuide() 
+--    YinDaoMarg:getInstance():addGuide({parent = self,index = 3},8)----剧情
+--    YinDaoMarg:getInstance():doNextGuide() 
 end
 function BangPaiMain:RedPoint()
     --判断加不加红点

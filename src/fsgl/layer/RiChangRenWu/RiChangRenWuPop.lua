@@ -4,7 +4,30 @@ local RiChangRenWuPop = class("RiChangRenWuPop",function ()
 end)
 
 function RiChangRenWuPop:ctor(data)
+
+	self._localData = gameData.getDataFromCSV("MartialList")
+	self._showData = {}
+    self:initData()
 	self:initUI(data)
+end
+
+function RiChangRenWuPop:initData()
+    self._showData = {}
+    for i = 1,#self._localData do
+        self._showData[i] = {}
+        for j = 1,3 do
+            if self._localData[i]["rewardtype"..j] ~= nil then
+                local temp = {}
+                if self._localData[i]["rewardtype"..j] == 4 then
+                    temp.itemtype = 4
+                    temp.itemid = self._localData[i]["canshu"..j]
+                else
+                    temp.itemtype = self._localData[i]["rewardtype"..j]
+                end
+                table.insert(self._showData[i],temp)
+            end
+        end
+    end
 end
 
 function RiChangRenWuPop:initUI(data)
@@ -18,6 +41,29 @@ function RiChangRenWuPop:initUI(data)
 	icon:setScale(0.6)
 	icon:setPosition(bg:getBoundingBox().width/2,bg:getBoundingBox().height-10)
 	bg:addChild(icon)
+
+	local x = icon:getContentSize().width * 1/(#self._showData[data.ywcIndex] + 1) 
+    if #self._showData[data.ywcIndex] == 2 then
+        x = icon:getContentSize().width * 1/(#self._showData[data.ywcIndex] + 1) - 2
+    else
+        x = icon:getContentSize().width * 1/(#self._showData[data.ywcIndex] + 1) + 15
+    end 
+    for k,v in pairs(self._showData[data.ywcIndex]) do 
+        local _item = ItemNode:createWithParams({
+            _type_ = v.itemtype, 
+            itemId = v.itemid or 0,
+            isShowCount = false,
+            needSwallow = true,
+        })
+        _item:setScale(0.6)
+        icon:addChild(_item)        
+        _item:setPosition(x,_item:getBoundingBox().height + 110)
+        if #self._showData[data.ywcIndex] == 2 then
+            x = x + _item:getBoundingBox().width*2
+        else
+            x = x + _item:getBoundingBox().width + 10
+        end   
+    end 
 
 	 local csvData = gameData.getDataFromCSV("FunctionInfoList")[data.id]                 ----------------关卡描述
 	-- local desc = XTHDLabel:createWithParams({

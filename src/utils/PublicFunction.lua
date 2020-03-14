@@ -578,16 +578,16 @@ function replaceLayer(params)
         turnStageChapterScene(chapterId,ChapterType.Normal,node)
     elseif id == 2 then    --2ăç˛žčąĺŻćŹ
         local _elite_open_data = gameData.getDataFromCSV("FunctionInfoList", {["id"] = 19} )
-            if tonumber(_elite_open_data["unlocktype"]) == 2 then
-                if gameUser.getInstancingId() < tonumber(_elite_open_data["unlockparam"]) then
+        if tonumber(_elite_open_data["unlocktype"]) == 2 then
+			if gameUser.getInstancingId() < tonumber(_elite_open_data["unlockparam"]) then
                 XTHDTOAST(LANGUAGE_KEY_NOTOPEN)------"ç˛žčąĺŻćŹććŞĺźĺŻ!")
                 return
             end
-            if tonumber(_elite_open_data["unlocktype"]) == 1 then
-                if gameUser.getLevel() < tonumber(_elite_open_data["unlockparam"]) then
-                    XTHDTOAST(LANGUAGE_TIPS_OPEN_ELITE(_elite_open_data["unlockparam"]))------"ç˛žčąĺŻćŹććŞĺźĺŻ!")
-                    return
-                end
+        end
+		if tonumber(_elite_open_data["unlocktype"]) == 1 then
+			if gameUser.getLevel() < tonumber(_elite_open_data["unlockparam"]) then
+				XTHDTOAST(LANGUAGE_TIPS_OPEN_ELITE(_elite_open_data["unlockparam"]))------"ç˛žčąĺŻćŹććŞĺźĺŻ!")
+                return
             end
         end
         turnStageChapterScene(chapterId,ChapterType.ELite,node)
@@ -1976,25 +1976,54 @@ end
 --获得称号时的刷新称号列表处理
 function RefreshTitlList(data)
 	local titlename = nil
-	local index = nil	
-	if #gameUser.getCurTitleList() > 0 then
-		for i = 1,#data do
-			local _istrue = false
-			for k,v in pairs(gameUser.getCurTitleList()) do
-				if data[i] == v then
-					_istrue = true
+	local index = nil
+	if #data >=  #gameUser.getCurTitleList() then
+		if #gameUser.getCurTitleList() > 0 then
+			for i = 1,#data do
+				local _istrue = false
+				for k,v in pairs(gameUser.getCurTitleList()) do
+					if data[i] == v then
+						_istrue = true
+					end
+				end
+				if not _istrue then
+					index = i
 				end
 			end
-			if not _istrue then
-				index = i
+			titlename = gameData.getDataFromCSV("TitleInfo",{id = data[index]}).name
+		else
+			titlename = gameData.getDataFromCSV("TitleInfo",{id = data[1]}).name
+		end
+		gameUser.setCurTitleList(data)
+		if titlename then
+			XTHDTOAST("恭喜获得称号《"..titlename.."》")
+		end
+	else
+		local titleId = nil
+		for k,v in pairs(gameUser.getCurTitleList()) do
+			local _isTrue = false
+			for i = 1, #data do
+				if v == data[i] then
+					_isTrue = true
+				end
+			end
+			if not _isTrue then
+				titleId = v
+				break;
 			end
 		end
-		titlename = gameData.getDataFromCSV("TitleInfo",{id = data[index]}).name
-	else
-		titlename = gameData.getDataFromCSV("TitleInfo",{id = data[1]}).name
+		local list = {}
+
+		for k,v in pairs(gameUser.getCurTitleList()) do
+			if v ~= titleId then
+				list[#list + 1] = v
+			end
+		end
+		gameUser.setCurTitleList(list)
+		
+		local titlename = gameData.getDataFromCSV("TitleInfo",{id = titleId}).name
+		XTHDTOAST("您的称号《"..titlename.."》已被他人夺走")
 	end
-	gameUser.setCurTitleList(data)
-	XTHDTOAST("恭喜获得称号《"..titlename.."》")
 end
 
 --获得称号时英雄属性刷新

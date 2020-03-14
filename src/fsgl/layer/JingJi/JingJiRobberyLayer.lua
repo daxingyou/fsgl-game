@@ -234,15 +234,15 @@ function JingJiRobberyLayer:setPlayerData(data)
     local zl_bg = cc.Sprite:create("res/image/common/zl_bg.png")
     zl_bg:setPosition(450,self.playerBg:getBoundingBox().height/2+3)
     self.playerBg:addChild(zl_bg)
-    --天庭战力
-    local powerSp = cc.Sprite:create("res/image/common/fightValue_Image.png")
-    powerSp:setPosition(380,self.playerBg:getBoundingBox().height/2+3)
-    self.playerBg:addChild(powerSp)
+--    --天庭战力
+--    local powerSp = cc.Sprite:create("res/image/common/fightValue_Image.png")
+--    powerSp:setPosition(380,self.playerBg:getBoundingBox().height/2+3)
+--    self.playerBg:addChild(powerSp)
 
     --天庭战力值
     local powerNum = cc.Label:createWithBMFont("res/fonts/yellowwordforcamp.fnt",data.maxPower)
     powerNum:setAnchorPoint(0,0.5)
-    powerNum:setPosition(powerSp:getPositionX()+powerSp:getBoundingBox().width/2,powerSp:getPositionY()-4)
+    powerNum:setPosition(430,self.playerBg:getBoundingBox().height/2 - 3)
     self.playerBg:addChild(powerNum)
 
     self.robberyTimeLabel:setString(data.robberyTime)
@@ -345,14 +345,14 @@ function JingJiRobberyLayer:refreshRivals(data)
      zl_bg:setPosition(480,self.rivalBg:getBoundingBox().height/2+3)
      self.rivalBg:addChild(zl_bg)
     --战力
-    local powerSp = cc.Sprite:create("res/image/common/fightValue_Image.png")
-    powerSp:setPosition(20,zl_bg:getContentSize().height*0.5)
-    zl_bg:addChild(powerSp)
+--    local powerSp = cc.Sprite:create("res/image/common/fightValue_Image.png")
+--    powerSp:setPosition(20,zl_bg:getContentSize().height*0.5)
+--    zl_bg:addChild(powerSp)
 
     --战力值
     local powerNum = cc.Label:createWithBMFont("res/fonts/yellowwordforcamp.fnt",rivalData.teams[1].power)
     powerNum:setAnchorPoint(0,0.5)
-    powerNum:setPosition(50,zl_bg:getContentSize().height*0.5 - 3)
+    powerNum:setPosition(65,zl_bg:getContentSize().height*0.5 - 3)
    zl_bg:addChild(powerNum)
 
     if self.enemyTeamBtn then
@@ -435,7 +435,7 @@ function JingJiRobberyLayer:refreshRivals(data)
             self.teamBg = ccui.Scale9Sprite:create("res/image/common/tips_bg.png")
             self.teamBg:setContentSize(cc.size(319,123))
             self.teamBg:setAnchorPoint(1,0)
-            self.teamBg:setPosition(self.rivalBg:getPositionX()+self.rivalBg:getBoundingBox().width,self.enemyTeamBtn:getPositionY()+self.enemyTeamBtn:getBoundingBox().height+5)
+            self.teamBg:setPosition(self.rivalBg:getPositionX()+self.rivalBg:getBoundingBox().width * 0.2 + 20,self:getContentSize().height *0.15 + self.teamBg:getContentSize().width *0.5)
             self:addChild(self.teamBg)
 
             local teamStr = cc.Sprite:create("res/image/plugin/competitive_layer/enemy_team.png")

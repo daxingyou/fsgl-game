@@ -1863,7 +1863,7 @@ function XiuLianInfoLayer:create(data)
 end
 
 function XiuLianInfoLayer:onEnter()
-    YinDaoMarg:getInstance():addGuide( { parent = self, index = 5 }, 17)
+    YinDaoMarg:getInstance():addGuide( { parent = self, index = 6 }, 17)
     ----剧情
     YinDaoMarg:getInstance():doNextGuide()
 end

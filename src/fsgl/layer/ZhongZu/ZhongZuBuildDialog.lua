@@ -82,13 +82,10 @@ function ZhongZuBuildDialog:doButtonClicked( _tag )
 	elseif _tag == 4 then  ----捐献
 		requires("src/fsgl/layer/ZhongZu/forTheHost/ZhongZuCityDonate.lua"):create(self.__cityID,self.__parent)
     elseif _tag == 5 then  ----守卫
---        HttpRequestWithOutParams("redHeroActivityList", function(data)
---             print("服务器返回的数据为：")
---             print_r(data)
---        end )
         local cityid = self.__cityID
+        local pLay = self.__parent
         HttpRequestWithParams("campBossInfo",{cityId = self.__cityID,campId = gameUser.getCampID()}, function(data)
-             LayerManager.createModule("src/fsgl/layer/ZhongZu/ZhongZuShouWei.lua", { par = self ,serverData = data,cityID = cityid})
+             LayerManager.createModule("src/fsgl/layer/ZhongZu/ZhongZuShouWei.lua", { par = pLay ,serverData = data,cityID = cityid})
         end )
 	end 
 	self:removeFromParent()

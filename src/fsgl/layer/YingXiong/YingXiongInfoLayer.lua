@@ -1828,11 +1828,9 @@ function YingXiongInfoLayer:OneKeyToStrength()
     for k, v in pairs(_costItemTable) do
         if k == "gold" and v.allNeedNum == 0 then
             local _dialog = XTHDConfirmDialog:createWithParams( {
-                msg = "当前强化石不足，可通过扫荡或者强化商店购买获得，是否前往购买？",
+                msg = "当前强化石不足，可通过扫荡或获得，是否前往扫荡？",
                 rightCallback = function()
-                    local changeLayer = requires("src/fsgl/layer/ShangCheng/ShangCheng.lua"):create( { which = 'strength', callback = callback })
-                    -----强化
-                    LayerManager.addLayout(changeLayer)
+                    replaceLayer({id = 1})
                 end
             } )
             self:addChild(_dialog)

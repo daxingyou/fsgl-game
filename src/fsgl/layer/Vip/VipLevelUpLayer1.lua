@@ -55,9 +55,9 @@ function VipLevelUpLayer1:init( data )
 		board:addChild(_gotoBtn)
 		_gotoBtn:setTouchEndedCallback(function( )
 			if data ~= nil then
-				XTHD.createVipLayer(self:getParent())
+				XTHD.createVipLayer(cc.Director:getInstance():getRunningScene(),self._parent)
 			else
-				XTHD.createVipLayer(self:getParent():getParent(),self:getParent())
+				XTHD.createVipLayer(cc.Director:getInstance():getRunningScene(),self._parent)
 			end
 			self:removeFromParent()
 		end)

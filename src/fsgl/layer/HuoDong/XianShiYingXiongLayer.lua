@@ -53,7 +53,7 @@ function XianShiYingXiongLayer:initLayer()
     	end)
 
     local _titlePosY = _popNode:getContentSize().height - 90
-    local _titleSp = cc.Sprite:create("res/image/activities/TimelimitActivity/heroname.png")
+    local _titleSp = cc.Sprite:create("res/image/activities/TimelimitActivity/heroname"..self.infoData.petId..".png")
 	_titleSp:setAnchorPoint(cc.p(0.5,0.5))
     _titleSp:setPosition(cc.p(_popNode:getContentSize().width/2,_titlePosY))
     _popNode:addChild(_titleSp)
@@ -125,19 +125,71 @@ function XianShiYingXiongLayer:initLayer()
 
 	self:setSkillItems()
 
+    local receiveBtn = XTHD.createCommonButton({
+			normalFile = "res/image/plugin/timehero_act/rec1.png",
+			selectedFile = "res/image/plugin/timehero_act/rec2.png",
+			text = "",
+			ttf = "res/fonts/def.ttf",
+			fontSize = 30,
+		})
+    receiveBtn:setScale(0.8)
+    receiveBtn:getLabel():enableOutline(cc.c4b(45,13,103,255),2)
+    receiveBtn:setPosition(cc.p(_popNode:getContentSize().width/2 + 80,130))
+	_popNode:addChild(receiveBtn)
+	receiveBtn:setTouchEndedCallback(function()
+		if self.heroData.state == 1 then
+            HttpRequestWithOutParams("redHeroActivityReward", function(params)
+                self.heroData.state = 0
+                self.unfinBtn:setVisible(true)
+                self.receiveBtn:setVisible(false)
+--                receiveBtn:getLabel():setString("未完成")
+--                print("领奖")
+--                print_r(params)
+                local show = {}
+                if params.bagItems and #params.bagItems ~= 0 then
+                    for i=1,#params.bagItems do
+                        local item_data = params.bagItems[i]
+                        local showCount = item_data.count
+                        if item_data.count and tonumber(item_data.count) ~= 0 then
+                            --print("itemCount: "..DBTableItem.getCountByID(item_data.dbId))
+                            showCount = item_data.count - tonumber(DBTableItem.getCountByID(item_data.dbId))
+                            DBTableItem.updateCount(gameUser.getUserId(),item_data,item_data.dbId)
+                        else
+                            DBTableItem.deleteData(gameUser.getUserId(),item_data.dbId)
+                        end
+                        --如果奖励类型
+                        local idx = #show + 1
+                        show[idx] = {}
+                        show[idx].rewardtype = 4 -- item_data.item_type
+                        show[idx].id = item_data.itemId
+                        show[idx].num = 100
+                    end
+                end
+                --显示领取奖励成功界面
+                ShowRewardNode:create(show)
+            end )
+        else 
+            XTHDTOAST("未达到条件")
+        end
+	end)
+    self.receiveBtn = receiveBtn
+
+    local unfinBtn = cc.Sprite:create("res/image/plugin/timehero_act/unfin.png")
+    unfinBtn:setScale(0.8)
+    unfinBtn:setPosition(cc.p(_popNode:getContentSize().width/2 + 80,130))
+    _popNode:addChild(unfinBtn)
+    self.unfinBtn = unfinBtn
+    self:freshBtnState()
+
 	--按钮
 	local _buyBtn = XTHD.createButton({
-			normalFile = "res/image/plugin/timehero_act/lananniu.png",
-			selectedFile = "res/image/plugin/timehero_act/lananniu.png",
-			text = "购买",
+			normalFile = "res/image/plugin/timehero_act/ten1.png",
+			selectedFile = "res/image/plugin/timehero_act/ten2.png",
+			text = "",
 			ttf = "res/fonts/def.ttf",
-			fontSize = 36,
+			fontSize = 30,
 		})
-	-- local _buyBtn = XTHD.createCommonButton({
-	-- 	btnColor = "write",
-	-- 	text = "购买"
-	-- })
-	_buyBtn:setScale(0.6)
+	_buyBtn:setScale(0.8)
 	_buyBtn:getLabel():setPositionX(_buyBtn:getLabel():getPositionX()-55)
 	_buyBtn:getLabel():setPositionY(_buyBtn:getLabel():getPositionY()-5)
 	_buyBtn:getLabel():enableOutline(cc.c4b(45,13,103,255),2)
@@ -195,8 +247,10 @@ function XianShiYingXiongLayer:initLayer()
 	_costLabel:setAnchorPoint(cc.p(0,0.5))
 	_costLabel:setPosition(cc.p(_costSp:getBoundingBox().x+_costSp:getBoundingBox().width,_btnChildPosY-4))
 	_buyBtn:addChild(_costLabel)
+    _costSp:setVisible(false)
+    _costLabel:setVisible(false)
 
-	_buyBtn:setPosition(cc.p(_popNode:getContentSize().width/2,75+55))
+	_buyBtn:setPosition(cc.p(_popNode:getContentSize().width/2 - 80,130))
 	_popNode:addChild(_buyBtn)
 	_buyBtn:setTouchEndedCallback(function()
 			self:buyBtnCallback(self.infoData.configId)
@@ -208,17 +262,26 @@ function XianShiYingXiongLayer:initLayer()
     _lastNumTitle:setAnchorPoint(cc.p(0.5,0.5))
     _lastNumTitle:setColor(self.redColor)
     _lastNumTitle:enableShadow(self.redColor, cc.size(0.4,-0.4), 0.4)
+    _lastNumTitle:setVisible(false)
 
     local _lastNumValue = XTHDLabel:create("0",20)
     self.lastNumValue = _lastNumValue
     _lastNumValue:setAnchorPoint(cc.p(0,0.5))
     _lastNumValue:setColor(self.redColor)
     _lastNumValue:enableShadow(self.redColor, cc.size(0.4,-0.4), 0.4)
+    _lastNumValue:setVisible(false)
 
     _lastNumTitle:setPosition(cc.p(_popNode:getContentSize().width/2 -_lastNumValue:getContentSize().width/2-5,80))
     _lastNumValue:setPosition(cc.p(_lastNumTitle:getBoundingBox().x+_lastNumTitle:getBoundingBox().width + 10,_lastNumTitle:getPositionY()))
     _popNode:addChild(_lastNumTitle)
     _popNode:addChild(_lastNumValue)
+
+    local tipText = XTHDLabel:create("每满10次十连抽可领取100个活动英雄碎片（领取上限：3次）",15)                   
+    tipText:setAnchorPoint(cc.p(0.5,0.5))
+    tipText:setColor(self.redColor)
+    tipText:enableShadow(self.redColor, cc.size(0.4,-0.4), 0.4)
+    tipText:setPosition(cc.p(_popNode:getContentSize().width/2 -_lastNumValue:getContentSize().width/2+35,73))
+    _popNode:addChild(tipText)
 
     self:refreshLastNumTitle()
 
@@ -226,9 +289,9 @@ function XianShiYingXiongLayer:initLayer()
 end
 
 function XianShiYingXiongLayer:buyBtnCallback(_configId)
-	ClientHttp:httpCommon( "exchangeLimitPet?", self,{configId = _configId}, function(data)
-		    -- print("限时英雄服务器返回的数据为：----------")
-		    -- print_r(data)
+	ClientHttp:httpCommon("recruitRequest?", self,{recruitType=1,sum=10,activityId=11}, function(data)   --exchangeLimitPet
+		    print("限时英雄服务器返回的数据为：----------")
+		    print_r(data)
 			self.infoData.surplusCount = data.surplusCount or 0
 			self:setCurrentCostResource()
 			if data.bagItems and #data.bagItems ~= 0 then
@@ -244,21 +307,78 @@ function XianShiYingXiongLayer:buyBtnCallback(_configId)
 			    end
 		    	XTHD.dispatchEvent({name = CUSTOM_EVENT.REFRESH_TOP_INFO})
 			end
-			gameData.saveDataToDB({[1] =data["petInfo"]},1)
+            self:getHeroReward(1,data)
+--            data["resultList"][1].id = data["resultList"][1].petId
+--			gameData.saveDataToDB({[1] =data["resultList"][1]},1)
 			self:refreshLastNumTitle()
 			self:refreshResourceValue()
-			local layer = requires("src/fsgl/layer/QiXingTan/QiXingTanGetNewHeroLayer.lua"):create({
-        		par = cc.Director:getInstance():getRunningScene(),
-	            id = data["petInfo"].id,
-	            star = data["petInfo"].starLevel,
-			})
+            self.resourceValue:setString(XTHD.resource.getItemNum(2310)) 
+--			local layer = requires("src/fsgl/layer/QiXingTan/QiXingTanGetNewHeroLayer.lua"):create({
+--        		par = cc.Director:getInstance():getRunningScene(),
+--	            id = data["resultList"][1].petId,
+--	            star = data["resultList"][1].starLevel,
+--			})
 
 			RedPointManage:getDynamicHeroData()
 			RedPointManage:getDynamicItemData()
 			RedPointManage:getDynamicDBHeroSkillData()
+            self:freshBtnState()
 			XTHD.dispatchEvent({["name"] =CUSTOM_EVENT.REFRESH_FUNCTION_REDPOINT})
 
         end)
+end
+
+function XianShiYingXiongLayer:getHeroReward(_type, data )
+    local _data = data
+    if not _data then
+        return
+    end
+    if not _data["addPets"] or not _data["resultList"] then
+        return
+    end
+    local function _goShowReward()
+		if _type == 1 then
+			local showReward = requires("src/fsgl/layer/QiXingTan/QiXingTanShowHeroRewardPop.lua"):create(_data,2)
+			LayerManager.pushModule(showReward)
+		else
+			local showReward = requires("src/fsgl/layer/QiXingTan/QiXingTanShowEquipRewardPop.lua"):create(data)
+			LayerManager.pushModule(showReward)
+		end
+    end 
+
+    if _data.serverAddress ~= "" and _data.token ~= "" then
+        gameUser.setToken(_data.token)
+        gameUser.setNewLoginToken(_data.token) 
+        GAME_API = _data.serverAddress.."/game/"
+        XTHDHttp:requestAsyncWithParams({
+            url = _data.serverAddress .. "/game/newLogin?token="..gameUser.getNewLoginToken(),
+            successCallback = function( sData )
+                if sData.result == 0 then
+                    cc.UserDefault:getInstance():setStringForKey(KEY_NAME_LAST_UUID, sData["uuid"])
+                    cc.UserDefault:getInstance():flush()
+                    gameUser.setSocketIP(0)
+                    gameUser.setSocketPort(0)
+                    gameUser.initWithData(sData)
+                    MsgCenter:getInstance()
+                    _goShowReward()
+                    return 
+                end
+                gameUser.setToken(nil)
+                LayerManager.backToLoginLayer()
+            end,
+            failedCallback = function()
+                gameUser.setToken(nil)
+                LayerManager.backToLoginLayer()
+            end,
+            targetNeedsToRetain = self,--需要保存引用的目标
+            loadingType = HTTP_LOADING_TYPE.CIRCLE,--加载图显示 circle 光圈加载 head 头像加载
+        })
+    else
+        if _data.serverAddress ~= "" then
+            MsgCenter:getInstance()
+        end
+        _goShowReward()
+    end
 end
 
 function XianShiYingXiongLayer:setHeroSp()
@@ -424,6 +544,23 @@ function XianShiYingXiongLayer:setTimeHeroData(data)
 	local _acttimeStr = "00-00"
 	_acttimeStr = data.beginMonth .. "." .. data.beginDay .. "-" .. data.endMonth .. "." .. data.endDay
 	self.infoData.actTimeStr = _acttimeStr
+end
+
+function XianShiYingXiongLayer:freshBtnState()
+     HttpRequestWithOutParams("redHeroActivityList", function(data)
+--        print("---------------")
+--        print_r(data)
+        self.heroData = data
+        if data.state == 1 then
+--            self.receiveBtn:getLabel():setString("领取")
+             self.unfinBtn:setVisible(false)
+             self.receiveBtn:setVisible(true)
+        else 
+--            self.receiveBtn:getLabel():setString("未完成")
+             self.unfinBtn:setVisible(true)
+             self.receiveBtn:setVisible(false)
+        end
+    end )
 end
 
 function XianShiYingXiongLayer:create(data)

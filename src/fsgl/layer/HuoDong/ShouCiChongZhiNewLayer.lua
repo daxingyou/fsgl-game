@@ -500,8 +500,11 @@ function ShouCiChongZhiNewLayer:onCleanup()
 	self._exist = false
 	XTHD.removeEventListener(CUSTOM_EVENT.REFRESH_RECHARGE_MSG)
 	if gameUser.getMeiRiQianDaoState() == 1 then
-    	local popLayer = requires("src/fsgl/layer/ConstraintPoplayer/MeiRiQianDaoPopLayer.lua"):create()
-		cc.Director:getInstance():getRunningScene():addChild(popLayer)
+    	ClientHttp:httpActivity("getCheckInDailyList?",self,function(data)
+			local popLayer = requires("src/fsgl/layer/ConstraintPoplayer/MeiRiQianDaoPopLayer.lua"):create(data)
+			cc.Director:getInstance():getRunningScene():addChild(popLayer)
+			popLayer:show()
+		end,{})
     end
 end
 

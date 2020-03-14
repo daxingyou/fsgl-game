@@ -97,7 +97,9 @@ function VoucherChongzhi:createTableViewCell(index,cell)
 		local itemBtn = XTHDPushButton:createWithParams({
 			normalFile = "res/image/VoucherCenter/viplibao/itemNode.png",
 			selectedFile = "res/image/VoucherCenter/viplibao/itemNode.png",
+			needEnableWhenMoving = true,
 		})
+		itemBtn:setSwallowTouches(false)
 		cellbg:addChild(itemBtn,10)
 		itemBtn:setPosition(cellbg:getContentSize().width *0.5,cellbg:getContentSize().height *0.5 + 10)
 		itemBtn:setScale(0.7)

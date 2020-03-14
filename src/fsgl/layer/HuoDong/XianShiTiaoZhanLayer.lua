@@ -24,8 +24,9 @@ function XianShiTiaoZhanLayer:ctor(data)
 	self._serverData = data
 end
 
-function XianShiTiaoZhanLayer:create(node)
+function XianShiTiaoZhanLayer:create(node,serverData)
 	self._parent = node
+    self.serverData = serverData
     XTHDHttp:requestAsyncInGameWithParams({
         modules = "yearBeastInfo?",
         successCallback = function(data)
@@ -138,8 +139,8 @@ function XianShiTiaoZhanLayer:initRight( )
 	local size = cc.Director:getInstance():getWinSize()
 	local scaleX = size.width / _size.width
 	local scaleY = size.height / _size.height
-	local _spine = sp.SkeletonAnimation:createWithBinaryFile("res/spine/006.skel", "res/spine/006.atlas", 1.0) 
-    _spine:setAnimation(0,"idle",true)
+    local _spine = XTHD.getHeroSpineById(self.serverData.list[1].petId)
+	_spine:setAnimation(0,"idle",true)
     _spine:setScaleX(-1)
     local _node = cc.Node:create()
     self:addChild(_node)
@@ -366,7 +367,7 @@ function XianShiTiaoZhanLayer:createKillCell(index)
 	_campIcon:setPosition(60,node:getContentSize().height / 2 - 7)
 	----名字
 	local _name = string.format("%s LV:%d",data.name,data.level) ------%sLv%d\
-	_name = XTHDLabel:createWithSystemFont(_name,XTHD.SystemFont,16)
+	_name = XTHDLabel:createWithSystemFont(_name,XTHD.SystemFont,15)
 	_name:setColor(cc.c3b(255,255,255))
 	_name:enableShadow(cc.c4b(255,255,255,255),cc.size(0.5,-0.5))
 	_name:setAnchorPoint(0,0.5)
@@ -378,7 +379,7 @@ function XianShiTiaoZhanLayer:createKillCell(index)
 	_kill:enableShadow(cc.c4b(0xff,0xff,0xff,0xff),cc.size(0.5,-0.5))
 	_kill:setAnchorPoint(0,0.5)
 	node:addChild(_kill)
-	_kill:setPosition(node:getContentSize().width * 2/3 + 10,_name:getPositionY())
+	_kill:setPosition(node:getContentSize().width * 2/3 + 30,_name:getPositionY())
 	-----击杀数量
 	local _amount = XTHDLabel:createWithSystemFont(data.killSum,XTHD.SystemFont,18)-----击杀
 	_amount:setColor(cc.c3b(251,254,0))

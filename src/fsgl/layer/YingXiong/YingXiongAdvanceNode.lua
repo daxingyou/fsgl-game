@@ -61,6 +61,20 @@ function YingXiongAdvanceNode:onCleanup()
 end
 
 function YingXiongAdvanceNode:init(heroData)
+	local help_btn = XTHDPushButton:createWithParams({
+		normalFile        = "res/image/camp/lifetree/wanfa_up.png",
+        selectedFile      = "res/image/camp/lifetree/wanfa_down.png",
+        musicFile = XTHD.resource.music.effect_btn_common,
+        endCallback       = function()
+            local StoredValue = requires("src/fsgl/layer/common/WanFaShuoMingLayer.lua"):create({type=41});
+            cc.Director:getInstance():getRunningScene():addChild(StoredValue)
+        end,
+	})
+	help_btn:setScale(0.5)
+	self:addChild(help_btn)
+	help_btn:setPosition(self:getContentSize().width - help_btn:getBoundingBox().width *0.5 - 5,self:getContentSize().height - help_btn:getBoundingBox().height*0.5 - 5)
+
+
 	self.data = clone(heroData)
 	self.current_advance = self.data["advance"]
 
@@ -265,10 +279,10 @@ function YingXiongAdvanceNode:isUnLockSkill(advanceId) --进阶到改阶是否�
 	if advanceId == 1 then
 	    local skillId = _skillTable["skillid1"] and _skillTable["skillid1"] or 0
 	    return skillId
-	elseif advanceId == 4 then
+	elseif advanceId == 5 then
 	    local skillId = _skillTable["skillid2"] and _skillTable["skillid2"] or 0
 	    return skillId
-	elseif advanceId == 8 then
+	elseif advanceId == 9 then
 	    local skillId = _skillTable["skillid3"] and _skillTable["skillid3"] or 0
 	    return skillId
 	else

@@ -840,12 +840,12 @@ function XiongShouLaiXiLayer:revival()
 end
 
 function XiongShouLaiXiLayer:addGuide( )
-    YinDaoMarg:getInstance():addGuide({
-        parent = self,
-        target = self.battle_btn, -----点击挑战按钮
-        index = 3,
-    },23)
-    YinDaoMarg:getInstance():doNextGuide()    
+--    YinDaoMarg:getInstance():addGuide({
+--        parent = self,
+--        target = self.battle_btn, -----点击挑战按钮
+--        index = 3,
+--    },23)
+--    YinDaoMarg:getInstance():doNextGuide()    
 end
 
 return XiongShouLaiXiLayer

@@ -696,7 +696,7 @@ function JingXiangZhiLuSingleChallengeLayer:freshChapterInfo(id)
 
 	if self:getLevelByType() >= self:getCurrentChapterData()[id].instancingid then
 		self._cicon:setTexture("res/image/challenge/header_taofa.png")
-		self._xhCount:setString("1")
+		self._xhCount:setString("10")
 	else
 		self._cicon:setTexture("res/image/common/common_baozi.png")
 		self._xhCount:setString("50")
@@ -915,12 +915,14 @@ function JingXiangZhiLuSingleChallengeLayer:onChallengeBtnClick()
 		local _dialog = XTHDConfirmDialog:createWithParams({
 			msg = "是否消耗50点体力进行挑战？",
 			rightCallback = function()
+                self.dialog:hide()
 				LayerManager.addShieldLayout()
 				local _tab = {instancingid = self:getCurrentChapterData()[self._selectHeroIndex].instancingid, battle_type = BattleType.SINGLECHALLENGE, stageData = self:getCurrentChapterData()[self._selectHeroIndex]}
 				local _layer = requires("src/fsgl/layer/ChuZhan/XuanZeYingXiongCopyLayer.lua"):createWithParams( _tab )
-				fnMyPushScene(_layer)
+				fnMyPushScene(_layer) 
 			end
 		})
+        self.dialog = _dialog
 		self:addChild(_dialog)
     end
 end

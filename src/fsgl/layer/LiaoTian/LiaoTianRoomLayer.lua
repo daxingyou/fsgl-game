@@ -542,7 +542,7 @@ function LiaoTianRoomLayer:createVeiwCell(data)
         ----头像
         local icon = nil
         local background = nil
-        if data.chatType == LiaoTianDatas.__chatType.TYPE_ANNOUNCEMENT or data.chatType == LiaoTianDatas.__chatType.TYPE_FIGHTREPORT then
+        if data.chatType == LiaoTianDatas.__chatType.TYPE_ANNOUNCEMENT then
             ----公告/战报
             icon = cc.Sprite:create("res/image/chatroom/chat_system_repbox.png")
             icon:setScale(0.7)
@@ -591,7 +591,7 @@ function LiaoTianRoomLayer:createVeiwCell(data)
             x = 18
         end
         ----
-        if data.chatType == LiaoTianDatas.__chatType.TYPE_ANNOUNCEMENT or data.chatType == LiaoTianDatas.__chatType.TYPE_FIGHTREPORT then
+        if data.chatType == LiaoTianDatas.__chatType.TYPE_ANNOUNCEMENT then
             ----公告/战报
             ----
             local _icon = cc.Sprite:create("res/image/chatroom/chat_announce_icon.png")
@@ -993,7 +993,7 @@ function LiaoTianRoomLayer:createSharebtn(itme_data)
 end
 
 function LiaoTianRoomLayer:PaoMaDeng()
-    local lable = XTHDLabel:create("哈塞给哈塞给哈塞给哈塞给哈塞给哈塞给哈塞给哈塞给哈塞给哈塞给", 18, "res/fonts/def.ttf")
+    local lable = XTHDLabel:create(LiaoTianDatas.__ChatMsg[1].message, 18, "res/fonts/def.ttf")
     self._gonggaoListview:addChild(lable)
     lable:setAnchorPoint(0, 0.5)
     lable:setColor(XTHD.resource.textColor.red_text)
@@ -1002,7 +1002,7 @@ function LiaoTianRoomLayer:PaoMaDeng()
     schedule(self, function()
         lable:setPositionX(lable:getPositionX() -0.5)
         if math.abs(lable:getPositionX()) > lable:getContentSize().width + self._gonggaoListview:getContentSize().width then
-            lable:setString("滴滴滴滴滴滴")
+            lable:setString(LiaoTianDatas.__ChatMsg[1].message)
             lable:setPositionX(self._gonggaoListview:getContentSize().width)
         end
     end , 0.01, 10001)

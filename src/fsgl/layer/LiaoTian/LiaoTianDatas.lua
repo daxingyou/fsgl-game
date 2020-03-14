@@ -9,6 +9,7 @@ LiaoTianDatas.__BPMsg = { } -- 帮派频道的消息
 LiaoTianDatas.__campMsg = { } -- 种族频道的消息
 LiaoTianDatas.__System = { } --- 系统消息（公告，战报等）
 LiaoTianDatas.__teamMsg = { }
+LiaoTianDatas.__ChatMsg = {}
 LiaoTianDatas.newMsg = {
     -- 是否有新的未查看的消息
     _world = 0,
@@ -39,6 +40,8 @@ LiaoTianDatas.__chatType = {
     TYPE_FIGHTREPORT = 36,
     -- 战报
     TYPE_TEAM_CHAT = 40,-- 队伍聊天
+	--聊天界面的滚动公告
+	TYPE_CHATROOM_MAG = 99,
 }
 LiaoTianDatas.MAXMSG = 50
 
@@ -57,6 +60,7 @@ end
 function LiaoTianDatas.insertMsg(_type, isSelf, Msg)
     -- print("聊天信息为：")
     -- print_r(Msg)
+
     if isSelf then
         -- 是自己发的
         local data = LiaoTianDatas.consistSelfMsg(Msg)
@@ -74,7 +78,7 @@ function LiaoTianDatas.insertMsg(_type, isSelf, Msg)
             table.insert(LiaoTianDatas.__teamMsg, 1, data)
             XTHD.dispatchEvent( { name = CUSTOM_EVENT.DISPLAY_PLAYER_SPEEK, _data = { roleID = data.senderID, wordIndex = data.message } })
         end
-    else
+	else
         local data = LiaoTianDatas.analysisServerMsg(Msg)
         if _type == LiaoTianDatas.__chatType.TYPE_WORLD_CHAT then
             -- 世界信息
@@ -149,6 +153,8 @@ function LiaoTianDatas.insertMsg(_type, isSelf, Msg)
                 end
                 table.insert(LiaoTianDatas.__System, 1, data)
             end
+		elseif _type == LiaoTianDatas.__chatType.TYPE_CHATROOM_MAG then
+			table.insert(LiaoTianDatas.__ChatMsg, 1, data)
         end
         LiaoTianDatas.dispatchChatMsgs(data)
     end
@@ -310,7 +316,6 @@ function LiaoTianDatas.consistFightReport(msg)
 end
 
 function LiaoTianDatas.getMsgsByType(_type)
-    print("这是多少", _type)
     if _type == LiaoTianDatas.__chatType.TYPE_WORLD_CHAT then
         LiaoTianDatas.newMsg._world = 0
         return LiaoTianDatas.__worldMsg

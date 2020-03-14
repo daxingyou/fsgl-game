@@ -380,31 +380,31 @@ function TuJianLayer:createCell(cell, posIndex ,index)
 	heroRank:setPosition(cellbg:getContentSize().width - 10,cellbg:getContentSize().height - heroRank:getContentSize().height *0.5 - 5)
 	XTHD.setGray(heroRank,isGray)
 
-	local starNum = 3
-	local starType = 1
-	if self._heroList[index].rank == 1 then
-		starNum = 3
-		starType = 1
-	elseif self._heroList[index].rank == 2 then
-		starNum = 4
-		starType = 1
-	elseif self._heroList[index].rank == 3 then
-		starNum = 3
-		starType = 2
-	elseif self._heroList[index].rank == 4 then
-		starNum = 4
-		starType = 2
-	elseif self._heroList[index].rank == 5 then
-		starNum = 5
-		starType = 2
-	end
-	for i = 1,starNum do
-		local star = cc.Sprite:create("res/image/newHeroLayer/star_".. starType ..".png")
-		star:setScale(0.8)
-		cellbg:addChild(star)
-		local x = cellbg:getContentSize().width*0.5 - 20 + (starNum-1) *star:getContentSize().width *0.5 - (i-1)*(star:getContentSize().width - 10) + (10 - starNum *2) *2.5
-		star:setPosition(x,cellbg:getContentSize().height - star:getContentSize().height *0.5 - 130)
-	end
+--	local starNum = 3
+--	local starType = 1
+--	if self._heroList[index].rank == 1 then
+--		starNum = 3
+--		starType = 1
+--	elseif self._heroList[index].rank == 2 then
+--		starNum = 4
+--		starType = 1
+--	elseif self._heroList[index].rank == 3 then
+--		starNum = 3
+--		starType = 2
+--	elseif self._heroList[index].rank == 4 then
+--		starNum = 4
+--		starType = 2
+--	elseif self._heroList[index].rank == 5 then
+--		starNum = 5
+--		starType = 2
+--	end
+--	for i = 1,starNum do
+--		local star = cc.Sprite:create("res/image/newHeroLayer/star_".. starType ..".png")
+--		star:setScale(0.8)
+--		cellbg:addChild(star)
+--		local x = cellbg:getContentSize().width*0.5 - 20 + (starNum-1) *star:getContentSize().width *0.5 - (i-1)*(star:getContentSize().width - 10) + (10 - starNum *2) *2.5
+--		star:setPosition(x,cellbg:getContentSize().height - star:getContentSize().height *0.5 - 130)
+--	end
 
 	--创建透明按钮
 	 local herobtn = XTHDPushButton:createWithParams({

@@ -10,7 +10,9 @@ local BangPaiHuoDong = class("BangPaiHuoDong", function (...)
 	return node
 end)
 
-function BangPaiHuoDong:init(  )
+function BangPaiHuoDong:init( parent ,pos)
+	self._pos = pos
+	self._parent = parent
     self._cell_arr = {}  --存放cell
     self._worship = nil   --帮派祭拜
     self._worship_times = nil --祭拜次数label
@@ -64,7 +66,20 @@ function BangPaiHuoDong:init(  )
 			_itemBtn:setScale(1)
             self:switchActivity(i)        
         end)
+        if i == 4 then
+            self.xiulianBtn = _itemBtn
+        end
     end
+	local x,y = self.xiulianBtn:getPosition()
+	local pos = self.xiulianBtn:convertToWorldSpace(cc.p(x,y))
+    YinDaoMarg:getInstance():addGuide({ ----点击帮派修炼
+        parent = self._parent,
+        target = self.xiulianBtn,
+        index = 3,
+        needNext = false,
+        offset = cc.p(pos.x + self._pos.x - self.xiulianBtn:getContentSize().width *0.5,pos.y + self._pos.y + self.xiulianBtn:getContentSize().height *0.25),
+    },17)
+    YinDaoMarg:getInstance():doNextGuide() 
 end
 
 function BangPaiHuoDong:switchActivity( idx )
@@ -89,7 +104,8 @@ function BangPaiHuoDong:switchActivity( idx )
                 LayerManager.addLayout(_newLayer,{noHide = true})
             end,{})
     else
-        XTHDTOAST(LANGUAGE_TIPS_WORDS11)
+        YinDaoMarg:getInstance():guideTouchEnd()
+        XTHD.createBibleLayer(cc.Director:getInstance():getRunningScene())
     end
 end
 
@@ -108,9 +124,9 @@ function BangPaiHuoDong:getFileNameByIdx( idx )
     return path,#file_path
 end
 
-function BangPaiHuoDong:create(  )
+function BangPaiHuoDong:create( parent,pos )
 	local pLay = self.new()
-	pLay:init()
+	pLay:init(parent,pos)
 	return pLay
 end
 

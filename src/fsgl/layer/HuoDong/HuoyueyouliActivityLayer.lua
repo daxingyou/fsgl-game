@@ -203,7 +203,6 @@ function HuoyueyouliActivityLayer:buildCell(cell,idx)
 			selectedFile = "res/image/activities/huoyueyouli/btn_qianwang_down.png",
 			isScrollView = true,
 			endCallback = function ()
---				dump(self._tableListdata,"刷新")
                 if self._tableListdata[1].gotype == 33 then
                     local equipLayer = requires("src/fsgl/layer/ZhuangBei/ZhuangBeiLayer.lua"):create(nil, nil, 1, nil)
 		            LayerManager.addLayout(equipLayer)

@@ -558,7 +558,7 @@ LANGUAGE_TIPS_WORDS144 = "后可领取奖励"
 LANGUAGE_TIPS_WORDS145 = "主人，我们现在缺少资金啊！去竞技场抢点钱来花花么？"
 LANGUAGE_TIPS_WORDS146 = "被该玩家抢最多次: 此处省去七个字"
 LANGUAGE_TIPS_WORDS147 = "没有返回数据"
-LANGUAGE_TIPS_WORDS148 = "为你的队伍取个名字"
+LANGUAGE_TIPS_WORDS148 = "重新取个名字"
 LANGUAGE_TIPS_WORDS149 = "1~6位英文、汉字"
 LANGUAGE_TIPS_WORDS150 = "修改昵称花费100元宝,是否继续？"
 LANGUAGE_TIPS_WORDS151 = "首次修改昵称免费,是否继续？"
@@ -934,8 +934,8 @@ LANGUAGE_KEY_HERO_TEXT = {
 	noRecruitHeroTextXc = "未拥有英雄"
 	,initSkill = "初始技能"
 	,advanceGreenIndicate = "英雄进阶到+1后解锁"
-	,advanceBlueIndicate = "英雄进阶到+4后解锁"
-	,advancePupleIndicate = "英雄进阶到+8后解锁"
+	,advanceBlueIndicate = "英雄进阶到+5后解锁"
+	,advancePupleIndicate = "英雄进阶到+9后解锁"
 	,ownedHeros = "拥有英雄"
 	,highestHeroFVIM = "最高英雄战力"
 	,ownedArtifact = "拥有神器"
@@ -1351,7 +1351,7 @@ LANGUAGE_KEY_GUILD_TEXT = {
 	,guildAcceptApplyFailToastXc = "该玩家已经加入其他帮派"
 	,guildRefuseApplyToastXc = "成功拒绝申请"
 	,guildNoEnoughLevelToastXc = "等级不足，无法申请"
-	,guildCannotCreateGuildToastXc = "创建帮派需要等级达到21"
+	,guildCannotCreateGuildToastXc = "创建帮派需要等级达到18"
 	,guildCannotApplyToastXc = "少侠，你都是有帮派的人了，不要吃着碗里瞧着锅里啊"
 	,guildNoEnoughPermissionToastXc = "少侠权限不足，快努力提升自己的地位吧"
 	,guildNoInheritorToastXc = "暂无可继承帮主之位的人选"
@@ -1447,7 +1447,7 @@ LANGUAGE_KEY_MYRANKREWARD	= "排名固定奖励："
 LANGUAGE_KEY_FETCHREWARD 	= "领取奖励"
 LANGUAGE_KEY_CANFETCHREWARD = "可以领取奖励"
 
-LANGUAGE_KEY_FINISHALLTASK = "恭喜您完成了所有任务"
+LANGUAGE_KEY_FINISHALLTASK = "恭喜您完成了当前等级所有任务"
 LANGUAGE_KEY_TASKTARGET    = "任务目标"
 LANGUAGE_KEY_SPACEFETCH  = "领 取"
 LANGUAGE_KEY_SPACEGOTO = "前 往"
@@ -1658,9 +1658,21 @@ LANGUAGE_GAME_DIRECTION = {
 	},
 	[3] = {
 	"升星说明",
-	"1。装备强化等级越高升星加成越高",
-	"2．升星加成会随洗练效果变化",
-	"3．进阶失败会退还50%的消耗",
+	"1．1-5星使用该英雄的碎片升星",
+	"2．五星以上使用特殊丹药升星",
+	"3．五星到六星使用绿影星丹",
+	"4．六星到七星使用蓝夜玄丹",
+	"5．七星到八星使用紫渊灵丹",
+	"6．八星到九星使用橙龙天丹",
+	"7．九星到十星使用赤麟圣丹",
+	"8．五星以上所使用的丹药可通过献祭获得",
+	"9．升星可获得大量英雄属性",
+	"10．重生不会返还英雄碎片以及特殊丹药，但是会返还其他材料",
+	"11．绿色英雄最多可升至6星",
+	"12．蓝色英雄最多可升至7星",
+	"13．紫色英雄最多可升至8星",
+	"14．橙色英雄最多可升至9星",
+	"15．红色英雄可升至10星",
 	},
 	[4] = {
 	"洗练说明",	
@@ -1834,9 +1846,10 @@ LANGUAGE_GAME_DIRECTION = {
 	[25] = {
 			"玩法说明",
 			"1．修炼可以提升装备以及英雄属性",
-			"2．英雄修炼消耗该英雄的碎片银两以及翡翠可以提升英雄属性",
+			"2．英雄修炼消耗该英雄的碎片银两以及帮派贡献可以提升英雄属性",
 			"3．装备修炼消耗该装备的碎片银两以及回收点提升装备属性",
 			"4．回收点可以通过回收装备获得",
+			"5．帮派贡献可以通关帮派相关活动获得",
 			},
 	[26] = {
 			"玩法说明",
@@ -1895,6 +1908,14 @@ LANGUAGE_GAME_DIRECTION = {
 			"1．点击每个功能的按钮即可开始对应的资源产出",
 			"2．修仙过程中，玩家无需在游戏内，只需要时间到后领取相应奖励即可",
 			"3．VIP越高的玩家可修仙的时间就越长，奖励也就越高",
+			"4．银矿提炼可获得“银两”",
+			"5．玉石雕琢可获得“翡翠”",
+			"6．静心打坐可获得“经验”",
+			"7．深山寻宝可获得“藏宝图碎片”",
+			"8．培育仙果可获得“经验果”",
+			"9．淬炼神器可获得“原石进阶箱”",
+			"10．研习兵书可获得“韬略”",
+			"11．丹药炼制可获得“进阶丹”"
 			},
 	[34] = {
 			"玩法说明",
@@ -1924,13 +1945,13 @@ LANGUAGE_GAME_DIRECTION = {
 	[37] = {
 			"七星坛抽奖说明",
 			"1．援军降临通过英雄密令进行抽英雄",
-			" a．首次十连抽100%获得三星以上英雄",
+			" a．首次十连抽100%获得SSR英雄",
 			" b．单抽品质为R英雄概率为1.5%",
 			" c．单抽品质为SR英雄概率为1.5%",
 			" d．十连抽英雄必得R以上SSR以下品质英雄",
 			" e．vip7以上十连抽英雄必得SR以上SSSR以下品质英雄",
 			" f．vip12以上单抽品质为SSR的英雄概率为0.3%",
-			" g．品质SSSR英雄只能通过特殊活动获得",
+			" g．品质UR英雄只能通过特殊活动开启获得",
 			"2．神兵异宝通过神兵号角进行抽道具装备",
 			" a．初级进阶丹概率为7%",
 			" b．召唤石概率为4%",
@@ -1963,6 +1984,25 @@ LANGUAGE_GAME_DIRECTION = {
 			"3．抽中已经拥有的武将会自动转化为等值的召唤石。",
 			"4．达到VIP12，十连抽必定获得稀有武将。",
 			"5．在神兵异宝玩法中抽奖可获得稀有道具和装备。",
+			},
+    [40] = {
+			"玩法说明",
+			"1．领地战开始时先进攻每座城池的守卫，击败守卫后才继续攻入城内进行PVP战斗。",
+			"2．每次攻打一次守卫就给一个攻城礼包（数量无上限。",
+			"3．生命之树等级越高，城池守卫等级就越高。",
+			},
+	[41] = {
+			"进阶说明",
+			"1．英雄进阶+6开启英雄第三个技能，+9开启英雄第四个技能",
+			"2．英雄在5-6阶进阶时需要1个初级武魂",
+			"3．英雄在8-9阶进阶时需要1个高级武魂",
+			"4．武魂可在七星坛通过召唤石兑换",
+			},
+	[42] = {
+			"技能说明",
+			"1．开启英雄新技能的要求1阶开第一个技能",
+			"2．5阶开第二个技能",
+			"3．9阶开第三个技能",
 			},
 }
 
@@ -2519,7 +2559,7 @@ function LANGUAGE_TIPS_equipItemLevelPromptTextXc(_str)
 	return _str .. "级可装备"
 end
 function LANGUAGE_TIPS_skillUnlockDescTextXc(_idx)
-	local _strTable = {"+1","+4","+8"}
+	local _strTable = {"+1","+5","+9"}
 	local _str = _strTable[tonumber(_idx)]
 	return "进阶到" .. _str .. "后解锁"
 end

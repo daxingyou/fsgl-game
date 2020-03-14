@@ -37,10 +37,10 @@ function ShangCheng:ctor(params,isUpdate,callFunc)
     self._funcValid = {84,33,34,35,32,73,74,77,76,72,35,84,84,84,84,84}-----元宝、竞技商店、回收商店、神器商店、阵营商店、悬赏、团购/修罗、运镖，帮派,将军府,强化
    -- self._storeTags = {1,12,2,3,4,5,6,8,10,11} ----元宝、竞技商店、回收商店、神器商店、阵营商店、悬赏、团购/修罗,帮派,将军府,强化,鲜花
 	if gameUser.getLimitTimeShopState() == 1 then
-        self._storeTags = {1,12,7,14,15}
+        self._storeTags = {1,7,14,15}
 		-- self._storeTags = {1,12,2,3,4,5,6,7,8,10,13}
 	else
-        self._storeTags = {1,12,14,15}
+        self._storeTags = {1,14,15}
 		-- self._storeTags = {1,12,2,3,4,5,6,8,10,13}
 	end
 
@@ -235,6 +235,14 @@ function ShangCheng:init( )
 	node:setPosition(pinkBg:getContentSize().width *0.5,pinkBg:getContentSize().height - node:getContentSize().height *0.5)
 	self._titleContainer = node
 
+	local refreshLable = XTHDLabel:create("功能商店每天00:00点刷新",14)
+	refreshLable:setAnchorPoint(0,0.5)
+	refreshLable:setColor(cc.c3b(255,246,127))
+	self._bg:addChild(refreshLable)
+	refreshLable:setPosition(5,refreshLable:getContentSize().height *0.5 + 35)
+	self._refreshLable = refreshLable
+	self._refreshLable:setVisible(false)
+
  	self:switchTitleContainer(self._storeIndex)
     ------
 	self:initButtonsView()
@@ -379,6 +387,12 @@ function ShangCheng:changeStoreList( index )
 	if index == 11 then
 		XTHDTOAST("侍仆商店暂未开放，敬请期待！")
 		return
+	end
+
+	if index == 15 then
+		self._refreshLable:setVisible(true)
+	else
+		self._refreshLable:setVisible(false)
 	end
 	
     self._canChangeStore = false
@@ -544,7 +558,7 @@ function ShangCheng:loadShenMiStores(index)
 
 		local _type = 4
         local _itemID = data.localD.itemid
-        local _amount = data.localD.num
+        local _amount = data.localD.sellnum
 		local icon = ItemNode:createWithParams({
             _type_ = _type,
             itemId = _itemID,
@@ -1307,7 +1321,9 @@ function ShangCheng:doExchange( storeData,index,targ, name,_index)
 								local _data = data.items[i]
 								local num = gameData.getDataFromDynamicDB(gameUser.getUserId(), DB_TABLE_NAME_ITEM,{itemid = _data.itemId}).count or 0
 								local num2 = _data.count - num
-								show_data[#show_data+1] = {rewardtype = 4, id =_data.itemId, num = num2}
+								if num2 > 0 then
+									show_data[#show_data+1] = {rewardtype = 4, id =_data.itemId, num = num2}
+								end
 								DBTableItem.updateCount(gameUser.getUserId(),_data,_data["dbId"])
 							end
 							ShowRewardNode:create(show_data)
@@ -1850,6 +1866,8 @@ function ShangCheng:getNumTable(data,name,index)
 			_playeLablePath = "银两"
 		elseif tonumber(_data[1]) == 3 then
 			_playeLablePath = "元宝"
+		elseif tonumber(_data[1]) == 4 then
+			_playeLablePath = gameData.getDataFromCSV("ArticleInfoSheet",{itemid = tonumber(_data[2])}).name
 		else
 			_playeLablePath = "翡翠"
 		end

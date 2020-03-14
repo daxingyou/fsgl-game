@@ -585,7 +585,7 @@ end
 
 -- 创建帮派
 function BangPaiLieBiao:createGuildCallBack()
-    if tonumber(gameUser.getLevel()) < 21 then
+    if tonumber(gameUser.getLevel()) < 18 then
         XTHDTOAST(LANGUAGE_KEY_GUILD_TEXT.guildCannotCreateGuildToastXc)
         return
     end

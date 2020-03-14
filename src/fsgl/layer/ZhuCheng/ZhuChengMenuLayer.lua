@@ -330,8 +330,12 @@ function ZhuChengMenuLayer:init()
     } )
 
     if mGameUser.getLevel() > 7 and mGameUser.getMeiRiQianDaoState() == 1 then
-        local popLayer = requires("src/fsgl/layer/ConstraintPoplayer/MeiRiQianDaoPopLayer.lua"):create()
-        self:addChild(popLayer)
+		ClientHttp:httpActivity("getCheckInDailyList?",self,function(data)
+			local popLayer = requires("src/fsgl/layer/ConstraintPoplayer/MeiRiQianDaoPopLayer.lua"):create(data)
+			cc.Director:getInstance():getRunningScene():addChild(popLayer)
+			popLayer:setName("Poplayer")
+			popLayer:show()
+		end,{})
     end
     self:refreshTopInfo()
     self:refreshBaseInfo()
@@ -687,29 +691,23 @@ function ZhuChengMenuLayer:initHeadBar(...)
     local vipNode = cc.Node:create()
     self:addChild(vipNode)
     vipNode:setPosition(280, self:getContentSize().height - 22)
+	self._vipNode = vipNode
     local vipBg = cc.Sprite:create("res/image/vip/vip_big.png")
     vipBg:setScale(0.4)
     vipNode:addChild(vipBg)
-    if mGameUser.getVip() < 10 then
-        local vipg = cc.Sprite:create("res/image/vip/vip_" .. tostring(mGameUser.getVip()) .. ".png")
-        vipg:setScale(0.5)
-        vipNode:addChild(vipg)
-        vipNode:setContentSize(vipBg:getBoundingBox().width * 0.4 + vipg:getBoundingBox().width, vipBg:getBoundingBox().height)
-        vipg:setPosition(vipBg:getBoundingBox().width - 23, vipBg:getBoundingBox().height / 2 - 22)
-        self.vipG = vipg
-    else
-        local vipg = cc.Sprite:create("res/image/vip/vip_" .. tostring((math.floor(mGameUser.getVip() / 10))) .. ".png")
-        vipg:setScale(0.5)
-        vipNode:addChild(vipg)
-        local vips = cc.Sprite:create("res/image/vip/vip_" .. tostring((mGameUser.getVip() % 10)) .. ".png")
-        vips:setScale(0.5)
-        vipNode:addChild(vips)
-        vipNode:setContentSize(vipBg:getBoundingBox().width * 0.4 + vipg:getBoundingBox().width * 0.5 + vips:getBoundingBox().width * 0.5, vipBg:getBoundingBox().height * 0.5)
-        vipg:setPosition(vipBg:getBoundingBox().width - 23, vipBg:getBoundingBox().height / 2 - 22)
-        vips:setPosition(vipBg:getBoundingBox().width + vipg:getBoundingBox().width - 26, vipBg:getBoundingBox().height / 2 - 22)
-        self.vipG = vipg
-        self.vipS = vips
-    end
+	self._vipBg = vipBg
+    local vipg = cc.Sprite:create()
+    vipg:setScale(0.5)
+	vipNode:addChild(vipg)
+    self.vipG = vipg
+        
+    local vips = cc.Sprite:create()
+    vips:setScale(0.5)
+    vipNode:addChild(vips)
+    vipNode:setContentSize(vipBg:getBoundingBox().width * 0.4 + vipg:getBoundingBox().width * 0.5 + vips:getBoundingBox().width * 0.5, vipBg:getBoundingBox().height * 0.5)
+    vipg:setPosition(vipBg:getBoundingBox().width - 23, vipBg:getBoundingBox().height / 2 - 22)
+    vips:setPosition(vipBg:getBoundingBox().width + vipg:getBoundingBox().width - 26, vipBg:getBoundingBox().height / 2 - 22)
+    self.vipS = vips
 
     local vipBtn = XTHDPushButton:createWithParams( {
         musicFile = XTHD.resource.music.effect_btn_common,
@@ -774,7 +772,7 @@ function ZhuChengMenuLayer:initHeadBar(...)
     charge:setAnchorPoint(0, 1)
     charge:setPosition(vipBox:getPositionX() + vipBox:getBoundingBox().width + 35, vipBox:getPositionY() + 30)
     charge:setTouchEndedCallback( function()
-      	local voucherLayer = requires("src/fsgl/layer/VoucherCenter/VoucherCenterLayer.lua"):create()
+      	local voucherLayer = requires("src/fsgl/layer/VoucherCenter/VoucherCenterLayer.lua"):create(3)
 		LayerManager.addLayout(voucherLayer)
     end )
     self._chargeBtn = charge
@@ -881,7 +879,7 @@ function ZhuChengMenuLayer:initNumberBar()
                 self._boxTips = nil
             end
         end )
-        _barkBG:setPosition(x + _barkBG:getBoundingBox().width / 2, self:getContentSize().height - _barkBG:getBoundingBox().height / 2 - 10)
+        _barkBG:setPosition(x + _barkBG:getBoundingBox().width / 3 + 5, self:getContentSize().height - _barkBG:getBoundingBox().height / 2 - 10)
         self:addChild(_barkBG)
 
         local physical_icon = cc.Sprite:create(_iconSRC[i])
@@ -999,7 +997,7 @@ function ZhuChengMenuLayer:initLeftMenu()
             redDot:setVisible(false)
             self.xxsjRedDot = redDot
             self.__functionButtons[31] = menuBtn
-            self.__functionButtons[31]:setVisible(gameUser.getLevel() >= 40)
+            self.__functionButtons[31]:setVisible(true)
         elseif i == 5 then
             -- 资源找回按钮位置
             self:PushBtnToLeftNode(menuBtn)
@@ -1209,12 +1207,13 @@ function ZhuChengMenuLayer:initBottomMenu()
             -- menuBtn:setPosition(cc.p(self:getContentSize().width-340,10))
         elseif i == 6 then
             -- 修炼
-            self:PushBtnTorightfloorNode(menuBtn)
+--            self:PushBtnTorightfloorNode(menuBtn)
             local redDot = XTHDImage:create("res/image/common/heroList_redPoint.png")
             menuBtn:addChild(redDot)
             redDot:setPosition(menuBtn:getContentSize().width - redDot:getContentSize().width, menuBtn:getContentSize().height - 15)
             redDot:setVisible(false)
             self._baodianRedDot = redDot
+            menuBtn:setVisible(false)
             self.__functionButtons[17] = menuBtn
             -- xiulian
             -- menuBtn:setPosition(cc.p(self:getContentSize().width-360,10))
@@ -1286,7 +1285,7 @@ function ZhuChengMenuLayer:initRightUpMenu()
                 XTHDTOAST("12级解锁世界Boss")
                 return
             end
-            YinDaoMarg:getInstance():guideTouchEnd()
+            YinDaoMarg:getInstance():overCurrentGuide(true)
             LayerManager.createModule("src/fsgl/layer/XiongShouLaiXi/XiongShouLaiXiLayer.lua", { par = self })
         elseif sIndex == 5 then
             -- 首冲
@@ -1730,6 +1729,7 @@ function ZhuChengMenuLayer:adjustBottomBtns()
             end
         end
     end
+    self.__functionButtons[17]:setVisible(false)
 end
 
 --------------------------------------与主城对接方法--------------------------------------
@@ -1749,6 +1749,9 @@ function ZhuChengMenuLayer:refreshTopInfo()
     else
         self.vipG:initWithFile("res/image/vip/vip_" .. tostring((math.floor(mGameUser.getVip() / 10))) .. ".png")
         self.vipS:initWithFile("res/image/vip/vip_" .. tostring((mGameUser.getVip() % 10)) .. ".png")
+		self._vipNode:setContentSize(self._vipBg:getBoundingBox().width * 0.4 + self.vipG:getBoundingBox().width * 0.5 + self.vipS:getBoundingBox().width * 0.5, self._vipBg:getBoundingBox().height * 0.5)
+		self.vipG:setPosition(self._vipBg:getBoundingBox().width - 23, self._vipBg:getBoundingBox().height / 2 - 22)
+		self.vipS:setPosition(self.vipG:getPositionX() + self.vipG:getBoundingBox().width *0.5 + self.vipS:getBoundingBox().width *0.5, self._vipBg:getBoundingBox().height / 2 - 22)
     end
 
     if self._propertyLable and #self._propertyLable > 3 then
@@ -1959,12 +1962,12 @@ function ZhuChengMenuLayer:refreshBaseInfo()
 
         -- 战力竞赛
         if self.__functionButtons[40] then
-            self.__functionButtons[40]:setVisible(gameUser.getZLJSOpenState() == 1)
+            self.__functionButtons[40]:setVisible(false)
         end
 
         -- 全民竞技
         if self.__functionButtons[41] then
-            self.__functionButtons[41]:setVisible(gameUser.getQMJJOpenState() == 1)
+            self.__functionButtons[41]:setVisible(false)
         end
 
         self.scaleBtn:setRotation(0)
@@ -1973,7 +1976,7 @@ function ZhuChengMenuLayer:refreshBaseInfo()
 
     if self.__functionButtons[31] then
         -- 修仙圣境
-        self.__functionButtons[31]:setVisible(gameUser.getLevel() >= 40)
+        --self.__functionButtons[31]:setVisible(gameUser.getLevel() >= 40)
     end
 
     if self.__functionButtons[66] then
@@ -2005,7 +2008,7 @@ function ZhuChengMenuLayer:refreshBaseInfo()
 --        end
 --    end
 
-    -- self:adjustLeftUpMenu()
+-- self:adjustLeftUpMenu()
     self:refreshCeilNodeBtnPos()
     self:refreshRightNodeBtnPos()
     self:refreshRightFloorBtnPos()
@@ -2977,7 +2980,7 @@ function ZhuChengMenuLayer:addGuide()
     --- 任务
     local _equip = self.__functionButtons[13]
     --- 装备
-    local _baodian = self.__functionButtons[17]
+--    local _baodian = self.__functionButtons[17]
     --- 宝典
     YinDaoMarg:getInstance():addGuide( {
         -----引导去英雄
@@ -2999,6 +3002,7 @@ function ZhuChengMenuLayer:addGuide()
     } , {
         { 1, 6 },
         { 2, 10 },
+		{ 3, 1 },
         { 5, 7 },
         { 8, 2 },
     } )
@@ -3021,8 +3025,8 @@ function ZhuChengMenuLayer:addGuide()
     } )
     YinDaoMarg:getInstance():addGuide( {
         parent = self,
-        target = _baodian,
-        -----宝典
+        target = _family,
+        -----修炼
         index = 2,
         needNext = false,
     } , 17)
@@ -3154,32 +3158,33 @@ end
 
 -- 战力竞技
 function ZhuChengMenuLayer:ZhanlijingsaiActivityLayer()
-	local biwuzhaoqin = requires("src/fsgl/layer/Biwuzhaoqin/Biwuzhaoqin.lua"):create()
-	LayerManager.addLayout(biwuzhaoqin)
---    local list = { "heroStar", "heroPhase", "heroPower", "equipStar", "godPhase" }
---    ClientHttp:requestAsyncInGameWithParams( {
---        modules = "leaderBoardRank?",
---        params = { type = list[1] },
---        successCallback = function(data)
---            if data.result == 0 then
---                local biyedianliLayer = requires("src/fsgl/layer/HuoDong/ZhanlijingsaiActivityLayer.lua")
---                local layer = biyedianliLayer:create(data)
---                cc.Director:getInstance():getRunningScene():addChild(layer)
---				layer:setName("Poplayer")
---                layer:show()
---            else
---                XTHDTOAST(data.msg)
---            end
---        end,
---        failedCallback = function()
---            XTHDTOAST(LANGUAGE_TIPS_WEBERROR)
---            ------"网络请求失败")
---        end,
---        -- 失败回调
---        loadingType = HTTP_LOADING_TYPE.CIRCLE,
---        -- 加载图显示 circle 光圈加载 head 头像加载
---        loadingParent = node,
---    } )
+--	local biwuzhaoqin = requires("src/fsgl/layer/Biwuzhaoqin/Biwuzhaoqin.lua"):create()
+--	LayerManager.addLayout(biwuzhaoqin)
+	
+    local list = { "heroStar", "heroPhase", "heroPower", "equipStar", "godPhase" }
+    ClientHttp:requestAsyncInGameWithParams( {
+        modules = "leaderBoardRank?",
+        params = { type = list[1] },
+        successCallback = function(data)
+            if data.result == 0 then
+                local biyedianliLayer = requires("src/fsgl/layer/HuoDong/ZhanlijingsaiActivityLayer.lua")
+                local layer = biyedianliLayer:create(data)
+                cc.Director:getInstance():getRunningScene():addChild(layer)
+				layer:setName("Poplayer")
+                layer:show()
+            else
+                XTHDTOAST(data.msg)
+            end
+        end,
+        failedCallback = function()
+            XTHDTOAST(LANGUAGE_TIPS_WEBERROR)
+            ------"网络请求失败")
+        end,
+        -- 失败回调
+        loadingType = HTTP_LOADING_TYPE.CIRCLE,
+        -- 加载图显示 circle 光圈加载 head 头像加载
+        loadingParent = node,
+    } )
 end
 -- 全民竞技
 function ZhuChengMenuLayer:QuanmingjingjiActivityLayer()

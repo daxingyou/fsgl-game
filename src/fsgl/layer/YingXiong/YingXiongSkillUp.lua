@@ -58,6 +58,19 @@ function YingXiongSkillUp:onEnter(  )
 end
 
 function YingXiongSkillUp:init(heroData)
+	local help_btn = XTHDPushButton:createWithParams({
+		normalFile        = "res/image/camp/lifetree/wanfa_up.png",
+        selectedFile      = "res/image/camp/lifetree/wanfa_down.png",
+        musicFile = XTHD.resource.music.effect_btn_common,
+        endCallback       = function()
+            local StoredValue = requires("src/fsgl/layer/common/WanFaShuoMingLayer.lua"):create({type=42});
+            cc.Director:getInstance():getRunningScene():addChild(StoredValue)
+        end,
+	})
+	help_btn:setScale(0.5)
+	self:addChild(help_btn)
+	help_btn:setPosition(self:getContentSize().width - help_btn:getBoundingBox().width *0.5 - 5,self:getContentSize().height - help_btn:getBoundingBox().height*0.5 - 5)
+
 	--接收监听
 	self:getEventCustom()
 
@@ -145,10 +158,12 @@ function YingXiongSkillUp:init(heroData)
 			self:toBuySkillPoint()
 		end
 	})
-	buySkillPoint:setScale(0.5)
+	buySkillPoint:setScale(0.4)
+	buySkillPoint:getLabel():enableOutline(cc.c4b(15,0,0,255),2)
+	buySkillPoint:getLabel():setScale(1.2)
 	buySkillPoint:setName("buySkillPoint")
 	buySkillPoint:setAnchorPoint(cc.p(1,0.5))
-	buySkillPoint:setPosition(cc.p(self:getContentSize().width-10,label_last_skill_point:getPositionY()))
+	buySkillPoint:setPosition(cc.p(self:getContentSize().width-35,label_last_skill_point:getPositionY()))
 	buySkillPoint:setVisible(false)
 	self:addChild(buySkillPoint,1)
 
